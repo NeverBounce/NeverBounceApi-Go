@@ -11,11 +11,13 @@ import (
 )
 
 type NeverBounce struct {
-	ApiKey string
+	ApiKey     string
+	apiBaseUrl string
 }
 
 func New(apiKey string) (error, *NeverBounce) {
 	r := &NeverBounce{}
+	r.apiBaseUrl = "https://api.neverbounce.com/v4/"
 	r.ApiKey = apiKey
 	err, _ := r.Info()
 	if err != nil {
@@ -28,7 +30,7 @@ func New(apiKey string) (error, *NeverBounce) {
 // how many jobs are currently running on your account.
 func (r *NeverBounce) Info() (error, *nbDto.Info) {
 	// call info API
-	url := "https://api.neverbounce.com/v4/account/info?key=" + r.ApiKey
+	url := r.apiBaseUrl + "account/info?key=" + r.ApiKey
 	res, err := http.Get(url)
 	if err != nil {
 		return err, nil
