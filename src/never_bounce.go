@@ -7,7 +7,6 @@ import (
 	"errors"
 	"github.com/enkhalifapro/neverBounce/src/nb_error"
 	"github.com/enkhalifapro/neverBounce/src/nb_dto"
-	"fmt"
 )
 
 type NeverBounce struct {
@@ -26,11 +25,7 @@ func New(apiKey string) (error, *NeverBounce) {
 	return nil, r
 }
 
-// Account endpoints allow to programmatically check your account's balance and
-// how many jobs are currently running on your account.
-func (r *NeverBounce) Info() (error, *nbDto.Info) {
-	// call info API
-	url := r.apiBaseUrl + "account/info?key=" + r.ApiKey
+func callApi(url string) (error, []byte) {
 	res, err := http.Get(url)
 	if err != nil {
 		return err, nil
@@ -38,6 +33,19 @@ func (r *NeverBounce) Info() (error, *nbDto.Info) {
 
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err, nil
+	}
+	return nil, body
+}
+
+// Account endpoints allow to programmatically check your account's balance and
+// how many jobs are currently running on your account.
+func (r *NeverBounce) Info() (error, *nbDto.Info) {
+	// call info API
+	url := r.apiBaseUrl + "account/info?key=" + r.ApiKey
+
+	err, body := callApi(url)
 	if err != nil {
 		return err, nil
 	}

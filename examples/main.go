@@ -12,5 +12,5 @@ func main() {
 		panic(err)
 	}
 	err, info := neverBounce.Info()
-	fmt.Println(info.BillingType)
+	fmt.Println(info)
 }
