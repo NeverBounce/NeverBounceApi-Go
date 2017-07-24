@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/enkhalifapro/neverBounce/src"
+	"github.com/NeverBounce/NeverBounceApi-Go/src"
 )
 
 func main() {
@@ -11,7 +11,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err, info := neverBounce.Info()
+	info, err := neverBounce.Info()
 	fmt.Println(info)
 	err, singleCheckInfo := neverBounce.Single.Check("enkhalifapro@gmail.com", true, true, "")
 	fmt.Println(err)

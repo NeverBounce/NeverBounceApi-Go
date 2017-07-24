@@ -2,8 +2,8 @@ package neverBounce
 
 import (
 	"encoding/json"
-	"github.com/enkhalifapro/neverBounce/src/nb_dto"
 	"strconv"
+	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_dto"
 )
 
 type Jobs struct {
