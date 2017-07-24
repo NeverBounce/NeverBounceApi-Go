@@ -18,7 +18,7 @@ func New(apiKey string) (error, *NeverBounce) {
 		ApiKey:     apiKey,
 		Single: &Single{apiBaseUrl: baseUrl,
 			apiKey:                 apiKey}}
-	err, _ := r.Info()
+	_, err := r.Info()
 	if err != nil {
 		return err, nil
 	}
