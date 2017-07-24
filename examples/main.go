@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/enkhalifapro/neverBounce/src"
+	"github.com/NeverBounce/NeverBounceApi-Go/src"
 )
 
 func main() {

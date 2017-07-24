@@ -2,7 +2,7 @@ package neverBounce
 
 import (
 	"encoding/json"
-	"github.com/enkhalifapro/neverBounce/src/nb_dto"
+	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_dto"
 )
 
 type Single struct {
