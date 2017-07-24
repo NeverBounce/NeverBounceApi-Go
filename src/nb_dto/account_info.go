@@ -1,6 +1,6 @@
 package nbDto
 
-type Info struct {
+type AccountInfo struct {
 	Status                string `json:"status"`
 	BillingType           string `json:"billing_type"`
 	Credits               int `json:"credits"`

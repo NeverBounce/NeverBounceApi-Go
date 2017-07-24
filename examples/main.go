@@ -13,4 +13,7 @@ func main() {
 	}
 	err, info := neverBounce.Info()
 	fmt.Println(info)
+	err, singleCheckInfo := neverBounce.Single.Check("enkhalifapro@gmail.com", true, true, "")
+	fmt.Println(err)
+	fmt.Println(singleCheckInfo)
 }
