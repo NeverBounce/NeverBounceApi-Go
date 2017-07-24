@@ -19,7 +19,7 @@ type Jobs struct {
 // includeCreditInfo: Include account credit info in response
 // max_execution_time: The maximum time in seconds we should try to verify the address
 
-func (r *Jobs) Search(jobId int, fileName string, completed bool, processing bool, indexing bool, failed bool, manualReview bool, unpurchased bool, page int, itemsPerPage int) (error, *nbDto.SingleCheckInfo) {
+func (r *Jobs) Search(jobId int, fileName string, completed bool, processing bool, indexing bool, failed bool, manualReview bool, unpurchased bool, page int, itemsPerPage int) (error, *nbDto.SearchInfo) {
 	// call info API
 	url := r.apiBaseUrl + "jobs/search?key=" + r.apiKey
 
@@ -74,7 +74,7 @@ func (r *Jobs) Search(jobId int, fileName string, completed bool, processing boo
 	}
 
 	// extract result info
-	var info nbDto.SingleCheckInfo
+	var info nbDto.SearchInfo
 
 	err = json.Unmarshal(body, &info)
 	if err != nil {
