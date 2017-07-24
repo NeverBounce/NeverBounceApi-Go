@@ -11,7 +11,7 @@ type Jobs struct {
 	apiKey     string
 }
 
-// Single verification allows you verify individual emails and gather additional
+// Search : verification allows you verify individual emails and gather additional
 // information pertaining to the email.
 // @Params
 // email: The email to verify
