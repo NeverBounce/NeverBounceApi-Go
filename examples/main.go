@@ -13,14 +13,12 @@ func main() {
 
 	if err != nil {
 		panic(err)
-		return
 	}
 
 	// Info API
 	info, err := neverBounce.Info()
 	if err != nil {
 		panic(err)
-		return
 	}
 	fmt.Println(info)
 
@@ -28,7 +26,6 @@ func main() {
 	singleCheckInfo, err := neverBounce.Single.Check("enkhalifapro@gmail.com", true, true, "")
 	if err != nil {
 		panic(err)
-		return
 	}
 	fmt.Println(singleCheckInfo)
 
@@ -43,7 +40,6 @@ func main() {
 		FileName:      "ayman.csv"})
 	if err != nil {
 		panic(err)
-		return
 	}
 	fmt.Println(createSearchInfo)
 
@@ -52,8 +48,15 @@ func main() {
 	parseInfo, err := neverBounce.Jobs.Parse(277184, true)
 	if err != nil {
 		panic(err)
-		return
 	}
-	fmt.Println("parse is")
 	fmt.Println(parseInfo)
+
+	// Start job API
+
+	startInfo, err := neverBounce.Jobs.Start(277184, true)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(startInfo)
+
 }
