@@ -1,3 +1,4 @@
+// Package nbDto holds API result models.
 package nbDto
 
 // AccountInfo : Result model of Info API

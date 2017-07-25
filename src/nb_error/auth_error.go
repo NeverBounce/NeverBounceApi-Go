@@ -1,3 +1,4 @@
+// Package nbError holds API error result models.
 package nbError
 
 // AuthError : Error Result model of Auth API

@@ -1,3 +1,4 @@
+// Package nbDto holds API result models.
 package nbDto
 
 // AddressInfo : Nested result model of Single check API

@@ -1,3 +1,4 @@
+// Package nbDto holds API result models.
 package nbDto
 
 // Query : Nested result model of Info API

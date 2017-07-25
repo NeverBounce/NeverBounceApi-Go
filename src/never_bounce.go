@@ -1,3 +1,4 @@
+// Package neverBounce wrap NeverBounce restful APIs
 package neverBounce
 
 import (
