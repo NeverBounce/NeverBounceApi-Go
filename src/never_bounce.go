@@ -5,36 +5,41 @@ import (
 	"io/ioutil"
 )
 
+// NeverBounce : Our verification API allows you to create Custom Integrations to add email verification to any part of your software.
+// We offer solutions for verifying individual emails as well as lists containing hundreds or even millions of emails.
 type NeverBounce struct {
-	apiBaseUrl string
-	ApiKey     string
+	apiBaseURL string
+	APIKey     string
 	Single     *Single
 }
 
-func New(apiKey string) (error, *NeverBounce) {
-	baseUrl := "https://api.neverbounce.com/v4/"
+// New : Create a new instance of *NeverBounce
+// @Param
+// apiKey: API authentication key
+func New(apiKey string) (*NeverBounce, error) {
+	baseURL := "https://api.neverbounce.com/v4/"
 	r := &NeverBounce{
-		apiBaseUrl: baseUrl,
-		ApiKey:     apiKey,
-		Single: &Single{apiBaseUrl: baseUrl,
+		apiBaseURL: baseURL,
+		APIKey:     apiKey,
+		Single: &Single{apiBaseURL: baseURL,
 			apiKey:                 apiKey}}
 	_, err := r.Info()
 	if err != nil {
-		return err, nil
+		return nil, err
 	}
-	return nil, r
+	return r, nil
 }
 
-func callApi(url string) (error, []byte) {
+func callAPI(url string) ([]byte, error) {
 	res, err := http.Get(url)
 	if err != nil {
-		return err, nil
+		return nil, err
 	}
 
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return err, nil
+		return nil, err
 	}
-	return nil, body
+	return body, nil
 }

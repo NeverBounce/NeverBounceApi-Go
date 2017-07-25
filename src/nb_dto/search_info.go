@@ -1,12 +1,14 @@
 package nbDto
 
+// Query : Nested result model of Info API
 type Query struct {
 	Page           int `json:"page"`
 	ItemsPerPage int `json:"items_per_page"`
 }
 
+// SearchResult : Result model of Search API
 type SearchResult struct {
-	Id               int `json:"id"`
+	ID               int `json:"id"`
 	Status           int `json:"items_per_page"`
 	FileName         int `json:"filename"`
 	Created          string `json:"created"`
@@ -26,6 +28,7 @@ type SearchResult struct {
 	PercentComplete int `json:"percent_complete"`
 }
 
+// SearchInfo : Nested result model of Info API
 type SearchInfo struct {
 	Status        string `json:"status"`
 	TotalResults int `json:"total_results"`
