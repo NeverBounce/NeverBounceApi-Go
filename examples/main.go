@@ -1,3 +1,4 @@
+// Package main show examples of using NeverBounce package
 package main
 
 import (
