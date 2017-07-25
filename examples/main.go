@@ -59,4 +59,11 @@ func main() {
 	}
 	fmt.Println(startInfo)
 
+	// job status API
+
+	statusInfo, err := neverBounce.Jobs.Status(277184)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(statusInfo)
 }

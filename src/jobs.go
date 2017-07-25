@@ -199,3 +199,34 @@ func (r *Jobs) Start(jobID int, runSample bool) (*nbDto.StartInfo, error) {
 	}
 	return &info, nil
 }
+
+// Status : indicate what stage the job is currently in.
+// This will be the primary property you'll want to check to determine what can be done with the job.
+func (r *Jobs) Status(jobID int) (*nbDto.JobStatusInfo, error) {
+	// call API
+	url := r.apiBaseURL + "jobs/status?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
+
+	body, err := callAPI(url)
+	if err != nil {
+		return nil, err
+	}
+
+	// check error response
+	var authError nbError.AuthError
+	err = json.Unmarshal(body, &authError)
+	if err != nil {
+		return nil, err
+	}
+	if authError.Status != "success" {
+		return nil, errors.New(authError.Message)
+	}
+
+	// extract result info
+	var info nbDto.JobStatusInfo
+
+	err = json.Unmarshal(body, &info)
+	if err != nil {
+		return nil, err
+	}
+	return &info, nil
+}
