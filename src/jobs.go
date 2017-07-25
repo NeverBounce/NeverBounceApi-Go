@@ -6,6 +6,8 @@ import (
 	"strconv"
 	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_dto"
 	"bytes"
+	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_error"
+	"errors"
 )
 
 // Jobs : The bulk endpoint provides high-speed​ validation on a list of email addresses.
@@ -89,9 +91,10 @@ func (r *Jobs) Search(jobID int, fileName string, completed bool, processing boo
 // autoRun: Should we run the job immediately after being parsed?
 // runSample: Should this job be run as a sample?
 // fileName: This will be what's displayed in the dashboard when viewing this job
-func (r *Single) Create(createSearch *nbDto.CreateSearch) (*nbDto.CreateSearchInfo, error) {
+func (r *Jobs) Create(createSearch *nbDto.CreateSearch) (*nbDto.CreateSearchInfo, error) {
 	// call API
 	url := r.apiBaseURL + "jobs/create"
+	createSearch.ApiKEY = r.apiKey
 	postedBody, err := json.Marshal(createSearch)
 	if err != nil {
 		return nil, err
@@ -99,6 +102,16 @@ func (r *Single) Create(createSearch *nbDto.CreateSearch) (*nbDto.CreateSearchIn
 	body, err := postAPI(url, bytes.NewBuffer(postedBody))
 	if err != nil {
 		return nil, err
+	}
+
+	// check error response
+	var authError nbError.AuthError
+	err = json.Unmarshal(body, &authError)
+	if err != nil {
+		return nil, err
+	}
+	if authError.Status != "success" {
+		return nil, errors.New(authError.Message)
 	}
 
 	// extract result info
