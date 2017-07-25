@@ -1,7 +1,7 @@
 // Package nbDto holds API result models.
 package nbDto
 
-// CreateSearchInfo : Post model of Create search API
+// CreateSearch : Post model of Create search API
 type CreateSearch struct {
 	InputLocation string `json:"input_location"`
 	Input         []string `json:"input"`
