@@ -3,7 +3,7 @@ package nbDto
 
 // CreateSearch : Post model of Create search API
 type CreateSearch struct {
-	ApiKEY        string `json:"key"`
+	APIKEY        string `json:"key"`
 	InputLocation string `json:"input_location"`
 	Input         []string `json:"input"`
 	AutoParse     bool `json:"auto_parse"`

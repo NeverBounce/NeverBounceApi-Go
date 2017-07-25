@@ -94,7 +94,7 @@ func (r *Jobs) Search(jobID int, fileName string, completed bool, processing boo
 func (r *Jobs) Create(createSearch *nbDto.CreateSearch) (*nbDto.CreateSearchInfo, error) {
 	// call API
 	url := r.apiBaseURL + "jobs/create"
-	createSearch.ApiKEY = r.apiKey
+	createSearch.APIKEY = r.apiKey
 	postedBody, err := json.Marshal(createSearch)
 	if err != nil {
 		return nil, err
