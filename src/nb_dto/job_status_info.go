@@ -1,7 +1,7 @@
 // Package nbDto holds API result models.
 package nbDto
 
-// AccountInfo : Result model of Info API
+// JobStatusInfo : Result model of Info API
 type JobStatusInfo struct {
 	Status          string `json:"status"`
 	ID              string `json:"id"`
