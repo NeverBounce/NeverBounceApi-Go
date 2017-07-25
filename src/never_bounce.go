@@ -4,6 +4,9 @@ package neverBounce
 import (
 	"net/http"
 	"io/ioutil"
+	"fmt"
+	"bytes"
+	"encoding/json"
 )
 
 // NeverBounce : Our verification API allows you to create Custom Integrations to add email verification to any part of your software.
@@ -33,6 +36,23 @@ func New(apiKey string) (*NeverBounce, error) {
 
 func callAPI(url string) ([]byte, error) {
 	res, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+	return body, nil
+}
+
+func postAPI(url string, postedBody *bytes.Buffer) ([]byte, error) {
+
+	jsonPostedBody, _ := json.Marshal(postedBody)
+
+	res, err := http.Post(url, "application/json", bytes.NewBuffer(jsonPostedBody))
 	if err != nil {
 		return nil, err
 	}

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"strconv"
 	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_dto"
+	"bytes"
 )
 
 // Jobs : The bulk endpoint provides high-speed​ validation on a list of email addresses.
@@ -15,10 +16,9 @@ type Jobs struct {
 	apiKey     string
 }
 
-// Search : verification allows you verify individual emails and gather additional
-// information pertaining to the email.
+// Search : filter and find from the saved validation jobs
 func (r *Jobs) Search(jobID int, fileName string, completed bool, processing bool, indexing bool, failed bool, manualReview bool, unpurchased bool, page int, itemsPerPage int) (*nbDto.SearchInfo, error) {
-	// call info API
+	// call API
 	url := r.apiBaseURL + "jobs/search?key=" + r.apiKey
 
 	// add jobId param
@@ -73,6 +73,36 @@ func (r *Jobs) Search(jobID int, fileName string, completed bool, processing boo
 
 	// extract result info
 	var info nbDto.SearchInfo
+
+	err = json.Unmarshal(body, &info)
+	if err != nil {
+		return nil, err
+	}
+	return &info, nil
+}
+
+// Create : add a new validation job
+// @Param
+// inputLocation: The type of input being supplied. Accepted values are "remote_url" and "supplied".
+// input: The input to be verified
+// autoParse: Should be begin parsing the job immediately?
+// autoRun: Should we run the job immediately after being parsed?
+// runSample: Should this job be run as a sample?
+// fileName: This will be what's displayed in the dashboard when viewing this job
+func (r *Single) Create(createSearch *nbDto.CreateSearch) (*nbDto.CreateSearchInfo, error) {
+	// call API
+	url := r.apiBaseURL + "jobs/create"
+	postedBody, err := json.Marshal(createSearch)
+	if err != nil {
+		return nil, err
+	}
+	body, err := postAPI(url, bytes.NewBuffer(postedBody))
+	if err != nil {
+		return nil, err
+	}
+
+	// extract result info
+	var info nbDto.CreateSearchInfo
 
 	err = json.Unmarshal(body, &info)
 	if err != nil {

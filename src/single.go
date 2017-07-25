@@ -14,11 +14,6 @@ type Single struct {
 
 // Check : verification allows you verify individual emails and gather additional
 // information pertaining to the email.
-// @Params
-// email: The email to verify
-// includeAddressInfo: Include additional address info in response
-// includeCreditInfo: Include account credit info in response
-// max_execution_time: The maximum time in seconds we should try to verify the address
 func (r *Single) Check(email string, includeAddressInfo bool, includeCreditInfo bool, maxExecutionTime string) (*nbDto.SingleCheckInfo, error) {
 	// call info API
 	url := r.apiBaseURL + "single/check?key=" + r.apiKey + "&email=" + email
