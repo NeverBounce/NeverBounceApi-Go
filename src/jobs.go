@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_error"
 	"errors"
+	"fmt"
 )
 
 // Jobs : The bulk endpoint provides high-speed​ validation on a list of email addresses.
@@ -116,6 +117,44 @@ func (r *Jobs) Create(createSearch *nbDto.CreateSearch) (*nbDto.CreateSearchInfo
 
 	// extract result info
 	var info nbDto.CreateSearchInfo
+
+	err = json.Unmarshal(body, &info)
+	if err != nil {
+		return nil, err
+	}
+	return &info, nil
+}
+
+// Create : allows you to parse a job created with auto_parse disabled.
+// You cannot reparse a list once it's been parsed.
+func (r *Jobs) Parse(jobID int, autoStart bool) (*nbDto.ParseInfo, error) {
+	// call API
+	url := r.apiBaseURL + "jobs/parse"
+	values := map[string]interface{}{}
+	values["key"] = r.apiKey
+	values["job_id"] = jobID
+	values["auto_start"] = autoStart
+	postedBody, err := json.Marshal(values)
+	if err != nil {
+		return nil, err
+	}
+	body, err := postAPI(url, bytes.NewBuffer(postedBody))
+	if err != nil {
+		return nil, err
+	}
+
+	// check error response
+	var authError nbError.AuthError
+	err = json.Unmarshal(body, &authError)
+	if err != nil {
+		return nil, err
+	}
+	if authError.Status != "success" {
+		return nil, errors.New(authError.Message)
+	}
+
+	// extract result info
+	var info nbDto.ParseInfo
 
 	err = json.Unmarshal(body, &info)
 	if err != nil {

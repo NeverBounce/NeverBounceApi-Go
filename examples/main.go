@@ -46,4 +46,14 @@ func main() {
 		return
 	}
 	fmt.Println(createSearchInfo)
+
+	// Parse job API
+
+	parseInfo, err := neverBounce.Jobs.Parse(277184, true)
+	if err != nil {
+		panic(err)
+		return
+	}
+	fmt.Println("parse is")
+	fmt.Println(parseInfo)
 }
