@@ -13,7 +13,7 @@ type ResultQuery struct {
 	ItemsPerPage int `json:"items_per_page"`
 }
 
-// Verification : The data object will contain the original data submitted for this row.
+// Data : The data object will contain the original data submitted for this row.
 // If the source data was submitted via the API the data will have the same keys as when it was originally submitted.
 // If submitted as a CSV in the dashboard the data will use the header row to determine the keys for the data when available.
 type Data struct {
