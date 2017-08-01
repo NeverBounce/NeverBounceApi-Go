@@ -28,6 +28,14 @@ func main() {
 	}
 	fmt.Println(singleCheckInfo)
 
+	// Search API
+
+	searchInfo, err := neverBounce.Jobs.Search(277184, "example.csv", false, false, false, false, false, false, 1, 10)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(searchInfo)
+
 	// Create search API
 
 	createSearchInfo, err := neverBounce.Jobs.Create(&nbDto.CreateSearch{

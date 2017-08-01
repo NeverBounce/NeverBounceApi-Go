@@ -11,7 +11,7 @@ $ go get github.com/NeverBounce/NeverBounceApi-Go
 
 ```go
 func main() {
-	neverBounce, err := neverBounce.New("secret_nvrbnc_golang")
+	neverBounce, err := neverBounce.New("apiKey")
     
     	if err != nil {
     		panic(err)
@@ -25,7 +25,7 @@ func main() {
 #### Info
 ```go
 func main() {
-	neverBounce, err := neverBounce.New("secret_nvrbnc_golang")
+	neverBounce, err := neverBounce.New("apiKey")
 	if err != nil {
     	panic(err)
     }
@@ -41,7 +41,7 @@ func main() {
 #### Check
 ```go
 func main() {
-	neverBounce, err := neverBounce.New("secret_nvrbnc_golang")
+	neverBounce, err := neverBounce.New("apiKey")
     if err != nil {
     	panic(err)
     }
@@ -50,5 +50,132 @@ func main() {
     if err != nil {
     	panic(err)
     }
+}
+```
+
+### Jobs
+#### Search
+```go
+func main() {
+	neverBounce, err := neverBounce.New("apiKey")
+    if err != nil {
+    	panic(err)
+    }
+    
+    searchInfo, err := neverBounce.Jobs.Search(277184, "example.csv", false, false, false, false, false, false, 1, 10)
+    	if err != nil {
+    		panic(err)
+    	}
+}
+```
+
+#### Create
+```go
+func main() {
+	neverBounce, err := neverBounce.New("apiKey")
+    if err != nil {
+    	panic(err)
+    }
+    
+    createSearchInfo, err := neverBounce.Jobs.Create(&nbDto.CreateSearch{
+    	InputLocation: "supplied",
+    	Input:         []string{"example@gmail.com"},
+    	AutoParse:     true,
+    	AutoRun:       true,
+    	RunSample:     false,
+    	FileName:      "example.csv"})
+    if err != nil {
+    	panic(err)
+    }
+}
+```
+
+#### Parse
+```go
+func main() {
+	neverBounce, err := neverBounce.New("apiKey")
+    if err != nil {
+    	panic(err)
+    }
+    
+    parseInfo, err := neverBounce.Jobs.Parse(277184, true)
+    	if err != nil {
+    		panic(err)
+    	}
+}
+```
+
+#### Start
+```go
+func main() {
+	neverBounce, err := neverBounce.New("apiKey")
+    if err != nil {
+    	panic(err)
+    }
+    
+    startInfo, err := neverBounce.Jobs.Start(277184, true)
+    	if err != nil {
+    		panic(err)
+    	}
+}
+```
+
+#### Status
+```go
+func main() {
+	neverBounce, err := neverBounce.New("apiKey")
+    if err != nil {
+    	panic(err)
+    }
+    
+    statusInfo, err := neverBounce.Jobs.Status(277184)
+    	if err != nil {
+    		panic(err)
+    	}
+}
+```
+
+#### Result
+```go
+func main() {
+	neverBounce, err := neverBounce.New("apiKey")
+    if err != nil {
+    	panic(err)
+    }
+    
+    resultsInfo, err := neverBounce.Jobs.Results(277184, 1, 10)
+    	if err != nil {
+    		panic(err)
+    	}
+}
+```
+
+#### Download
+```go
+func main() {
+	neverBounce, err := neverBounce.New("apiKey")
+    if err != nil {
+    	panic(err)
+    }
+    
+    err = neverBounce.Jobs.Download(277184, "./job.csv")
+    	if err != nil {
+    		panic(err)
+    	}
+}
+```
+
+#### Delete
+```go
+func main() {
+	neverBounce, err := neverBounce.New("apiKey")
+    if err != nil {
+    	panic(err)
+    }
+    
+    err = neverBounce.Jobs.Delete(277184)
+    	if err != nil {
+    		panic(err)
+    	}
 }
 ```
