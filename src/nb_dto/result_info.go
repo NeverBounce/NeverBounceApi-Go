@@ -3,7 +3,7 @@ package nbDto
 
 // ResultQuery : Nested result model of Info API
 type ResultQuery struct {
-	JobId        int `json:"job_id"`
+	JobID        int `json:"job_id"`
 	Valids       int `json:"valids"`
 	InValids     int `json:"invalids"`
 	Disposables  int `json:"disposables"`
@@ -16,7 +16,7 @@ type ResultQuery struct {
 // Data : Email data of Result API
 type Data struct {
 	Email string `json:"email"`
-	Id    string `json:"id"`
+	ID    string `json:"id"`
 	Name  string `json:"name"`
 }
 
