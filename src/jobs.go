@@ -270,3 +270,26 @@ func (r *Jobs) Results(jobID int, page int, itemPerPage int) (*nbDto.ResultInfo,
 	}
 	return &info, nil
 }
+
+// Download : Download a file containing the job data as a CSV file.
+func (r *Jobs) Download(jobID int, filePath string) (error) {
+	// call API
+	url := r.apiBaseURL + "jobs/download?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
+	err := downloadFile(filePath, url)
+	return err
+}
+
+// Download : Download a file containing the job data as a CSV file.
+func (r *Jobs) DownloadWithOptions(jobID int, filePath string, valids int, inValids int, catchalls int, unknowns int, disposables int, includeDuplicates int, emailStatus int) (error) {
+	// call API
+	url := r.apiBaseURL + "jobs/download?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
+	url += "&valids=" + strconv.Itoa(valids)
+	url += "&invalids=" + strconv.Itoa(inValids)
+	url += "&catchalls=" + strconv.Itoa(catchalls)
+	url += "&unknowns=" + strconv.Itoa(unknowns)
+	url += "&disposables=" + strconv.Itoa(disposables)
+	url += "&include_duplicates=" + strconv.Itoa(includeDuplicates)
+	url += "&email_status=" + strconv.Itoa(emailStatus)
+	err := downloadFile(filePath, url)
+	return err
+}

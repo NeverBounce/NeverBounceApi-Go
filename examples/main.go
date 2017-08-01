@@ -4,7 +4,6 @@ package main
 import (
 	"fmt"
 	"github.com/NeverBounce/NeverBounceApi-Go/src"
-	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_dto"
 )
 
 func main() {
@@ -15,7 +14,7 @@ func main() {
 		panic(err)
 	}
 
-	// Info API
+	/*// Info API
 	info, err := neverBounce.Info()
 	if err != nil {
 		panic(err)
@@ -45,19 +44,19 @@ func main() {
 
 	// Parse job API
 
-	/*parseInfo, err := neverBounce.Jobs.Parse(277184, true)
+	parseInfo, err := neverBounce.Jobs.Parse(277184, true)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(parseInfo)*/
+	fmt.Println(parseInfo)
 
 	// Start job API
 
-	/*startInfo, err := neverBounce.Jobs.Start(277184, true)
+	startInfo, err := neverBounce.Jobs.Start(277184, true)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(startInfo)*/
+	fmt.Println(startInfo)
 
 	// job status API
 
@@ -73,5 +72,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(resultsInfo)
+	fmt.Println(resultsInfo)*/
+
+	err = neverBounce.Jobs.Download(277184, "./job.csv")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("xxxxx")
 }

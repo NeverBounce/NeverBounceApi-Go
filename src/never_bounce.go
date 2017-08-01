@@ -5,6 +5,11 @@ import (
 	"net/http"
 	"io/ioutil"
 	"bytes"
+	"os"
+	"io"
+	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_error"
+	"encoding/json"
+	"errors"
 )
 
 // NeverBounce : Our verification API allows you to create Custom Integrations to add email verification to any part of your software.
@@ -62,4 +67,40 @@ func postAPI(url string, postedBody *bytes.Buffer) ([]byte, error) {
 		return nil, err
 	}
 	return body, nil
+}
+
+func downloadFile(filepath string, url string) (err error) {
+	// Get the data
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	// check error response
+	var authError nbError.AuthError
+	err = json.Unmarshal(body, &authError)
+	if err != nil {
+		return err
+	}
+	if authError.Status != "success" {
+		return errors.New(authError.Message)
+	}
+
+	// Writer the body to file
+	// Create the file
+	out, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+	_, err = io.Copy(out, resp.Body)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
