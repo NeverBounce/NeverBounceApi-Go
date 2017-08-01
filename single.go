@@ -3,7 +3,7 @@ package neverBounce
 
 import (
 	"encoding/json"
-	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_dto"
+	"github.com/NeverBounce/NeverBounceApi-Go/nb_dto"
 )
 
 // Single : Single functionality holder

@@ -7,9 +7,9 @@ import (
 	"bytes"
 	"os"
 	"io"
-	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_error"
 	"encoding/json"
 	"errors"
+	"github.com/NeverBounce/NeverBounceApi-Go/nb_error"
 )
 
 // NeverBounce : Our verification API allows you to create Custom Integrations to add email verification to any part of your software.
