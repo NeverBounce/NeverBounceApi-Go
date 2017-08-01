@@ -293,3 +293,32 @@ func (r *Jobs) DownloadWithOptions(jobID int, filePath string, valids int, inVal
 	err := downloadFile(filePath, url)
 	return err
 }
+
+// Delete : delete job by ID
+func (r *Jobs) Delete(jobID int) (error) {
+	// call API
+	url := r.apiBaseURL + "jobs/delete"
+	values := map[string]interface{}{}
+	values["key"] = r.apiKey
+	values["job_id"] = jobID
+	postedBody, err := json.Marshal(values)
+	if err != nil {
+		return err
+	}
+	body, err := postAPI(url, bytes.NewBuffer(postedBody))
+	if err != nil {
+		return err
+	}
+
+	// check error response
+	var authError nbError.AuthError
+	err = json.Unmarshal(body, &authError)
+	if err != nil {
+		return err
+	}
+	if authError.Status != "success" {
+		return errors.New(authError.Message)
+	}
+
+	return nil
+}
