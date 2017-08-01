@@ -4,10 +4,10 @@ package neverBounce
 import (
 	"encoding/json"
 	"strconv"
-	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_dto"
 	"bytes"
-	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_error"
 	"errors"
+	"github.com/NeverBounce/NeverBounceApi-Go/nb_error"
+	"github.com/NeverBounce/NeverBounceApi-Go/nb_dto"
 )
 
 // Jobs : The bulk endpoint provides high-speed​ validation on a list of email addresses.

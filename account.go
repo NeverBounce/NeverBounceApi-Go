@@ -4,8 +4,8 @@ package neverBounce
 import (
 	"encoding/json"
 	"errors"
-	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_error"
-	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_dto"
+	"github.com/NeverBounce/NeverBounceApi-Go/nb_dto"
+	"github.com/NeverBounce/NeverBounceApi-Go/nb_error"
 )
 
 // Info : Account endpoints allow to programmatically check your account's balance and

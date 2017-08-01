@@ -3,8 +3,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/NeverBounce/NeverBounceApi-Go/src"
-	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_dto"
+	"github.com/NeverBounce/NeverBounceApi-Go/nb_dto"
+	"github.com/NeverBounce/NeverBounceApi-Go"
 )
 
 func main() {
