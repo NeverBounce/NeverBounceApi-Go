@@ -1,7 +1,7 @@
 // Package nbDto holds API result models.
 package nbDto
 
-// Query : Nested result model of Info API
+// ResultQuery : Nested result model of Info API
 type ResultQuery struct {
 	JobId        int `json:"job_id"`
 	Valids       int `json:"valids"`
@@ -20,7 +20,7 @@ type Data struct {
 	Name  string `json:"name"`
 }
 
-// verification : Email verification data of Result API
+// Verification : Email verification data of Result API
 type Verification struct {
 	Result              string `json:"result"`
 	Flags               []string `json:"flags"`
@@ -34,7 +34,7 @@ type Result struct {
 	Verification Verification `json:"verification"`
 }
 
-// SearchInfo : Nested result model of Info API
+// ResultInfo : Nested result model of Info API
 type ResultInfo struct {
 	Status        string `json:"status"`
 	TotalResults  int `json:"total_results"`
