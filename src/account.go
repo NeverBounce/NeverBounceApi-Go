@@ -1,3 +1,4 @@
+// Package neverBounce wrap NeverBounce restful APIs
 package neverBounce
 
 import (
@@ -11,9 +12,9 @@ import (
 // how many jobs are currently running on your account.
 func (r *NeverBounce) Info() (*nbDto.AccountInfo, error) {
 	// call info API
-	url := r.apiBaseUrl + "account/info?key=" + r.ApiKey
+	url := r.apiBaseURL + "account/info?key=" + r.APIKey
 
-	err, body := callApi(url)
+	body, err := callAPI(url)
 	if err != nil {
 		return nil, err
 	}

@@ -1,5 +1,7 @@
+// Package nbDto holds API result models.
 package nbDto
 
+// AddressInfo : Nested result model of Single check API
 type AddressInfo struct {
 	OriginalEmail   string `json:"original_email"`
 	NormalizedEmail string `json:"normalized_email"`
@@ -12,14 +14,16 @@ type AddressInfo struct {
 	Tld             string `json:"tld"`
 }
 
+// CreditsInfo : Nested result model of Single check API
 type CreditsInfo struct {
 	PaidCreditsUsed      int `json:"paid_credits_used"`
 	FreeCreditsUsed      int `json:"free_credits_used"`
 	PaidCreditsRemaining int `json:"free_credits_remaining"`
 	FreeCreditsRemaining int `json:"free_credits_remaining"`
-	MonthlyApiUsage      string `json:"monthly_api_usage"`
+	MonthlyAPIUsage      string `json:"monthly_api_usage"`
 }
 
+// SingleCheckInfo : Result model of Single check API
 type SingleCheckInfo struct {
 	Status                 string `json:"status"`
 	Result                 string `json:"result"`

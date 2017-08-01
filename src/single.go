@@ -1,3 +1,4 @@
+// Package neverBounce wrap NeverBounce restful APIs
 package neverBounce
 
 import (
@@ -5,22 +6,17 @@ import (
 	"github.com/NeverBounce/NeverBounceApi-Go/src/nb_dto"
 )
 
+// Single : Single functionality holder
 type Single struct {
-	apiBaseUrl string
+	apiBaseURL string
 	apiKey     string
 }
 
-// Single verification allows you verify individual emails and gather additional
+// Check : verification allows you verify individual emails and gather additional
 // information pertaining to the email.
-// @Params
-// email: The email to verify
-// includeAddressInfo: Include additional address info in response
-// includeCreditInfo: Include account credit info in response
-// max_execution_time: The maximum time in seconds we should try to verify the address
-
-func (r *Single) Check(email string, includeAddressInfo bool, includeCreditInfo bool, maxExecutionTime string) (error, *nbDto.SingleCheckInfo) {
+func (r *Single) Check(email string, includeAddressInfo bool, includeCreditInfo bool, maxExecutionTime string) (*nbDto.SingleCheckInfo, error) {
 	// call info API
-	url := r.apiBaseUrl + "single/check?key=" + r.apiKey + "&email=" + email
+	url := r.apiBaseURL + "single/check?key=" + r.apiKey + "&email=" + email
 
 	// include address info
 	if includeAddressInfo == true {
@@ -37,9 +33,9 @@ func (r *Single) Check(email string, includeAddressInfo bool, includeCreditInfo 
 		url += "&max_execution_time=" + maxExecutionTime
 	}
 
-	err, body := callApi(url)
+	body, err := callAPI(url)
 	if err != nil {
-		return err, nil
+		return nil, err
 	}
 
 	// extract result info
@@ -47,7 +43,7 @@ func (r *Single) Check(email string, includeAddressInfo bool, includeCreditInfo 
 
 	err = json.Unmarshal(body, &info)
 	if err != nil {
-		return err, nil
+		return nil, err
 	}
-	return nil, &info
+	return &info, nil
 }
