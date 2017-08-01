@@ -279,7 +279,7 @@ func (r *Jobs) Download(jobID int, filePath string) (error) {
 	return err
 }
 
-// Download : Download a file containing the job data as a CSV file.
+// DownloadWithOptions : Download a file containing the job data as a CSV file with using filters.
 func (r *Jobs) DownloadWithOptions(jobID int, filePath string, valids int, inValids int, catchalls int, unknowns int, disposables int, includeDuplicates int, emailStatus int) (error) {
 	// call API
 	url := r.apiBaseURL + "jobs/download?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
