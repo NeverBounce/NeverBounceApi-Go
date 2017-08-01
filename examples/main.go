@@ -10,7 +10,6 @@ import (
 func main() {
 	// instantiate neverBounce
 	neverBounce, err := neverBounce.New("secret_nvrbnc_golang")
-
 	if err != nil {
 		panic(err)
 	}
@@ -28,6 +27,14 @@ func main() {
 		panic(err)
 	}
 	fmt.Println(singleCheckInfo)
+
+	// Search API
+
+	searchInfo, err := neverBounce.Jobs.Search(277184, "example.csv", false, false, false, false, false, false, 1, 10)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(searchInfo)
 
 	// Create search API
 
