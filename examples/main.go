@@ -45,19 +45,19 @@ func main() {
 
 	// Parse job API
 
-	parseInfo, err := neverBounce.Jobs.Parse(277184, true)
+	/*parseInfo, err := neverBounce.Jobs.Parse(277184, true)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(parseInfo)
+	fmt.Println(parseInfo)*/
 
 	// Start job API
 
-	startInfo, err := neverBounce.Jobs.Start(277184, true)
+	/*startInfo, err := neverBounce.Jobs.Start(277184, true)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(startInfo)
+	fmt.Println(startInfo)*/
 
 	// job status API
 
@@ -66,4 +66,12 @@ func main() {
 		panic(err)
 	}
 	fmt.Println(statusInfo)
+
+	// job results API
+
+	resultsInfo, err := neverBounce.Jobs.Results(277184, 1, 10)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(resultsInfo)
 }

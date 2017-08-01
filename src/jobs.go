@@ -230,3 +230,43 @@ func (r *Jobs) Status(jobID int) (*nbDto.JobStatusInfo, error) {
 	}
 	return &info, nil
 }
+
+// Results : Get job result by job ID.
+func (r *Jobs) Results(jobID int, page int, itemPerPage int) (*nbDto.ResultInfo, error) {
+	// call API
+	url := r.apiBaseURL + "jobs/results?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
+
+	// add page param
+	if page > 0 {
+		url += "&page=" + strconv.Itoa(page)
+	}
+
+	// add itemPerPage param
+	if page > 0 {
+		url += "&items_per_page=" + strconv.Itoa(itemPerPage)
+	}
+
+	body, err := callAPI(url)
+	if err != nil {
+		return nil, err
+	}
+
+	// check error response
+	var authError nbError.AuthError
+	err = json.Unmarshal(body, &authError)
+	if err != nil {
+		return nil, err
+	}
+	if authError.Status != "success" {
+		return nil, errors.New(authError.Message)
+	}
+
+	// extract result info
+	var info nbDto.ResultInfo
+
+	err = json.Unmarshal(body, &info)
+	if err != nil {
+		return nil, err
+	}
+	return &info, nil
+}
