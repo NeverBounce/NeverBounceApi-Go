@@ -26,11 +26,27 @@ func main() {
 ```go
 func main() {
 	neverBounce, err := neverBounce.New("secret_nvrbnc_golang")
-    if err != nil {
+	if err != nil {
     	panic(err)
     }
     
     info, err := neverBounce.Info()
+    if err != nil {
+    	panic(err)
+    }
+}
+```
+
+### Single
+#### Check
+```go
+func main() {
+	neverBounce, err := neverBounce.New("secret_nvrbnc_golang")
+    if err != nil {
+    	panic(err)
+    }
+    
+    singleCheckInfo, err := neverBounce.Single.Check("example@gmail.com", true, true, "")
     if err != nil {
     	panic(err)
     }

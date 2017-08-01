@@ -10,7 +10,6 @@ import (
 func main() {
 	// instantiate neverBounce
 	neverBounce, err := neverBounce.New("secret_nvrbnc_golang")
-
 	if err != nil {
 		panic(err)
 	}
