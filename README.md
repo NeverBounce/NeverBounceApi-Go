@@ -6,3 +6,33 @@
 ```sh
 $ go get github.com/NeverBounce/NeverBounceApi-Go
 ```
+
+2. Initiate NeverBounce package:
+
+```go
+func main() {
+	neverBounce, err := neverBounce.New("secret_nvrbnc_golang")
+    
+    	if err != nil {
+    		panic(err)
+    	}
+}
+```
+
+## API Examples
+
+### Account
+#### Info
+```go
+func main() {
+	neverBounce, err := neverBounce.New("secret_nvrbnc_golang")
+    if err != nil {
+    	panic(err)
+    }
+    
+    info, err := neverBounce.Info()
+    if err != nil {
+    	panic(err)
+    }
+}
+```
