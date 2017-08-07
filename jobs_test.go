@@ -6,7 +6,6 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/NeverBounce/NeverBounceApi-Go"
 	"github.com/NeverBounce/NeverBounceApi-Go/nb_dto"
-	"fmt"
 )
 
 var _ = Describe("Jobs", func() {
@@ -27,9 +26,22 @@ var _ = Describe("Jobs", func() {
 				AutoRun:       true,
 				RunSample:     false,
 				FileName:      "example.csv"})
-			fmt.Println("xxxxxx")
-			fmt.Println(resp.JobID)
 			Expect(resp.JobID).NotTo(BeZero())
+			Expect(err).To(BeNil())
+		})
+	})
+	Describe("Parse", func() {
+		It("should return a valid queueID and error should be nil", func() {
+			// mock the root info API
+			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4/jobs/parse",
+				httpmock.NewStringResponder(200, `{
+                "status": "success",
+                "queue_id": 55,
+                "execution_time": 388
+            }`))
+			neverBounce, _ := neverBounce.New("apiKey")
+			resp, err := neverBounce.Jobs.Parse(150970, false)
+			Expect(resp.QueueID).To(Equal(55))
 			Expect(err).To(BeNil())
 		})
 	})
