@@ -4,7 +4,6 @@ package neverBounce
 import (
 	"encoding/json"
 	"github.com/NeverBounce/NeverBounceApi-Go/nb_dto"
-	"fmt"
 )
 
 // Single : Single functionality holder
@@ -16,12 +15,8 @@ type Single struct {
 // Check : verification allows you verify individual emails and gather additional
 // information pertaining to the email.
 func (r *Single) Check(email string, includeAddressInfo bool, includeCreditInfo bool, maxExecutionTime string) (*nbDto.SingleCheckInfo, error) {
-	fmt.Println("in check core")
 	// call info API
 	url := r.apiBaseURL + "single/check?key=" + r.apiKey + "&email=" + email
-
-	fmt.Println("url is " + url)
-
 	// include address info
 	if includeAddressInfo == true {
 		url += "&address_info=1"
