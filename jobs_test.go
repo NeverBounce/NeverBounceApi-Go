@@ -45,4 +45,19 @@ var _ = Describe("Jobs", func() {
 			Expect(err).To(BeNil())
 		})
 	})
+	Describe("Start", func() {
+		It("should return a valid queueID and error should be nil", func() {
+			// mock the root info API
+			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4/jobs/start",
+				httpmock.NewStringResponder(200, `{
+                "status": "success",
+                "queue_id": 55,
+                "execution_time": 388
+            }`))
+			neverBounce, _ := neverBounce.New("apiKey")
+			resp, err := neverBounce.Jobs.Start(150970, false)
+			Expect(resp.QueueID).To(Equal(55))
+			Expect(err).To(BeNil())
+		})
+	})
 })
