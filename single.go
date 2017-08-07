@@ -17,7 +17,6 @@ type Single struct {
 func (r *Single) Check(email string, includeAddressInfo bool, includeCreditInfo bool, maxExecutionTime string) (*nbDto.SingleCheckInfo, error) {
 	// call info API
 	url := r.apiBaseURL + "single/check?key=" + r.apiKey + "&email=" + email
-
 	// include address info
 	if includeAddressInfo == true {
 		url += "&address_info=1"
