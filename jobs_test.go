@@ -211,4 +211,17 @@ var _ = Describe("Jobs", func() {
 			Expect(err).To(BeNil())
 		})
 	})
+	Describe("Delete", func() {
+		It("error should be nil", func() {
+			// mock the root info API
+			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4/jobs/delete",
+				httpmock.NewStringResponder(200, `{
+                "status": "success",
+                "execution_time": 388
+            }`))
+			neverBounce, _ := neverBounce.New("apiKey")
+			err := neverBounce.Jobs.Delete(150970)
+			Expect(err).To(BeNil())
+		})
+	})
 })
