@@ -5,3 +5,4 @@ engines:
       min_confidence: 0.1
 Usage:
   cc-test-reporter before-build
+  cc-test-reporter after-build
