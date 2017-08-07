@@ -7,7 +7,7 @@ go:
 
 before_install:
   - go get -v github.com/golang/lint/golint
-
+  - go get github.com/axw/gocov/gocov
 script:
   - golint ./...
   - go test -v ./...
