@@ -200,4 +200,15 @@ var _ = Describe("Jobs", func() {
 			Expect(err).To(BeNil())
 		})
 	})
+	Describe("Download", func() {
+		It("error should be nil", func() {
+			// mock the root info API
+			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/jobs/download?key=apiKey&job_id=150970",
+				httpmock.NewStringResponder(200, `{
+                "status": "success"}`))
+			neverBounce, _ := neverBounce.New("apiKey")
+			err := neverBounce.Jobs.Download(150970, "./example.csv")
+			Expect(err).To(BeNil())
+		})
+	})
 })
