@@ -1,25 +1,30 @@
 // Package nbDto holds API result models.
 package nbDto
 
-// JobStatusInfo : Result model of Info API
+// JobStatusTotal : Nested result model of Status API
+type JobStatusTotal struct {
+	Records    int `json:"records"`
+	Billable   int `json:"billable"`
+	Processed  int `json:"processed"`
+	Valid      int `json:"valid"`
+	Invalid    int `json:"invalid"`
+	Catchall   int `json:"catchall"`
+	Disposable int `json:"disposable"`
+	Unknown    int `json:"unknown"`
+	Duplicates int `json:"duplicates"`
+	BadSyntax  int `json:"bad_syntax"`
+}
+
+// JobStatusInfo : Result model of Status API
 type JobStatusInfo struct {
 	Status          string `json:"status"`
-	ID              string `json:"id"`
+	ID              int `json:"id"`
 	FileName        string `json:"filename"`
-	Created         string `json:"created"`
-	Started         string `json:"started"`
-	Finished        string `json:"finished"`
-	TotalRecords    int `json:"total_records"`
-	TotalBillable   int `json:"total_billable"`
-	TotalProcessed  int `json:"total_processed"`
-	TotalValid      int `json:"total_valid"`
-	TotalInvalid    int `json:"total_invalid"`
-	TotalCatchall   int `json:"total_catchall"`
-	TotalDisposable int `json:"total_disposable"`
-	TotalDuplicates int `json:"total_duplicates"`
-	TotalBadSyntax  int `json:"total_bad_syntax"`
+	Created         string `json:"created_at"`
+	Started         string `json:"started_at"`
+	Finished        string `json:"finished_at"`
+	Total           JobStatusTotal `json:"total"`
 	BounceEstimate  int `json:"bounce_estimate"`
-	TotalUnknown    int `json:"total_unknown"`
 	PercentComplete int `json:"percent_complete"`
 	JobStatus       string `json:"job_status"`
 	ExecutionTime   int `json:"execution_time"`
