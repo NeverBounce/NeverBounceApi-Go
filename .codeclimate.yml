@@ -3,3 +3,5 @@ engines:
     enabled: true
     config:
       min_confidence: 0.1
+Usage:
+  cc-test-reporter before-build
