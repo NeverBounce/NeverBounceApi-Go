@@ -9,7 +9,7 @@ import (
 
 var _ = Describe("Account", func() {
 	Describe("Info", func() {
-		It("should return a object during a good response", func() {
+		It("should return a object during a good response and error should be nil", func() {
 			// mock the root info API
 			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info?key=apiKey",
 				httpmock.NewStringResponder(200, `{
