@@ -8,7 +8,6 @@ import (
 	"errors"
 	"github.com/NeverBounce/NeverBounceApi-Go/nb_error"
 	"github.com/NeverBounce/NeverBounceApi-Go/nb_dto"
-	"fmt"
 )
 
 // Jobs : The bulk endpoint provides high-speed​ validation on a list of email addresses.
@@ -206,7 +205,6 @@ func (r *Jobs) Start(jobID int, runSample bool) (*nbDto.StartInfo, error) {
 func (r *Jobs) Status(jobID int) (*nbDto.JobStatusInfo, error) {
 	// call API
 	url := r.apiBaseURL + "jobs/status?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
-	fmt.Println("url is " + url)
 	body, err := callAPI(url)
 	if err != nil {
 		return nil, err

@@ -94,4 +94,110 @@ var _ = Describe("Jobs", func() {
 			Expect(err).To(BeNil())
 		})
 	})
+	Describe("Result", func() {
+		It("should return a valid TotalResults and error should be nil", func() {
+			// mock the root info API
+			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/jobs/results?key=apiKey&job_id=150970&page=1&items_per_page=3",
+				httpmock.NewStringResponder(200, `{
+                "status": "success",
+                "total_results": 3,
+                "total_pages": 1,
+                "query": {
+                    "job_id": 251319,
+                    "valids": 1,
+                    "invalids": 1,
+                    "disposables": 1,
+                    "catchalls": 1,
+                    "unknowns": 1,
+                    "page": 0,
+                    "items_per_page": 10
+                },
+                "results": [
+                    {
+                        "data": {
+                            "email": "email",
+                            "id": "id",
+                            "name": "name"
+                        },
+                        "verification": {
+                            "result": "invalid",
+                            "flags": [],
+                            "suggested_correction": "",
+                            "address_info": {
+                                "original_email": "email",
+                                "normalized_email": "",
+                                "addr": "",
+                                "alias": "",
+                                "host": "",
+                                "fqdn": "",
+                                "domain": "",
+                                "subdomain": "",
+                                "tld": ""
+                            }
+                        }
+                    },
+                    {
+                        "data": {
+                            "email": "support@neverbounce.com",
+                            "id": "12345",
+                            "name": "Fred McValid"
+                        },
+                        "verification": {
+                            "result": "valid",
+                            "flags": [
+                                "smtp_connectable",
+                                "has_dns",
+                                "has_dns_mx",
+                                "role_account"
+                            ],
+                            "suggested_correction": "",
+                            "address_info": {
+                                "original_email": "support@neverbounce.com",
+                                "normalized_email": "support@neverbounce.com",
+                                "addr": "support",
+                                "alias": "",
+                                "host": "neverbounce.com",
+                                "fqdn": "neverbounce.com",
+                                "domain": "neverbounce",
+                                "subdomain": "",
+                                "tld": "com"
+                            }
+                        }
+                    },
+                    {
+                        "data": {
+                            "email": "invalid@neverbounce.com",
+                            "id": "12346",
+                            "name": "Bob McInvalid"
+                        },
+                        "verification": {
+                            "result": "invalid",
+                            "flags": [
+                                "smtp_connectable",
+                                "has_dns",
+                                "has_dns_mx"
+                            ],
+                            "suggested_correction": "",
+                            "address_info": {
+                                "original_email": "invalid@neverbounce.com",
+                                "normalized_email": "invalid@neverbounce.com",
+                                "addr": "invalid",
+                                "alias": "",
+                                "host": "neverbounce.com",
+                                "fqdn": "neverbounce.com",
+                                "domain": "neverbounce",
+                                "subdomain": "",
+                                "tld": "com"
+                            }
+                        }
+                    }
+                ],
+                "execution_time": 55
+            }`))
+			neverBounce, _ := neverBounce.New("apiKey")
+			resp, err := neverBounce.Jobs.Results(150970, 1, 3)
+			Expect(resp.TotalResults).To(Equal(3))
+			Expect(err).To(BeNil())
+		})
+	})
 })
