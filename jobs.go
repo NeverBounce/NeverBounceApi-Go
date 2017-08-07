@@ -205,7 +205,6 @@ func (r *Jobs) Start(jobID int, runSample bool) (*nbDto.StartInfo, error) {
 func (r *Jobs) Status(jobID int) (*nbDto.JobStatusInfo, error) {
 	// call API
 	url := r.apiBaseURL + "jobs/status?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
-
 	body, err := callAPI(url)
 	if err != nil {
 		return nil, err
