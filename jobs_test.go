@@ -6,11 +6,12 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/NeverBounce/NeverBounceApi-Go"
 	"github.com/NeverBounce/NeverBounceApi-Go/nb_dto"
+	"fmt"
 )
 
 var _ = Describe("Jobs", func() {
 	Describe("Create", func() {
-		It("should return a object during a good response and error should be nil", func() {
+		It("should return JobID not equal to zero and error should be nil", func() {
 			// mock the root info API
 			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4/jobs/create",
 				httpmock.NewStringResponder(200, `{
@@ -26,7 +27,9 @@ var _ = Describe("Jobs", func() {
 				AutoRun:       true,
 				RunSample:     false,
 				FileName:      "example.csv"})
-			Expect(resp).NotTo(BeNil())
+			fmt.Println("xxxxxx")
+			fmt.Println(resp.JobID)
+			Expect(resp.JobID).NotTo(BeZero())
 			Expect(err).To(BeNil())
 		})
 	})
