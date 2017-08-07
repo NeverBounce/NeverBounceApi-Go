@@ -7,8 +7,8 @@ go:
 
 before_install:
   - go get -v github.com/golang/lint/golint
+  - cc-test-reporter before-build
 
 script:
   - golint ./...
   - go test -v ./...
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
