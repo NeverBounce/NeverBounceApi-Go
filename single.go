@@ -4,6 +4,8 @@ package neverBounce
 import (
 	"encoding/json"
 	"github.com/NeverBounce/NeverBounceApi-Go/nb_dto"
+	"github.com/NeverBounce/NeverBounceApi-Go/nb_error"
+	"errors"
 )
 
 // Single : Single functionality holder
@@ -35,6 +37,16 @@ func (r *Single) Check(email string, includeAddressInfo bool, includeCreditInfo 
 	body, err := callAPI(url)
 	if err != nil {
 		return nil, err
+	}
+
+	// check error response
+	var authError nbError.AuthError
+	err = json.Unmarshal(body, &authError)
+	if err != nil {
+		return nil, err
+	}
+	if authError.Status != "success" {
+		return nil, errors.New(authError.Message)
 	}
 
 	// extract result info
