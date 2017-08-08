@@ -19,7 +19,7 @@ var _ = Describe("Jobs", func() {
                 "execution_time": 388
             }`))
 			neverBounce, _ := neverBounce.New("apiKey")
-			resp, err := neverBounce.Jobs.Create(&nbDto.CreateSearch{
+			resp, err := neverBounce.Jobs.Create(&nbDto.CreateJob{
 				InputLocation: "supplied",
 				Input:         []string{"enkhalifapro@gmail.com"},
 				AutoParse:     true,
