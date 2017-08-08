@@ -110,13 +110,13 @@ func downloadFile(filepath string, url string) (err error) {
 		return err
 	}
 	// check error response
-	var authError nbError.AuthError
-	err = json.Unmarshal(body, &authError)
+	var apiError nbErrors.ApiError
+	err = json.Unmarshal(body, &apiError)
 	if err != nil {
 		return err
 	}
-	if authError.Status != "success" {
-		return errors.New(authError.Message)
+	if apiError.Status != "success" {
+		return errors.New(apiError.Message)
 	}
 
 	// Writer the body to file

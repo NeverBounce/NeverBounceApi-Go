@@ -105,13 +105,13 @@ func (r *Jobs) Create(createSearch *nbModels.CreateJob) (*nbModels.CreateSearchI
 	}
 
 	// check error response
-	var authError nbError.AuthError
-	err = json.Unmarshal(body, &authError)
+	var apiError nbErrors.ApiError
+	err = json.Unmarshal(body, &apiError)
 	if err != nil {
 		return nil, err
 	}
-	if authError.Status != "success" {
-		return nil, errors.New(authError.Message)
+	if apiError.Status != "success" {
+		return nil, errors.New(apiError.Message)
 	}
 
 	// extract result info
@@ -143,13 +143,13 @@ func (r *Jobs) Parse(jobID int, autoStart bool) (*nbModels.ParseInfo, error) {
 	}
 
 	// check error response
-	var authError nbError.AuthError
-	err = json.Unmarshal(body, &authError)
+	var apiError nbErrors.ApiError
+	err = json.Unmarshal(body, &apiError)
 	if err != nil {
 		return nil, err
 	}
-	if authError.Status != "success" {
-		return nil, errors.New(authError.Message)
+	if apiError.Status != "success" {
+		return nil, errors.New(apiError.Message)
 	}
 
 	// extract result info
@@ -181,13 +181,13 @@ func (r *Jobs) Start(jobID int, runSample bool) (*nbModels.StartInfo, error) {
 	}
 
 	// check error response
-	var authError nbError.AuthError
-	err = json.Unmarshal(body, &authError)
+	var apiError nbErrors.ApiError
+	err = json.Unmarshal(body, &apiError)
 	if err != nil {
 		return nil, err
 	}
-	if authError.Status != "success" {
-		return nil, errors.New(authError.Message)
+	if apiError.Status != "success" {
+		return nil, errors.New(apiError.Message)
 	}
 
 	// extract result info
@@ -211,13 +211,13 @@ func (r *Jobs) Status(jobID int) (*nbModels.JobStatusInfo, error) {
 	}
 
 	// check error response
-	var authError nbError.AuthError
-	err = json.Unmarshal(body, &authError)
+	var apiError nbErrors.ApiError
+	err = json.Unmarshal(body, &apiError)
 	if err != nil {
 		return nil, err
 	}
-	if authError.Status != "success" {
-		return nil, errors.New(authError.Message)
+	if apiError.Status != "success" {
+		return nil, errors.New(apiError.Message)
 	}
 
 	// extract result info
@@ -251,13 +251,13 @@ func (r *Jobs) Results(jobID int, page int, itemPerPage int) (*nbModels.ResultIn
 	}
 
 	// check error response
-	var authError nbError.AuthError
-	err = json.Unmarshal(body, &authError)
+	var apiError nbErrors.ApiError
+	err = json.Unmarshal(body, &apiError)
 	if err != nil {
 		return nil, err
 	}
-	if authError.Status != "success" {
-		return nil, errors.New(authError.Message)
+	if apiError.Status != "success" {
+		return nil, errors.New(apiError.Message)
 	}
 
 	// extract result info
@@ -310,13 +310,13 @@ func (r *Jobs) Delete(jobID int) (error) {
 	}
 
 	// check error response
-	var authError nbError.AuthError
-	err = json.Unmarshal(body, &authError)
+	var apiError nbErrors.ApiError
+	err = json.Unmarshal(body, &apiError)
 	if err != nil {
 		return err
 	}
-	if authError.Status != "success" {
-		return errors.New(authError.Message)
+	if apiError.Status != "success" {
+		return errors.New(apiError.Message)
 	}
 
 	return nil

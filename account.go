@@ -20,14 +20,14 @@ func (r *NeverBounce) Info() (*nbModels.AccountInfo, error) {
 	}
 
 	// check error response
-	var authError nbError.AuthError
+	var apiError nbErrors.ApiError
 
-	err = json.Unmarshal(body, &authError)
+	err = json.Unmarshal(body, &apiError)
 	if err != nil {
 		return nil, err
 	}
-	if authError.Status == "auth_failure" {
-		return nil, errors.New(authError.Message)
+	if apiError.Status == "auth_failure" {
+		return nil, errors.New(apiError.Message)
 	}
 
 	// check success response

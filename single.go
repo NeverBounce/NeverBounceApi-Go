@@ -40,13 +40,13 @@ func (r *Single) Check(email string, includeAddressInfo bool, includeCreditInfo 
 	}
 
 	// check error response
-	var authError nbError.AuthError
-	err = json.Unmarshal(body, &authError)
+	var apiError nbErrors.ApiError
+	err = json.Unmarshal(body, &apiError)
 	if err != nil {
 		return nil, err
 	}
-	if authError.Status != "success" {
-		return nil, errors.New(authError.Message)
+	if apiError.Status != "success" {
+		return nil, errors.New(apiError.Message)
 	}
 
 	// extract result info
