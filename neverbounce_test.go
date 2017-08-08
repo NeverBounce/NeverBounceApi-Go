@@ -12,6 +12,7 @@ func TestNeverBounceApiGo(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "NeverBounceApiGo Suite")
 }
+
 var _ = BeforeSuite(func() {
 	// block all HTTP requests
 	httpmock.Activate()

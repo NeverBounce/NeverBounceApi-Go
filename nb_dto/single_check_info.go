@@ -25,12 +25,12 @@ type CreditsInfo struct {
 
 // SingleCheckInfo : Result model of Single check API
 type SingleCheckInfo struct {
-	Status                 string `json:"status"`
-	Result                 string `json:"result"`
-	Flags                  []string `json:"flags"`
-	SuggestedCorrection    string `json:"suggested_correction"`
-	RetryToken             string `json:"retry_token"`
-	ExecutionTime          int `json:"execution_time"`
-	AddressInfo            AddressInfo `json:"address_info"`
-	CreditsInfo CreditsInfo `json:"credits_info"`
+	Status              string `json:"status"`
+	Result              string `json:"result"`
+	Flags               []string `json:"flags"`
+	SuggestedCorrection string `json:"suggested_correction"`
+	RetryToken          string `json:"retry_token"`
+	ExecutionTime       int `json:"execution_time"`
+	AddressInfo         AddressInfo `json:"address_info"`
+	CreditsInfo         CreditsInfo `json:"credits_info"`
 }
