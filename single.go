@@ -3,8 +3,8 @@ package neverbounce
 
 import (
 	"encoding/json"
-	"github.com/NeverBounce/NeverBounceApi-Go/nb_dto"
-	"github.com/NeverBounce/NeverBounceApi-Go/nb_error"
+	"github.com/NeverBounce/NeverBounceApi-Go/models"
+	"github.com/NeverBounce/NeverBounceApi-Go/errors"
 	"errors"
 )
 

@@ -5,7 +5,7 @@ import (
 	"gopkg.in/jarcoal/httpmock.v1"
 	. "github.com/onsi/gomega"
 	"github.com/NeverBounce/NeverBounceApi-Go"
-	"github.com/NeverBounce/NeverBounceApi-Go/nb_dto"
+	"github.com/NeverBounce/NeverBounceApi-Go/models"
 )
 
 var _ = Describe("Jobs", func() {

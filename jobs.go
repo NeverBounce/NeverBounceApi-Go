@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"bytes"
 	"errors"
-	"github.com/NeverBounce/NeverBounceApi-Go/nb_error"
-	"github.com/NeverBounce/NeverBounceApi-Go/nb_dto"
+	"github.com/NeverBounce/NeverBounceApi-Go/errors"
+	"github.com/NeverBounce/NeverBounceApi-Go/models"
 )
 
 // Jobs : The bulk endpoint provides high-speed​ validation on a list of email addresses.

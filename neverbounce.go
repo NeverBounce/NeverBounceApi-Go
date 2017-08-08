@@ -9,7 +9,7 @@ import (
 	"io"
 	"encoding/json"
 	"errors"
-	"github.com/NeverBounce/NeverBounceApi-Go/nb_error"
+	"github.com/NeverBounce/NeverBounceApi-Go/errors"
 	"strconv"
 )
 

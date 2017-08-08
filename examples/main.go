@@ -3,7 +3,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/NeverBounce/NeverBounceApi-Go/nb_dto"
+	"github.com/NeverBounce/NeverBounceApi-Go/models"
 	"github.com/NeverBounce/NeverBounceApi-Go"
 )
 
