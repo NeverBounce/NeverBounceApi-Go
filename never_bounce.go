@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/NeverBounce/NeverBounceApi-Go/nb_error"
+	"strconv"
 )
 
 // NeverBounce : Our verification API allows you to create Custom Integrations to add email verification to any part of your software.
@@ -47,6 +48,15 @@ func callAPI(url string) ([]byte, error) {
 		return nil, err
 	}
 
+	// handle 4xx HTTP codes
+	if res.StatusCode >= 500 {
+		return nil, errors.New("We were unable to complete your request. The following information was supplied \n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])")
+	}
+	// handle 5xx HTTP codes
+	if res.StatusCode >= 400 && res.StatusCode < 500 {
+		return nil, errors.New("We were unable to complete your request. The following information was supplied \n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])")
+	}
+
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
@@ -61,6 +71,15 @@ func postAPI(url string, postedBody *bytes.Buffer) ([]byte, error) {
 		return nil, err
 	}
 
+	// handle 4xx HTTP codes
+	if res.StatusCode >= 500 {
+		return nil, errors.New("We were unable to complete your request. The following information was supplied \n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])")
+	}
+	// handle 5xx HTTP codes
+	if res.StatusCode >= 400 && res.StatusCode < 500 {
+		return nil, errors.New("We were unable to complete your request. The following information was supplied \n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])")
+	}
+
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
@@ -71,12 +90,22 @@ func postAPI(url string, postedBody *bytes.Buffer) ([]byte, error) {
 
 func downloadFile(filepath string, url string) (err error) {
 	// Get the data
-	resp, err := http.Get(url)
+	res, err := http.Get(url)
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+
+	// handle 4xx HTTP codes
+	if res.StatusCode >= 500 {
+		return errors.New("We were unable to complete your request. The following information was supplied \n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])")
+	}
+	// handle 5xx HTTP codes
+	if res.StatusCode >= 400 && res.StatusCode < 500 {
+		return errors.New("We were unable to complete your request. The following information was supplied \n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])")
+	}
+
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
@@ -97,7 +126,7 @@ func downloadFile(filepath string, url string) (err error) {
 		return err
 	}
 	defer out.Close()
-	_, err = io.Copy(out, resp.Body)
+	_, err = io.Copy(out, res.Body)
 	if err != nil {
 		return err
 	}
