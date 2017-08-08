@@ -19,7 +19,7 @@ type Jobs struct {
 }
 
 // Search : filter and find from the saved validation jobs
-func (r *Jobs) Search(jobID int, fileName string, completed bool, processing bool, indexing bool, failed bool, manualReview bool, unpurchased bool, page int, itemsPerPage int) (*nbDto.SearchInfo, error) {
+func (r *Jobs) Search(jobID int, fileName string, completed bool, processing bool, indexing bool, failed bool, manualReview bool, unpurchased bool, page int, itemsPerPage int) (*nbModels.SearchInfo, error) {
 	// call API
 	url := r.apiBaseURL + "jobs/search?key=" + r.apiKey
 
@@ -74,7 +74,7 @@ func (r *Jobs) Search(jobID int, fileName string, completed bool, processing boo
 	}
 
 	// extract result info
-	var info nbDto.SearchInfo
+	var info nbModels.SearchInfo
 
 	err = json.Unmarshal(body, &info)
 	if err != nil {
@@ -91,7 +91,7 @@ func (r *Jobs) Search(jobID int, fileName string, completed bool, processing boo
 // autoRun: Should we run the job immediately after being parsed?
 // runSample: Should this job be run as a sample?
 // fileName: This will be what's displayed in the dashboard when viewing this job
-func (r *Jobs) Create(createSearch *nbDto.CreateJob) (*nbDto.CreateSearchInfo, error) {
+func (r *Jobs) Create(createSearch *nbModels.CreateJob) (*nbModels.CreateSearchInfo, error) {
 	// call API
 	url := r.apiBaseURL + "jobs/create"
 	createSearch.APIKEY = r.apiKey
@@ -115,7 +115,7 @@ func (r *Jobs) Create(createSearch *nbDto.CreateJob) (*nbDto.CreateSearchInfo, e
 	}
 
 	// extract result info
-	var info nbDto.CreateSearchInfo
+	var info nbModels.CreateSearchInfo
 
 	err = json.Unmarshal(body, &info)
 	if err != nil {
@@ -126,7 +126,7 @@ func (r *Jobs) Create(createSearch *nbDto.CreateJob) (*nbDto.CreateSearchInfo, e
 
 // Parse : allows you to parse a job created with auto_parse disabled.
 // You cannot reparse a list once it's been parsed.
-func (r *Jobs) Parse(jobID int, autoStart bool) (*nbDto.ParseInfo, error) {
+func (r *Jobs) Parse(jobID int, autoStart bool) (*nbModels.ParseInfo, error) {
 	// call API
 	url := r.apiBaseURL + "jobs/parse"
 	values := map[string]interface{}{}
@@ -153,7 +153,7 @@ func (r *Jobs) Parse(jobID int, autoStart bool) (*nbDto.ParseInfo, error) {
 	}
 
 	// extract result info
-	var info nbDto.ParseInfo
+	var info nbModels.ParseInfo
 
 	err = json.Unmarshal(body, &info)
 	if err != nil {
@@ -164,7 +164,7 @@ func (r *Jobs) Parse(jobID int, autoStart bool) (*nbDto.ParseInfo, error) {
 
 // Start : allows you to start a job created or parsed with auto_start disabled.
 // Once the list has been started the credits will be deducted and the process cannot be stopped or restarted
-func (r *Jobs) Start(jobID int, runSample bool) (*nbDto.StartInfo, error) {
+func (r *Jobs) Start(jobID int, runSample bool) (*nbModels.StartInfo, error) {
 	// call API
 	url := r.apiBaseURL + "jobs/start"
 	values := map[string]interface{}{}
@@ -191,7 +191,7 @@ func (r *Jobs) Start(jobID int, runSample bool) (*nbDto.StartInfo, error) {
 	}
 
 	// extract result info
-	var info nbDto.StartInfo
+	var info nbModels.StartInfo
 
 	err = json.Unmarshal(body, &info)
 	if err != nil {
@@ -202,7 +202,7 @@ func (r *Jobs) Start(jobID int, runSample bool) (*nbDto.StartInfo, error) {
 
 // Status : indicate what stage the job is currently in.
 // This will be the primary property you'll want to check to determine what can be done with the job.
-func (r *Jobs) Status(jobID int) (*nbDto.JobStatusInfo, error) {
+func (r *Jobs) Status(jobID int) (*nbModels.JobStatusInfo, error) {
 	// call API
 	url := r.apiBaseURL + "jobs/status?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
 	body, err := callAPI(url)
@@ -221,7 +221,7 @@ func (r *Jobs) Status(jobID int) (*nbDto.JobStatusInfo, error) {
 	}
 
 	// extract result info
-	var info nbDto.JobStatusInfo
+	var info nbModels.JobStatusInfo
 
 	err = json.Unmarshal(body, &info)
 	if err != nil {
@@ -231,7 +231,7 @@ func (r *Jobs) Status(jobID int) (*nbDto.JobStatusInfo, error) {
 }
 
 // Results : Get job result by job ID.
-func (r *Jobs) Results(jobID int, page int, itemPerPage int) (*nbDto.ResultInfo, error) {
+func (r *Jobs) Results(jobID int, page int, itemPerPage int) (*nbModels.ResultInfo, error) {
 	// call API
 	url := r.apiBaseURL + "jobs/results?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
 
@@ -261,7 +261,7 @@ func (r *Jobs) Results(jobID int, page int, itemPerPage int) (*nbDto.ResultInfo,
 	}
 
 	// extract result info
-	var info nbDto.ResultInfo
+	var info nbModels.ResultInfo
 
 	err = json.Unmarshal(body, &info)
 	if err != nil {

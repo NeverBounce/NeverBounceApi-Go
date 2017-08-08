@@ -1,5 +1,5 @@
 // Package nbDto holds API result models.
-package nbDto
+package nbModels
 
 // ResultQuery : Nested result model of Info API
 type ResultQuery struct {

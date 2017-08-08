@@ -1,5 +1,5 @@
 // Package nbDto holds API result models.
-package nbDto
+package nbModels
 
 // ParseInfo : Result model of Info API
 type ParseInfo struct {

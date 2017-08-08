@@ -10,7 +10,7 @@ import (
 
 // Info : Account endpoints allow to programmatically check your account's balance and
 // how many jobs are currently running on your account.
-func (r *NeverBounce) Info() (*nbDto.AccountInfo, error) {
+func (r *NeverBounce) Info() (*nbModels.AccountInfo, error) {
 	// call info API
 	url := r.apiBaseURL + "account/info?key=" + r.APIKey
 
@@ -31,7 +31,7 @@ func (r *NeverBounce) Info() (*nbDto.AccountInfo, error) {
 	}
 
 	// check success response
-	var info nbDto.AccountInfo
+	var info nbModels.AccountInfo
 
 	err = json.Unmarshal(body, &info)
 	if err != nil {

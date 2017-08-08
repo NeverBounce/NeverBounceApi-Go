@@ -1,5 +1,5 @@
 // Package nbDto holds API result models.
-package nbDto
+package nbModels
 
 // CreateSearchInfo : Result model of Create search API
 type CreateSearchInfo struct {

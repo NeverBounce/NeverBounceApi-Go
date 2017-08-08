@@ -1,5 +1,5 @@
 // Package nbDto holds API result models.
-package nbDto
+package nbModels
 
 // JobStatusTotal : Nested result model of Status API
 type JobStatusTotal struct {

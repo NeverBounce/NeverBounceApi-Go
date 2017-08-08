@@ -1,5 +1,5 @@
 // Package nbDto holds API result models.
-package nbDto
+package nbModels
 
 // CreateJob : Post model of Create job API
 type CreateJob struct {

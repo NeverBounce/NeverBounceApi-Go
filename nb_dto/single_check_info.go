@@ -1,5 +1,5 @@
 // Package nbDto holds API result models.
-package nbDto
+package nbModels
 
 // AddressInfo : Nested result model of Single check API
 type AddressInfo struct {
