@@ -3,6 +3,11 @@ engines:
     enabled: true
     config:
       min_confidence: 0.1
+  govet:
+    enabled: true
+ratings:
+  paths:
+    - "**.go"
 Usage:
   cc-test-reporter before-build
   cc-test-reporter after-build
