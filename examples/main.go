@@ -9,7 +9,7 @@ import (
 
 func main() {
 	// instantiate neverBounce
-	neverBounce, err := neverBounce.New("apiKey")
+	neverBounce, err := neverbounce.New("apiKey")
 	if err != nil {
 		panic(err)
 	}

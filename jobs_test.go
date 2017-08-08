@@ -1,4 +1,4 @@
-package neverBounce_test
+package neverbounce_test
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -18,7 +18,7 @@ var _ = Describe("Jobs", func() {
                 "job_id": 150970,
                 "execution_time": 388
             }`))
-			neverBounce, _ := neverBounce.New("apiKey")
+			neverBounce, _ := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.Create(&nbDto.CreateJob{
 				InputLocation: "supplied",
 				Input:         []string{"enkhalifapro@gmail.com"},
@@ -39,7 +39,7 @@ var _ = Describe("Jobs", func() {
                 "queue_id": 55,
                 "execution_time": 388
             }`))
-			neverBounce, _ := neverBounce.New("apiKey")
+			neverBounce, _ := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.Parse(150970, false)
 			Expect(resp.QueueID).To(Equal(55))
 			Expect(err).To(BeNil())
@@ -54,7 +54,7 @@ var _ = Describe("Jobs", func() {
                 "queue_id": 55,
                 "execution_time": 388
             }`))
-			neverBounce, _ := neverBounce.New("apiKey")
+			neverBounce, _ := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.Start(150970, false)
 			Expect(resp.QueueID).To(Equal(55))
 			Expect(err).To(BeNil())
@@ -88,7 +88,7 @@ var _ = Describe("Jobs", func() {
                 "job_status": "complete",
                 "execution_time": 322
             }`))
-			neverBounce, _ := neverBounce.New("apiKey")
+			neverBounce, _ := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.Status(150970)
 			Expect(resp.Total.Records).To(Equal(2))
 			Expect(err).To(BeNil())
@@ -194,7 +194,7 @@ var _ = Describe("Jobs", func() {
                 ],
                 "execution_time": 55
             }`))
-			neverBounce, _ := neverBounce.New("apiKey")
+			neverBounce, _ := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.Results(150970, 1, 3)
 			Expect(resp.TotalResults).To(Equal(3))
 			Expect(err).To(BeNil())
@@ -206,7 +206,7 @@ var _ = Describe("Jobs", func() {
 			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/jobs/download?key=apiKey&job_id=150970",
 				httpmock.NewStringResponder(200, `{
                 "status": "success"}`))
-			neverBounce, _ := neverBounce.New("apiKey")
+			neverBounce, _ := neverbounce.New("apiKey")
 			err := neverBounce.Jobs.Download(150970, "./example.csv")
 			Expect(err).To(BeNil())
 		})
@@ -219,7 +219,7 @@ var _ = Describe("Jobs", func() {
                 "status": "success",
                 "execution_time": 388
             }`))
-			neverBounce, _ := neverBounce.New("apiKey")
+			neverBounce, _ := neverbounce.New("apiKey")
 			err := neverBounce.Jobs.Delete(150970)
 			Expect(err).To(BeNil())
 		})

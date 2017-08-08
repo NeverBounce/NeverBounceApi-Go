@@ -1,5 +1,5 @@
 // Package neverBounce wrap NeverBounce restful APIs
-package neverBounce
+package neverbounce
 
 import (
 	"encoding/json"

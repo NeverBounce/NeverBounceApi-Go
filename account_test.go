@@ -1,4 +1,4 @@
-package neverBounce_test
+package neverbounce_test
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -23,7 +23,7 @@ var _ = Describe("Account", func() {
                 "retry_token": "",
                 "execution_time": 499
             }`))
-			neverBounce, err := neverBounce.New("apiKey")
+			neverBounce, err := neverbounce.New("apiKey")
 			Expect(neverBounce).NotTo(BeNil())
 			Expect(err).To(BeNil())
 		})
