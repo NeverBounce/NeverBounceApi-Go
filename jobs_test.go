@@ -6,6 +6,7 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/NeverBounce/NeverBounceApi-Go"
 	"github.com/NeverBounce/NeverBounceApi-Go/models"
+	"os"
 )
 
 var _ = Describe("Jobs", func() {
@@ -209,6 +210,9 @@ var _ = Describe("Jobs", func() {
 			neverBounce, _ := neverbounce.New("apiKey")
 			err := neverBounce.Jobs.Download(150970, "./example.csv")
 			Expect(err).To(BeNil())
+
+			// Cleanup
+			os.Remove("./example.csv");
 		})
 	})
 	Describe("Delete", func() {
