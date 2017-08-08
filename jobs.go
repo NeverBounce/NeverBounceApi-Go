@@ -91,7 +91,7 @@ func (r *Jobs) Search(jobID int, fileName string, completed bool, processing boo
 // autoRun: Should we run the job immediately after being parsed?
 // runSample: Should this job be run as a sample?
 // fileName: This will be what's displayed in the dashboard when viewing this job
-func (r *Jobs) Create(createSearch *nbDto.CreateSearch) (*nbDto.CreateSearchInfo, error) {
+func (r *Jobs) Create(createSearch *nbDto.CreateJob) (*nbDto.CreateSearchInfo, error) {
 	// call API
 	url := r.apiBaseURL + "jobs/create"
 	createSearch.APIKEY = r.apiKey

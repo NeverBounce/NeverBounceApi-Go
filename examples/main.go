@@ -38,7 +38,7 @@ func main() {
 
 	// Create search API
 
-	createSearchInfo, err := neverBounce.Jobs.Create(&nbDto.CreateSearch{
+	createSearchInfo, err := neverBounce.Jobs.Create(&nbDto.CreateJob{
 		InputLocation: "supplied",
 		Input:         []string{"enkhalifapro@gmail.com"},
 		AutoParse:     true,
