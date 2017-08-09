@@ -31,7 +31,7 @@ func New(apiKey string) (*NeverBounce, error) {
 		apiBaseURL: baseURL,
 		APIKey:     apiKey,
 		Single: &Single{apiBaseURL: baseURL,
-			apiKey:                 apiKey},
+			apiKey: apiKey},
 		Jobs: &Jobs{
 			apiBaseURL: baseURL,
 			apiKey:     apiKey}}
@@ -97,11 +97,15 @@ func downloadFile(filepath string, url string) (err error) {
 
 	// handle 4xx HTTP codes
 	if res.StatusCode >= 500 {
-		return errors.New("We were unable to complete your request. The following information was supplied \n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])")
+		return errors.New("We were unable to complete your request. " +
+			"The following information was supplied " +
+			"\n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])")
 	}
 	// handle 5xx HTTP codes
 	if res.StatusCode >= 400 && res.StatusCode < 500 {
-		return errors.New("We were unable to complete your request. The following information was supplied \n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])")
+		return errors.New("We were unable to complete your request. " +
+			"The following information was supplied " +
+			"\n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])")
 	}
 
 	defer res.Body.Close()

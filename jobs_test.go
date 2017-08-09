@@ -212,7 +212,7 @@ var _ = Describe("Jobs", func() {
 			Expect(err).To(BeNil())
 
 			// Cleanup
-			os.Remove("./example.csv");
+			os.Remove("./example.csv")
 		})
 	})
 	Describe("Delete", func() {
