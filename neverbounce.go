@@ -1,17 +1,31 @@
-// Package neverBounce wrap NeverBounce restful APIs
+/*
+Package neverbounce creates Golang friendly mappings to use NeverBounce's email verification API.
+
+Basic usage:
+	import "github.com/neverbounce/neverbounceapi-go"
+	client, err := neverbounce.New("api_key")
+	if err != nil {
+		panic(err)
+	}
+
+	accountInfo, err := client.Account.Info()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(accountInfo)
+
+Additional examples can be found in the examples directory
+*/
 package neverbounce
 
 import (
 	"net/http"
 	"io/ioutil"
 	"bytes"
-	"os"
-	"io"
 	"encoding/json"
 	"errors"
 	"strconv"
 	"github.com/NeverBounce/NeverBounceApi-Go/models"
-	"github.com/NeverBounce/NeverBounceApi-Go/errors"
 )
 
 // NeverBounce : Our verification API allows you to create Custom Integrations to add email verification to any part of your software.
@@ -50,102 +64,6 @@ func (r *NeverBounce) SetBaseURL(url string) {
 	r.Account.apiBaseURL = url
 	r.Single.apiBaseURL = url
 	r.Jobs.apiBaseURL = url
-}
-
-func callAPI(url string) ([]byte, error) {
-	res, err := http.Get(url)
-	if err != nil {
-		return nil, err
-	}
-
-	// handle 4xx HTTP codes
-	if res.StatusCode >= 500 {
-		return nil, errors.New("We were unable to complete your request. The following information was supplied \n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])")
-	}
-	// handle 5xx HTTP codes
-	if res.StatusCode >= 400 && res.StatusCode < 500 {
-		return nil, errors.New("We were unable to complete your request. The following information was supplied \n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])")
-	}
-
-	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	return body, nil
-}
-
-func postAPI(url string, postedBody *bytes.Buffer) ([]byte, error) {
-	res, err := http.Post(url, "application/json", postedBody)
-	if err != nil {
-		return nil, err
-	}
-
-	// handle 4xx HTTP codes
-	if res.StatusCode >= 500 {
-		return nil, errors.New("We were unable to complete your request. The following information was supplied \n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])")
-	}
-	// handle 5xx HTTP codes
-	if res.StatusCode >= 400 && res.StatusCode < 500 {
-		return nil, errors.New("We were unable to complete your request. The following information was supplied \n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])")
-	}
-
-	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	return body, nil
-}
-
-func downloadFile(filepath string, url string) (err error) {
-	// Get the data
-	res, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-
-	// handle 4xx HTTP codes
-	if res.StatusCode >= 500 {
-		return errors.New("We were unable to complete your request. " +
-			"The following information was supplied " +
-			"\n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])")
-	}
-	// handle 5xx HTTP codes
-	if res.StatusCode >= 400 && res.StatusCode < 500 {
-		return errors.New("We were unable to complete your request. " +
-			"The following information was supplied " +
-			"\n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])")
-	}
-
-	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return err
-	}
-	// check error response
-	var apiError nbErrors.ApiError
-	err = json.Unmarshal(body, &apiError)
-	if err != nil {
-		return err
-	}
-	if apiError.Status != "success" {
-		return errors.New(apiError.Message)
-	}
-
-	// Writer the body to file
-	// Create the file
-	out, err := os.Create(filepath)
-	if err != nil {
-		return err
-	}
-	defer out.Close()
-	_, err = io.Copy(out, res.Body)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func makeRequest(method string, url string, data interface{}) ([]byte, error) {

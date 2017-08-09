@@ -1,6 +1,14 @@
+/*
+Package nbModels provides the data mappings for API requests and API responses
+*/
 package nbModels
 
-// Our generic response struct, expects the status and execution_time
+// GenericRequestModel: Our generic request struct, expects the apikey
+type GenericRequestModel struct {
+	ApiKey string `json:"key"`
+}
+
+// GenericResponseModel: Our generic response struct, expects the status and execution_time
 type GenericResponseModel struct {
 	Status        string `json:"status"`
 	ExecutionTime int `json:"execution_time"`

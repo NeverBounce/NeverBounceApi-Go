@@ -11,7 +11,7 @@ type SingleCheckResponseModel struct {
 type SingleCheckRequestModel struct {
 	GenericRequestModel
 	Email       string `json:"email"`
-	AddressInfo bool `json:"address_info"`
-	CreditInfo  bool `json:"credit_info"`
-	Timeout     int `json:"timeout"`
+	AddressInfo bool `json:"address_info,omitempty"`
+	CreditInfo  bool `json:"credit_info,omitempty"`
+	Timeout     int `json:"timeout,omitempty"`
 }

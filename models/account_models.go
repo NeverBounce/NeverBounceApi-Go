@@ -2,7 +2,7 @@
 package nbModels
 
 // AccountInfoModel : Result model of Info API
-type AccountInfoModel struct {
+type AccountInfoResponseModel struct {
 	GenericResponseModel
 	BillingType string `json:"billing_type"`
 	CreditsInfo CreditsInfoModel `json:"credits_info"`

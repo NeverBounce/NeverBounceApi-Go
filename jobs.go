@@ -3,11 +3,10 @@ package neverbounce
 
 import (
 	"encoding/json"
-	"strconv"
 	"bytes"
-	"errors"
-	"github.com/NeverBounce/NeverBounceApi-Go/errors"
 	"github.com/NeverBounce/NeverBounceApi-Go/models"
+	"io"
+	"os"
 )
 
 // Jobs : The bulk endpoint provides high-speed​ validation on a list of email addresses.
@@ -19,63 +18,18 @@ type Jobs struct {
 }
 
 // Search : filter and find from the saved validation jobs
-func (r *Jobs) Search(jobID int, fileName string, completed bool, processing bool, indexing bool, failed bool, manualReview bool, unpurchased bool, page int, itemsPerPage int) (*nbModels.SearchInfo, error) {
-	// call API
-	url := r.apiBaseURL + "jobs/search?key=" + r.apiKey
+func (r *Jobs) Search(model *nbModels.JobsSearchRequestModel) (*nbModels.JobsSearchResponseModel, error) {
+	model.ApiKey = r.apiKey
 
-	// add jobId param
-	if jobID > 0 {
-		url += "&job_id=" + strconv.Itoa(jobID)
-	}
-
-	// add completed param
-	if completed != false {
-		url += "&completed=1"
-	}
-
-	// add processing param
-	if processing != false {
-		url += "&processing=1"
-	}
-
-	// add indexing param
-	if indexing != false {
-		url += "&indexing=1"
-	}
-
-	// add indexing param
-	if failed != false {
-		url += "&failed=1"
-	}
-
-	// add manual_review param
-	if manualReview != false {
-		url += "&manual_review=1"
-	}
-
-	// add unpurchased param
-	if unpurchased != false {
-		url += "&unpurchased=1"
-	}
-
-	// add page param
-	if page > 0 {
-		url += "&page=" + strconv.Itoa(jobID)
-	}
-
-	// add page param
-	if itemsPerPage > 0 {
-		url += "&items_per_page=" + strconv.Itoa(jobID)
-	}
-
-	body, err := callAPI(url)
+	// call info API
+	url := r.apiBaseURL + "jobs/search"
+	body, err := makeRequest("GET", url, model)
 	if err != nil {
 		return nil, err
 	}
 
-	// extract result info
-	var info nbModels.SearchInfo
-
+	// Unmarshal response
+	var info nbModels.JobsSearchResponseModel
 	err = json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err
@@ -91,32 +45,39 @@ func (r *Jobs) Search(jobID int, fileName string, completed bool, processing boo
 // autoRun: Should we run the job immediately after being parsed?
 // runSample: Should this job be run as a sample?
 // fileName: This will be what's displayed in the dashboard when viewing this job
-func (r *Jobs) Create(createSearch *nbModels.CreateJob) (*nbModels.CreateSearchInfo, error) {
-	// call API
+func (r *Jobs) CreateFromSuppliedData(model *nbModels.JobsCreateSuppliedDataRequestModel) (*nbModels.JobsCreateResponseModel, error) {
+	model.ApiKey = r.apiKey
+	model.InputLocation = "supplied"
+
+	// call info API
 	url := r.apiBaseURL + "jobs/create"
-	createSearch.APIKEY = r.apiKey
-	postedBody, err := json.Marshal(createSearch)
-	if err != nil {
-		return nil, err
-	}
-	body, err := postAPI(url, bytes.NewBuffer(postedBody))
+	body, err := makeRequest("POST", url, model)
 	if err != nil {
 		return nil, err
 	}
 
-	// check error response
-	var apiError nbErrors.ApiError
-	err = json.Unmarshal(body, &apiError)
+	// Unmarshal response
+	var info nbModels.JobsCreateResponseModel
+	err = json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err
 	}
-	if apiError.Status != "success" {
-		return nil, errors.New(apiError.Message)
+	return &info, nil
+}
+
+func (r *Jobs) CreateFromRemoteUrl(model *nbModels.JobsCreateRemoteUrlRequestModel) (*nbModels.JobsCreateResponseModel, error) {
+	model.ApiKey = r.apiKey
+	model.InputLocation = "remote_url"
+
+	// call info API
+	url := r.apiBaseURL + "jobs/create"
+	body, err := makeRequest("POST", url, model)
+	if err != nil {
+		return nil, err
 	}
 
-	// extract result info
-	var info nbModels.CreateSearchInfo
-
+	// Unmarshal response
+	var info nbModels.JobsCreateResponseModel
 	err = json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err
@@ -126,35 +87,18 @@ func (r *Jobs) Create(createSearch *nbModels.CreateJob) (*nbModels.CreateSearchI
 
 // Parse : allows you to parse a job created with auto_parse disabled.
 // You cannot reparse a list once it's been parsed.
-func (r *Jobs) Parse(jobID int, autoStart bool) (*nbModels.ParseInfo, error) {
-	// call API
+func (r *Jobs) Parse(model *nbModels.JobsParseRequestModel) (*nbModels.JobsParseResponseModel, error) {
+	model.ApiKey = r.apiKey
+
+	// call info API
 	url := r.apiBaseURL + "jobs/parse"
-	values := map[string]interface{}{}
-	values["key"] = r.apiKey
-	values["job_id"] = jobID
-	values["auto_start"] = autoStart
-	postedBody, err := json.Marshal(values)
-	if err != nil {
-		return nil, err
-	}
-	body, err := postAPI(url, bytes.NewBuffer(postedBody))
+	body, err := makeRequest("POST", url, model)
 	if err != nil {
 		return nil, err
 	}
 
-	// check error response
-	var apiError nbErrors.ApiError
-	err = json.Unmarshal(body, &apiError)
-	if err != nil {
-		return nil, err
-	}
-	if apiError.Status != "success" {
-		return nil, errors.New(apiError.Message)
-	}
-
-	// extract result info
-	var info nbModels.ParseInfo
-
+	// Unmarshal response
+	var info nbModels.JobsParseResponseModel
 	err = json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err
@@ -164,35 +108,18 @@ func (r *Jobs) Parse(jobID int, autoStart bool) (*nbModels.ParseInfo, error) {
 
 // Start : allows you to start a job created or parsed with auto_start disabled.
 // Once the list has been started the credits will be deducted and the process cannot be stopped or restarted
-func (r *Jobs) Start(jobID int, runSample bool) (*nbModels.StartInfo, error) {
-	// call API
+func (r *Jobs) Start(model *nbModels.JobsStartRequestModel) (*nbModels.JobsStartResponseModel, error) {
+	model.ApiKey = r.apiKey
+
+	// call info API
 	url := r.apiBaseURL + "jobs/start"
-	values := map[string]interface{}{}
-	values["key"] = r.apiKey
-	values["job_id"] = jobID
-	values["run_sample"] = runSample
-	postedBody, err := json.Marshal(values)
-	if err != nil {
-		return nil, err
-	}
-	body, err := postAPI(url, bytes.NewBuffer(postedBody))
+	body, err := makeRequest("POST", url, model)
 	if err != nil {
 		return nil, err
 	}
 
-	// check error response
-	var apiError nbErrors.ApiError
-	err = json.Unmarshal(body, &apiError)
-	if err != nil {
-		return nil, err
-	}
-	if apiError.Status != "success" {
-		return nil, errors.New(apiError.Message)
-	}
-
-	// extract result info
-	var info nbModels.StartInfo
-
+	// Unmarshal response
+	var info nbModels.JobsStartResponseModel
 	err = json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err
@@ -202,27 +129,18 @@ func (r *Jobs) Start(jobID int, runSample bool) (*nbModels.StartInfo, error) {
 
 // Status : indicate what stage the job is currently in.
 // This will be the primary property you'll want to check to determine what can be done with the job.
-func (r *Jobs) Status(jobID int) (*nbModels.JobStatusInfo, error) {
-	// call API
-	url := r.apiBaseURL + "jobs/status?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
-	body, err := callAPI(url)
+func (r *Jobs) Status(model *nbModels.JobsStatusRequestModel) (*nbModels.JobsStatusResponseModel, error) {
+	model.ApiKey = r.apiKey
+
+	// call info API
+	url := r.apiBaseURL + "jobs/status"
+	body, err := makeRequest("POST", url, model)
 	if err != nil {
 		return nil, err
 	}
 
-	// check error response
-	var apiError nbErrors.ApiError
-	err = json.Unmarshal(body, &apiError)
-	if err != nil {
-		return nil, err
-	}
-	if apiError.Status != "success" {
-		return nil, errors.New(apiError.Message)
-	}
-
-	// extract result info
-	var info nbModels.JobStatusInfo
-
+	// Unmarshal response
+	var info nbModels.JobsStatusResponseModel
 	err = json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err
@@ -231,38 +149,18 @@ func (r *Jobs) Status(jobID int) (*nbModels.JobStatusInfo, error) {
 }
 
 // Results : Get job result by job ID.
-func (r *Jobs) Results(jobID int, page int, itemPerPage int) (*nbModels.ResultInfo, error) {
-	// call API
-	url := r.apiBaseURL + "jobs/results?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
+func (r *Jobs) Results(model *nbModels.JobsResultsRequestModel) (*nbModels.JobsResultsResponseModel, error) {
+	model.ApiKey = r.apiKey
 
-	// add page param
-	if page > 0 {
-		url += "&page=" + strconv.Itoa(page)
-	}
-
-	// add itemPerPage param
-	if page > 0 {
-		url += "&items_per_page=" + strconv.Itoa(itemPerPage)
-	}
-
-	body, err := callAPI(url)
+	// call info API
+	url := r.apiBaseURL + "jobs/results"
+	body, err := makeRequest("POST", url, model)
 	if err != nil {
 		return nil, err
 	}
 
-	// check error response
-	var apiError nbErrors.ApiError
-	err = json.Unmarshal(body, &apiError)
-	if err != nil {
-		return nil, err
-	}
-	if apiError.Status != "success" {
-		return nil, errors.New(apiError.Message)
-	}
-
-	// extract result info
-	var info nbModels.ResultInfo
-
+	// Unmarshal response
+	var info nbModels.JobsResultsResponseModel
 	err = json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err
@@ -271,53 +169,44 @@ func (r *Jobs) Results(jobID int, page int, itemPerPage int) (*nbModels.ResultIn
 }
 
 // Download : Download a file containing the job data as a CSV file.
-func (r *Jobs) Download(jobID int, filePath string) (error) {
-	// call API
-	url := r.apiBaseURL + "jobs/download?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
-	err := downloadFile(filePath, url)
-	return err
-}
+func (r *Jobs) Download(model *nbModels.JobsDownloadRequestModel, filepath string) (error) {
+	model.ApiKey = r.apiKey
 
-// DownloadWithOptions : Download a file containing the job data as a CSV file with using filters.
-func (r *Jobs) DownloadWithOptions(jobID int, filePath string, valids int, inValids int, catchalls int, unknowns int, disposables int, includeDuplicates int, emailStatus int) (error) {
-	// call API
-	url := r.apiBaseURL + "jobs/download?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
-	url += "&valids=" + strconv.Itoa(valids)
-	url += "&invalids=" + strconv.Itoa(inValids)
-	url += "&catchalls=" + strconv.Itoa(catchalls)
-	url += "&unknowns=" + strconv.Itoa(unknowns)
-	url += "&disposables=" + strconv.Itoa(disposables)
-	url += "&include_duplicates=" + strconv.Itoa(includeDuplicates)
-	url += "&email_status=" + strconv.Itoa(emailStatus)
-	err := downloadFile(filePath, url)
+	// call info API
+	url := r.apiBaseURL + "jobs/download"
+	body, err := makeRequest("POST", url, model)
+	if err != nil {
+		return err
+	}
+
+	// Writer the body to file
+	// Create the file
+	out, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+	_, err = io.Copy(out, bytes.NewReader(body))
 	return err
 }
 
 // Delete : delete job by ID
-func (r *Jobs) Delete(jobID int) (error) {
-	// call API
+func (r *Jobs) Delete(model *nbModels.JobsDeleteRequestModel) (*nbModels.JobsDeleteResponseModel, error) {
+	model.ApiKey = r.apiKey
+
+	// call info API
 	url := r.apiBaseURL + "jobs/delete"
-	values := map[string]interface{}{}
-	values["key"] = r.apiKey
-	values["job_id"] = jobID
-	postedBody, err := json.Marshal(values)
+	body, err := makeRequest("POST", url, model)
 	if err != nil {
-		return err
-	}
-	body, err := postAPI(url, bytes.NewBuffer(postedBody))
-	if err != nil {
-		return err
+		return nil, err
 	}
 
-	// check error response
-	var apiError nbErrors.ApiError
-	err = json.Unmarshal(body, &apiError)
+	// Unmarshal response
+	var info nbModels.JobsDeleteResponseModel
+	err = json.Unmarshal(body, &info)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	if apiError.Status != "success" {
-		return errors.New(apiError.Message)
-	}
-
-	return nil
+	return &info, nil
 }
+
