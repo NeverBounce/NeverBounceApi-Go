@@ -28,7 +28,7 @@ type Verification struct {
 	Result              string `json:"result"`
 	Flags               []string `json:"flags"`
 	SuggestedCorrection string `json:"suggested_correction"`
-	AddressInfo         AddressInfo `json:"address_info"`
+	AddressInfo         AddressInfoModel `json:"address_info"`
 }
 
 // Result : Result model of Result API

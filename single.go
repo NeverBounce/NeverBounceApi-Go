@@ -16,7 +16,7 @@ type Single struct {
 
 // Check : verification allows you verify individual emails and gather additional
 // information pertaining to the email.
-func (r *Single) Check(email string, includeAddressInfo bool, includeCreditInfo bool, maxExecutionTime string) (*nbModels.SingleCheckInfo, error) {
+func (r *Single) Check(email string, includeAddressInfo bool, includeCreditInfo bool, maxExecutionTime string) (*nbModels.SingleCheckModel, error) {
 	// call info API
 	url := r.apiBaseURL + "single/check?key=" + r.apiKey + "&email=" + email
 	// include address info
@@ -50,7 +50,7 @@ func (r *Single) Check(email string, includeAddressInfo bool, includeCreditInfo 
 	}
 
 	// extract result info
-	var info nbModels.SingleCheckInfo
+	var info nbModels.SingleCheckModel
 
 	err = json.Unmarshal(body, &info)
 	if err != nil {
