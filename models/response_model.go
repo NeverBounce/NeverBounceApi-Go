@@ -2,8 +2,8 @@ package nbModels
 
 // Our generic response struct, expects the status and execution_time
 type GenericResponseModel struct {
-	Status                string `json:"status"`
-	ExecutionTime         int `json:"execution_time"`
+	Status        string `json:"status"`
+	ExecutionTime int `json:"execution_time"`
 }
 
 // Generic credit info struct
@@ -35,4 +35,9 @@ type AddressInfoModel struct {
 	Domain          string `json:"domain"`
 	Subdomain       string `json:"subdomain"`
 	Tld             string `json:"tld"`
+}
+
+type ApiErrorModel struct {
+	GenericResponseModel
+	Message string `json:"message"`
 }

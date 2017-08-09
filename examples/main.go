@@ -5,24 +5,27 @@ import (
 	"fmt"
 	//"github.com/NeverBounce/NeverBounceApi-Go/models"
 	"github.com/NeverBounce/NeverBounceApi-Go"
+	"github.com/NeverBounce/NeverBounceApi-Go/models"
 )
 
 func main() {
 	// instantiate neverBounce
 	neverBounce, err := neverbounce.New("secret_nvrbnc_golang_")
-	if err != nil {
-		panic(err)
-	}
 
 	// Info API
-	//info, err := neverBounce.Info()
+	//info, err := neverBounce.Account.Info()
 	//if err != nil {
 	//	panic(err)
 	//}
 	//fmt.Println(info)
 
 	//// Single check API
-	singleCheckInfo, err := neverBounce.Single.Check("support@neverbounce.com", true, true, "")
+	singleCheckInfo, err := neverBounce.Single.Check(&nbModels.SingleCheckRequestModel{
+		Email: "support@neverbounce.com",
+		AddressInfo: true,
+		CreditInfo: true,
+		Timeout: 10,
+	})
 	if err != nil {
 		panic(err)
 	}

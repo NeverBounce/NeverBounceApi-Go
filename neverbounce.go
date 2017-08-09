@@ -9,37 +9,47 @@ import (
 	"io"
 	"encoding/json"
 	"errors"
-	"github.com/NeverBounce/NeverBounceApi-Go/errors"
 	"strconv"
+	"github.com/NeverBounce/NeverBounceApi-Go/models"
+	"github.com/NeverBounce/NeverBounceApi-Go/errors"
 )
 
 // NeverBounce : Our verification API allows you to create Custom Integrations to add email verification to any part of your software.
 // We offer solutions for verifying individual emails as well as lists containing hundreds or even millions of emails.
 type NeverBounce struct {
-	apiBaseURL string
-	APIKey     string
+	Account     *Account
 	Single     *Single
 	Jobs       *Jobs
 }
+
+const DEFAULT_BASE_URL = "https://api.neverbounce.com/v4/"
 
 // New : Create a new instance of *NeverBounce
 // @Param
 // apiKey: API authentication key
 func New(apiKey string) (*NeverBounce, error) {
-	baseURL := "https://api.neverbounce.com/v4/"
 	r := &NeverBounce{
-		apiBaseURL: baseURL,
-		APIKey:     apiKey,
-		Single: &Single{apiBaseURL: baseURL,
-			apiKey: apiKey},
+		Account: &Account{
+			apiBaseURL: DEFAULT_BASE_URL,
+			apiKey: apiKey,
+		},
+		Single: &Single{
+			apiBaseURL: DEFAULT_BASE_URL,
+			apiKey: apiKey,
+		},
 		Jobs: &Jobs{
-			apiBaseURL: baseURL,
-			apiKey:     apiKey}}
-	_, err := r.Info()
-	if err != nil {
-		return nil, err
+			apiBaseURL: DEFAULT_BASE_URL,
+			apiKey:     apiKey,
+		},
 	}
+
 	return r, nil
+}
+
+func (r *NeverBounce) SetBaseURL(url string) {
+	r.Account.apiBaseURL = url
+	r.Single.apiBaseURL = url
+	r.Jobs.apiBaseURL = url
 }
 
 func callAPI(url string) ([]byte, error) {
@@ -136,4 +146,68 @@ func downloadFile(filepath string, url string) (err error) {
 	}
 
 	return nil
+}
+
+func makeRequest(method string, url string, data interface{}) ([]byte, error) {
+	// Marshal struct into JSON
+	body, err := json.Marshal(data)
+	if err != nil {
+		return nil, err
+	}
+
+	// Make request
+	request, _ := http.NewRequest(method, url, bytes.NewReader(body))
+	request.Header.Add("Content-Type", "application/json")
+
+	// Do request
+	client := http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		return nil, err
+	}
+
+	// handle 5xx HTTP codes
+	if res.StatusCode >= 500 {
+		return nil, errors.New("We were unable to complete your request. " +
+			"The following information was supplied: " + res.Status +
+			"\n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])")
+	}
+
+	// handle 4xx HTTP codes
+	if res.StatusCode >= 400 {
+		return nil, errors.New("We were unable to complete your request. " +
+			"The following information was supplied: " + res.Status +
+			"\n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])")
+	}
+
+	// Read body from request
+	body, e := ioutil.ReadAll(res.Body)
+	if e != nil {
+		return nil, e
+	}
+
+	// Handle JSON repsonses
+	if res.Header.Get("Content-Type") == "application/json" {
+
+		// check error response
+		var apiError nbModels.ApiErrorModel
+
+		// Unmarshal into error
+		var err = json.Unmarshal(body, &apiError)
+		if err != nil {
+			return nil, err
+		}
+
+		if apiError.Status != "success" {
+			return nil, errors.New("We were unable to complete your request. " +
+				"The following information was supplied: " + apiError.Message +
+				"\n\n(" + apiError.Status + ")")
+		}
+
+		// Return json string
+		return body, nil
+	}
+
+	// Return plain text responses
+	return body, nil
 }
