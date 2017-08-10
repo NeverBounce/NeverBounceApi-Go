@@ -27,16 +27,16 @@ import (
 	"github.com/NeverBounce/NeverBounceApi-Go/models"
 )
 
-// Single endpoints allow you to integrate our email verification into your existing
-// applications at the point of entry and onboarding processes
+// POE endpoints allow you to confirm frontend verifications performed
+// by the Javascript Widget
 type POE struct {
 	apiBaseURL string
 	apiKey     string
 }
 
-// Check verifies the email provided and returns the verification result.
-// In addition to this, it can also return a breakdown of the email address' host info
-// and your account balance
+// Confirm verifies that the result provided during frontend verification (e.g. Javascript Widget) has
+// not been tampered with.
+// It requires you to pass the email, result, transaction_id, and confirmation_token supplied by the verification.
 func (r *POE) Confirm(model *nbModels.POEConfirmRequestModel) (*nbModels.POEConfirmResponseModel, error) {
 	model.APIKey = r.apiKey
 
