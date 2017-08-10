@@ -1,5 +1,9 @@
 /*
-Package neverbounce creates Golang friendly mappings to use NeverBounce's email verification API.
+The neverbounce package creates native Golang mappings to use NeverBounce's email verification API.
+Our verification API allows you to create Custom Integrations to add email verification to any part of your software.
+We offer solutions for verifying individual emails as well as lists containing hundreds or even millions of emails.
+
+For our full API documentation see: https://developers.neverbounce.com/v4.0/
 
 Basic usage:
 	import "github.com/neverbounce/neverbounceapi-go"
@@ -28,19 +32,19 @@ import (
 	"github.com/NeverBounce/NeverBounceApi-Go/models"
 )
 
-// NeverBounce : Our verification API allows you to create Custom Integrations to add email verification to any part of your software.
-// We offer solutions for verifying individual emails as well as lists containing hundreds or even millions of emails.
+// The root struct created by the New method.
+// This is used to access the specific bindings.
 type NeverBounce struct {
 	Account     *Account
 	Single     *Single
 	Jobs       *Jobs
 }
 
+// The base url used to make requests
 const DEFAULT_BASE_URL = "https://api.neverbounce.com/v4/"
 
-// New : Create a new instance of *NeverBounce
-// @Param
-// apiKey: API authentication key
+
+// Creates a new instance of *NeverBounce. Accepts the api key to use for authentication.
 func New(apiKey string) (*NeverBounce, error) {
 	r := &NeverBounce{
 		Account: &Account{
@@ -60,12 +64,19 @@ func New(apiKey string) (*NeverBounce, error) {
 	return r, nil
 }
 
+// Sets the url used to make the requests (overrides the DEFAULT_BASE_URL constant).
+// This method is primarily for internal testing and debugging purposes,
+// under normal circumstances it will not be used
 func (r *NeverBounce) SetBaseURL(url string) {
 	r.Account.apiBaseURL = url
 	r.Single.apiBaseURL = url
 	r.Jobs.apiBaseURL = url
 }
 
+// Handles the request and parsing of the responses to and from the API
+// It will throw and error when a 4xx/5xx HTTP code is encountered or if
+// the API returns an api error.
+// See: https://developers.neverbounce.com/v4.0/reference#error-handling
 func makeRequest(method string, url string, data interface{}) ([]byte, error) {
 	// Marshal struct into JSON
 	body, err := json.Marshal(data)

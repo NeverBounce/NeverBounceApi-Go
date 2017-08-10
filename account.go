@@ -1,4 +1,3 @@
-// Package neverBounce wrap NeverBounce restful APIs
 package neverbounce
 
 import (
@@ -6,14 +5,14 @@ import (
 	"github.com/NeverBounce/NeverBounceApi-Go/models"
 )
 
-// Single : Single functionality holder
+// Contains bindings for Account API endpoints.
 type Account struct {
 	apiBaseURL string
 	apiKey     string
 }
 
-// Info : Account endpoints allow to programmatically check your account's balance and
-// how many jobs are currently running on your account.
+// Account info returns the account's current credit balance as well as job counts
+// indicating the number of jobs currently in the account.
 func (r *Account) Info() (*nbModels.AccountInfoResponseModel, error) {
 	// call info API
 	url := r.apiBaseURL + "account/info"

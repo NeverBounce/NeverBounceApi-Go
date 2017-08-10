@@ -1,4 +1,3 @@
-// Package neverBounce wrap NeverBounce restful APIs
 package neverbounce
 
 import (
@@ -9,7 +8,7 @@ import (
 	"os"
 )
 
-// Jobs : The bulk endpoint provides high-speed​ validation on a list of email addresses.
+// The jobs endpoints provides high-speed​ validation on a list of email addresses.
 // You can use the status endpoint to retrieve real-time statistics about a bulk job in progress.
 // Once the job has finished, the results can be retrieved with our download endpoint.
 type Jobs struct {
@@ -17,7 +16,9 @@ type Jobs struct {
 	apiKey     string
 }
 
-// Search : filter and find from the saved validation jobs
+// Search the jobs you've previously submitted to your account.
+// It will return jobs in batches according to the pagination options you've supplied.
+// The returned jobs will include the same information available from the Status method
 func (r *Jobs) Search(model *nbModels.JobsSearchRequestModel) (*nbModels.JobsSearchResponseModel, error) {
 	model.ApiKey = r.apiKey
 
@@ -37,14 +38,8 @@ func (r *Jobs) Search(model *nbModels.JobsSearchRequestModel) (*nbModels.JobsSea
 	return &info, nil
 }
 
-// Create : add a new validation job
-// @Param
-// inputLocation: The type of input being supplied. Accepted values are "remote_url" and "supplied".
-// input: The input to be verified
-// autoParse: Should be begin parsing the job immediately?
-// autoRun: Should we run the job immediately after being parsed?
-// runSample: Should this job be run as a sample?
-// fileName: This will be what's displayed in the dashboard when viewing this job
+// Creates a new job from data you supply directly in the request.
+// Supplied data will need to be given as a map, see the examples in the nbModel package.
 func (r *Jobs) CreateFromSuppliedData(model *nbModels.JobsCreateSuppliedDataRequestModel) (*nbModels.JobsCreateResponseModel, error) {
 	model.ApiKey = r.apiKey
 	model.InputLocation = "supplied"
@@ -65,6 +60,9 @@ func (r *Jobs) CreateFromSuppliedData(model *nbModels.JobsCreateSuppliedDataRequ
 	return &info, nil
 }
 
+// Creates a new job from a comma separated value (CSV) file hosted on a remote URL.
+// The URL supplied can be any commonly available protocal; e.g: HTTP, HTTPS, FTP, SFTP.
+// Basic auth is supported by including the credentials in the URI string; e.g: http://name:passwd@example.com/full/path/to/file.csv
 func (r *Jobs) CreateFromRemoteUrl(model *nbModels.JobsCreateRemoteUrlRequestModel) (*nbModels.JobsCreateResponseModel, error) {
 	model.ApiKey = r.apiKey
 	model.InputLocation = "remote_url"
@@ -85,8 +83,8 @@ func (r *Jobs) CreateFromRemoteUrl(model *nbModels.JobsCreateRemoteUrlRequestMod
 	return &info, nil
 }
 
-// Parse : allows you to parse a job created with auto_parse disabled.
-// You cannot reparse a list once it's been parsed.
+// If you create a job with AutoParse set to false (defaults to false) you can parse job using this endpoint.
+// Once parsed, a job cannot be reparsed.
 func (r *Jobs) Parse(model *nbModels.JobsParseRequestModel) (*nbModels.JobsParseResponseModel, error) {
 	model.ApiKey = r.apiKey
 
@@ -106,8 +104,8 @@ func (r *Jobs) Parse(model *nbModels.JobsParseRequestModel) (*nbModels.JobsParse
 	return &info, nil
 }
 
-// Start : allows you to start a job created or parsed with auto_start disabled.
-// Once the list has been started the credits will be deducted and the process cannot be stopped or restarted
+// If you create a job or parse a job with AutoStart set to false (defaults to false) you can start the job with this method.
+// Once the list has been started the credits will be deducted and the process cannot be stopped or restarted.
 func (r *Jobs) Start(model *nbModels.JobsStartRequestModel) (*nbModels.JobsStartResponseModel, error) {
 	model.ApiKey = r.apiKey
 
@@ -127,7 +125,7 @@ func (r *Jobs) Start(model *nbModels.JobsStartRequestModel) (*nbModels.JobsStart
 	return &info, nil
 }
 
-// Status : indicate what stage the job is currently in.
+// Status will return information pertaining to the Jobs state. It will include the jobs current status as well as the verification stats.
 // This will be the primary property you'll want to check to determine what can be done with the job.
 func (r *Jobs) Status(model *nbModels.JobsStatusRequestModel) (*nbModels.JobsStatusResponseModel, error) {
 	model.ApiKey = r.apiKey
@@ -148,7 +146,10 @@ func (r *Jobs) Status(model *nbModels.JobsStatusRequestModel) (*nbModels.JobsSta
 	return &info, nil
 }
 
-// Results : Get job result by job ID.
+// Results will return the actual verification results.
+// This can only be done once the job has reached the completed status.
+// The results will be returned in batches according to the pagination options you've supplied.
+// Verification info will be formatted the same way Single.Check returns verification info.
 func (r *Jobs) Results(model *nbModels.JobsResultsRequestModel) (*nbModels.JobsResultsResponseModel, error) {
 	model.ApiKey = r.apiKey
 
@@ -168,7 +169,8 @@ func (r *Jobs) Results(model *nbModels.JobsResultsRequestModel) (*nbModels.JobsR
 	return &info, nil
 }
 
-// Download : Download a file containing the job data as a CSV file.
+// Download the results as a CSV to a file.
+// This is useful if your uploading the results to a CRM or are use to working with spreadsheets.
 func (r *Jobs) Download(model *nbModels.JobsDownloadRequestModel, filepath string) (error) {
 	model.ApiKey = r.apiKey
 
@@ -190,7 +192,9 @@ func (r *Jobs) Download(model *nbModels.JobsDownloadRequestModel, filepath strin
 	return err
 }
 
-// Delete : delete job by ID
+// Delete a job. This can only be done when a job is Queued, Waiting, Completed, or Failed.
+// A job cannot be deleted while it is being uploaded, parsed, or ran.
+// Once deleted the job results cannot be recovered, deletion is permanent.
 func (r *Jobs) Delete(model *nbModels.JobsDeleteRequestModel) (*nbModels.JobsDeleteResponseModel, error) {
 	model.ApiKey = r.apiKey
 
