@@ -9,5 +9,5 @@ type JobsParseRequestModel struct {
 // ParseInfo : Result model of Info API
 type JobsParseResponseModel struct {
 	GenericResponseModel
-	QueueID string `json:"queue_id"`
+	QueueId string `json:"queue_id"`
 }

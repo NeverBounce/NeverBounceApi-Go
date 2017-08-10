@@ -8,5 +8,5 @@ type JobsStartRequestModel struct {
 
 type JobsStartResponseModel struct {
 	GenericResponseModel
-	QueueID string `json:"queue_id"`
+	QueueId string `json:"queue_id"`
 }

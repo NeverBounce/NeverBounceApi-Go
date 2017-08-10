@@ -17,7 +17,7 @@ var _ = BeforeSuite(func() {
 	// block all HTTP requests
 	httpmock.Activate()
 	// mock the root info API
-	httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info?key=apiKey",
+	httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",
 		httpmock.NewStringResponder(200, `{
                 "status": "success",
                 "result": "valid",

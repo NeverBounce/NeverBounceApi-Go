@@ -132,7 +132,7 @@ func (r *Jobs) Status(model *nbModels.JobsStatusRequestModel) (*nbModels.JobsSta
 
 	// call info API
 	url := r.apiBaseURL + "jobs/status"
-	body, err := makeRequest("POST", url, model)
+	body, err := makeRequest("GET", url, model)
 	if err != nil {
 		return nil, err
 	}
@@ -155,7 +155,7 @@ func (r *Jobs) Results(model *nbModels.JobsResultsRequestModel) (*nbModels.JobsR
 
 	// call info API
 	url := r.apiBaseURL + "jobs/results"
-	body, err := makeRequest("POST", url, model)
+	body, err := makeRequest("GET", url, model)
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +176,7 @@ func (r *Jobs) Download(model *nbModels.JobsDownloadRequestModel, filepath strin
 
 	// call info API
 	url := r.apiBaseURL + "jobs/download"
-	body, err := makeRequest("POST", url, model)
+	body, err := makeRequest("GET", url, model)
 	if err != nil {
 		return err
 	}
