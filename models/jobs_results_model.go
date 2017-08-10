@@ -1,14 +1,15 @@
+// Package nbModels provides the data mappings for API requests and API responses
 package nbModels
 
-// Job Search request model
+// JobsResultsRequestModel is the request model for Jobs.Results()
 type JobsResultsRequestModel struct {
 	GenericRequestModel
 	ItemsPerPage int `json:"items_per_page,omitempty"`
 	Page         int `json:"page,omitempty"`
-	JobId        int `json:"job_id,omitempty"`
+	JobID        int `json:"job_id,omitempty"`
 }
 
-// Job Model response
+// JobsResultsResponseModel is the response model for Jobs.Results()
 type JobsResultsResponseModel struct {
 	GenericResponseModel
 	TotalResults int `json:"total_results"`
@@ -17,13 +18,14 @@ type JobsResultsResponseModel struct {
 	Results      []JobsResultsDataModel `json:"results"`
 }
 
-// Jobs search query
+// JobsResultsQueryModel contains the query info for the request
 type JobsResultsQueryModel struct {
 	ItemsPerPage int `json:"items_per_page"`
 	Page         int `json:"page"`
-	JobId        int `json:"job_id,omitempty"`
+	JobID        int `json:"job_id,omitempty"`
 }
 
+// JobsResultsDataModel is the model for the each result returned by Jobs.Results()
 type JobsResultsDataModel struct {
 	Verification VerificationModel `json:"verification"`
 	Data         map[string]interface{} `json:"data"`

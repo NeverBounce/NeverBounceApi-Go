@@ -1,13 +1,15 @@
+// Package nbModels provides the data mappings for API requests and API responses
 package nbModels
 
+// JobsParseRequestModel is the request model for Jobs.Parse()
 type JobsParseRequestModel struct {
 	GenericRequestModel
-	JobId     int `json:"job_id"`
+	JobID     int `json:"job_id"`
 	AutoStart bool `json:"auto_start,omitempty"`
 }
 
-// ParseInfo : Result model of Info API
+// JobsParseResponseModel is the response model for Jobs.Parse()
 type JobsParseResponseModel struct {
 	GenericResponseModel
-	QueueId string `json:"queue_id"`
+	QueueID string `json:"queue_id"`
 }

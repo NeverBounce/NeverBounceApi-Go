@@ -1,20 +1,20 @@
-/*
-Package nbModels provides the data mappings for API requests and API responses
-*/
+// Package nbModels provides the data mappings for API requests and API responses
 package nbModels
 
-// GenericRequestModel: Our generic request struct, expects the apikey
+// GenericRequestModel is our most basic request model.
+// It accepts the APIKey to make the request from
 type GenericRequestModel struct {
-	ApiKey string `json:"key"`
+	APIKey string `json:"key"`
 }
 
-// GenericResponseModel: Our generic response struct, expects the status and execution_time
+// GenericResponseModel is our most basic API response.
+// It contains the responses Status and ExecutionTime
 type GenericResponseModel struct {
 	Status        string `json:"status"`
 	ExecutionTime int `json:"execution_time"`
 }
 
-// Generic credit info struct
+// CreditsInfoModel is used to parse out the credit info the repsonse
 type CreditsInfoModel struct {
 	PaidCreditsUsed      int `json:"paid_credits_used"`
 	FreeCreditsUsed      int `json:"free_credits_used"`
@@ -23,7 +23,7 @@ type CreditsInfoModel struct {
 	MonthlyAPIUsage      string `json:"monthly_api_usage"`
 }
 
-// Generic Verification struct
+// VerificationModel is used to parse out the verification responses from JobsStatus and SingleCheck
 type VerificationModel struct {
 	Result              string `json:"result"`
 	Flags               []string `json:"flags"`
@@ -32,7 +32,7 @@ type VerificationModel struct {
 	AddressInfo         AddressInfoModel `json:"address_info"`
 }
 
-// Generic Address info struct
+// AddressInfoModel is used to parse out address info from the VerificationModel
 type AddressInfoModel struct {
 	OriginalEmail   string `json:"original_email"`
 	NormalizedEmail string `json:"normalized_email"`
@@ -45,7 +45,8 @@ type AddressInfoModel struct {
 	Tld             string `json:"tld"`
 }
 
-type ApiErrorModel struct {
+// APIErrorModel is our generic error message response
+type APIErrorModel struct {
 	GenericResponseModel
 	Message string `json:"message"`
 }

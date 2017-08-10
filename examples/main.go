@@ -1,5 +1,7 @@
 /*
 Package main offers several examples for working with the neverbounce package.
+
+To use:
 Add your api key and uncomment specific methods to test them out.
 */
 package main
@@ -17,20 +19,21 @@ func main() {
 		panic(err)
 	}
 
-	account_info(client)
-	//single_check(client)
-	//jobs_search(client)
-	//jobs_create_supplied_data(client)
-	//jobs_create_remote_url(client)
-	//jobs_parse(client)
-	//jobs_start(client)
-	//jobs_status(client)
-	//jobs_results(client)
-	//jobs_download(client)
-	//jobs_delete(client)
+	AccountInfo(client)
+	//SingleCheck(client)
+	//JobsSearch(client)
+	//JobsCreateFromSuppliedData(client)
+	//JobsCreateFromRemoteURL(client)
+	//JobsParse(client)
+	//JobsStart(client)
+	//JobsStatus(client)
+	//JobsResults(client)
+	//JobsDownload(client)
+	//JobsDelete(client)
 }
 
-func account_info(client *neverbounce.NeverBounce) {
+// AccountInfo demonstrates how to retrieve the account info
+func AccountInfo(client *neverbounce.NeverBounce) {
 	accountInfo, err := client.Account.Info()
 	if err != nil {
 		panic(err)
@@ -38,7 +41,8 @@ func account_info(client *neverbounce.NeverBounce) {
 	fmt.Println(accountInfo)
 }
 
-func single_check(client *neverbounce.NeverBounce) {
+// SingleCheck demonstrates how to make to verify a single email
+func SingleCheck(client *neverbounce.NeverBounce) {
 	singleResults, err := client.Single.Check(&nbModels.SingleCheckRequestModel{
 		Email:       "support@neverbounce.com",
 		AddressInfo: true,
@@ -51,7 +55,8 @@ func single_check(client *neverbounce.NeverBounce) {
 	fmt.Println(singleResults)
 }
 
-func jobs_search(client *neverbounce.NeverBounce) {
+// JobsSearch demonstrates how to search for existing jobs on your account
+func JobsSearch(client *neverbounce.NeverBounce) {
 	searchResults, err := client.Jobs.Search(&nbModels.JobsSearchRequestModel{
 		JobStatus: "complete",
 	})
@@ -61,7 +66,8 @@ func jobs_search(client *neverbounce.NeverBounce) {
 	fmt.Println(searchResults)
 }
 
-func jobs_create_supplied_data(client *neverbounce.NeverBounce) {
+// JobsCreateFromSuppliedData demonstrates how to create a job using data you have available
+func JobsCreateFromSuppliedData(client *neverbounce.NeverBounce) {
 	// Build data map
 	createData := map[int]interface{}{}
 	createData[0] = map[string]interface{}{
@@ -88,9 +94,10 @@ func jobs_create_supplied_data(client *neverbounce.NeverBounce) {
 	fmt.Println(jobInfo)
 }
 
-func jobs_create_remote_url(client *neverbounce.NeverBounce) {
-	jobInfo, err := client.Jobs.CreateFromRemoteUrl(&nbModels.JobsCreateRemoteUrlRequestModel{
-		RemoteUrl: "https://example.com/file.csv",
+// JobsCreateFromRemoteURL demonstrates how to create a job using data hosted on a remote url
+func JobsCreateFromRemoteURL(client *neverbounce.NeverBounce) {
+	jobInfo, err := client.Jobs.CreateFromRemoteURL(&nbModels.JobsCreateRemoteURLRequestModel{
+		RemoteURL: "https://example.com/file.csv",
 		AutoParse: true,
 		AutoRun:   false,
 		RunSample: false,
@@ -101,9 +108,10 @@ func jobs_create_remote_url(client *neverbounce.NeverBounce) {
 	fmt.Println(jobInfo)
 }
 
-func jobs_parse(client *neverbounce.NeverBounce) {
+// JobsParse demonstrates how to parse a job after it's been created with AutoParse set to false
+func JobsParse(client *neverbounce.NeverBounce) {
 	parseInfo, err := client.Jobs.Parse(&nbModels.JobsParseRequestModel{
-		JobId: 296050,
+		JobID: 296050,
 	})
 	if err != nil {
 		panic(err)
@@ -111,9 +119,10 @@ func jobs_parse(client *neverbounce.NeverBounce) {
 	fmt.Println(parseInfo)
 }
 
-func jobs_start(client *neverbounce.NeverBounce) {
+// JobsStart demonstrates how to start a job after it's been parsed and AutoStart was set to false
+func JobsStart(client *neverbounce.NeverBounce) {
 	startInfo, err := client.Jobs.Start(&nbModels.JobsStartRequestModel{
-		JobId: 296050,
+		JobID: 296050,
 	})
 	if err != nil {
 		panic(err)
@@ -121,9 +130,10 @@ func jobs_start(client *neverbounce.NeverBounce) {
 	fmt.Println(startInfo)
 }
 
-func jobs_status(client *neverbounce.NeverBounce) {
+// JobsStatus demonstrates how to get the jobs status and stats
+func JobsStatus(client *neverbounce.NeverBounce) {
 	statusInfo, err := client.Jobs.Status(&nbModels.JobsStatusRequestModel{
-		JobId: 296050,
+		JobID: 296050,
 	})
 	if err != nil {
 		panic(err)
@@ -131,9 +141,10 @@ func jobs_status(client *neverbounce.NeverBounce) {
 	fmt.Println(statusInfo)
 }
 
-func jobs_results(client *neverbounce.NeverBounce) {
+// JobsResults demonstrates how to get the jobs results once it has completed verification
+func JobsResults(client *neverbounce.NeverBounce) {
 	resultsInfo, err := client.Jobs.Results(&nbModels.JobsResultsRequestModel{
-		JobId: 296050,
+		JobID: 296050,
 	})
 	if err != nil {
 		panic(err)
@@ -141,9 +152,10 @@ func jobs_results(client *neverbounce.NeverBounce) {
 	fmt.Println(resultsInfo)
 }
 
-func jobs_download(client *neverbounce.NeverBounce) {
+// JobsDownload demonstrates how to download the job results as a CSV file once it has completed verification
+func JobsDownload(client *neverbounce.NeverBounce) {
 	err := client.Jobs.Download(&nbModels.JobsDownloadRequestModel{
-		JobId:            296050,
+		JobID:            296050,
 		EmailStatusAsInt: true,
 	}, "test.csv")
 	if err != nil {
@@ -152,9 +164,10 @@ func jobs_download(client *neverbounce.NeverBounce) {
 	fmt.Println("Data saved to test.csv")
 }
 
-func jobs_delete(client *neverbounce.NeverBounce) {
+// JobsDelete demonstrates how to delete a job
+func JobsDelete(client *neverbounce.NeverBounce) {
 	deleteInfo, err := client.Jobs.Delete(&nbModels.JobsDeleteRequestModel{
-		JobId: 296050,
+		JobID: 296050,
 	})
 	if err != nil {
 		panic(err)

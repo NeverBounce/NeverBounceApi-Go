@@ -1,7 +1,8 @@
-// Package nbDto holds API result models.
+// Package nbModels provides the data mappings for API requests and API responses
 package nbModels
 
-// Creation request model
+// JobsCreateSuppliedDataRequestModel is the request model for creating a job with SuppliedData.
+// See examples/main.go for an example of it's use
 type JobsCreateSuppliedDataRequestModel struct {
 	GenericRequestModel
 	InputLocation string `json:"input_location"`
@@ -12,19 +13,19 @@ type JobsCreateSuppliedDataRequestModel struct {
 	FileName      string `json:"filename,omitempty"`
 }
 
-// Creation request model
-type JobsCreateRemoteUrlRequestModel struct {
+// JobsCreateRemoteURLRequestModel is the request model for creating a job with a remote URL
+type JobsCreateRemoteURLRequestModel struct {
 	GenericRequestModel
 	InputLocation string `json:"input_location"`
-	RemoteUrl     string `json:"input"`
+	RemoteURL     string `json:"input"`
 	AutoParse     bool `json:"auto_parse"`
 	AutoRun       bool `json:"auto_run"`
 	RunSample     bool `json:"run_sample"`
 	FileName      string `json:"filename,omitempty"`
 }
 
-// Creation response
+// JobsCreateResponseModel is the response model for both creation methods
 type JobsCreateResponseModel struct {
 	GenericResponseModel
-	JobId int `json:"job_id"`
+	JobID int `json:"job_id"`
 }

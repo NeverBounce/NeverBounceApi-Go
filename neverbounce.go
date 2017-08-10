@@ -1,5 +1,5 @@
 /*
-The neverbounce package creates native Golang mappings to use NeverBounce's email verification API.
+Package neverbounce creates native Golang mappings to use NeverBounce's email verification API.
 Our verification API allows you to create Custom Integrations to add email verification to any part of your software.
 We offer solutions for verifying individual emails as well as lists containing hundreds or even millions of emails.
 
@@ -32,7 +32,7 @@ import (
 	"github.com/NeverBounce/NeverBounceApi-Go/models"
 )
 
-// The root struct created by the New method.
+// NeverBounce is the root struct of the wrapper.
 // This is used to access the specific bindings.
 type NeverBounce struct {
 	Account     *Account
@@ -40,23 +40,23 @@ type NeverBounce struct {
 	Jobs       *Jobs
 }
 
-// The base url used to make requests
-const DEFAULT_BASE_URL = "https://api.neverbounce.com/v4/"
+// DefaultBaseURL is the default host to make the API requests on
+const DefaultBaseURL = "https://api.neverbounce.com/v4/"
 
 
-// Creates a new instance of *NeverBounce. Accepts the api key to use for authentication.
+// New creates a new instance of *NeverBounce. Accepts the api key to use for authentication.
 func New(apiKey string) (*NeverBounce, error) {
 	r := &NeverBounce{
 		Account: &Account{
-			apiBaseURL: DEFAULT_BASE_URL,
-			apiKey: apiKey,
+			apiBaseURL: DefaultBaseURL,
+			apiKey:     apiKey,
 		},
 		Single: &Single{
-			apiBaseURL: DEFAULT_BASE_URL,
-			apiKey: apiKey,
+			apiBaseURL: DefaultBaseURL,
+			apiKey:     apiKey,
 		},
 		Jobs: &Jobs{
-			apiBaseURL: DEFAULT_BASE_URL,
+			apiBaseURL: DefaultBaseURL,
 			apiKey:     apiKey,
 		},
 	}
@@ -64,7 +64,7 @@ func New(apiKey string) (*NeverBounce, error) {
 	return r, nil
 }
 
-// Sets the url used to make the requests (overrides the DEFAULT_BASE_URL constant).
+// SetBaseURL will set the url used to make the requests (overrides the DefaultBaseURL constant).
 // This method is primarily for internal testing and debugging purposes,
 // under normal circumstances it will not be used
 func (r *NeverBounce) SetBaseURL(url string) {
@@ -73,11 +73,11 @@ func (r *NeverBounce) SetBaseURL(url string) {
 	r.Jobs.apiBaseURL = url
 }
 
-// Handles the request and parsing of the responses to and from the API
+// MakeRequest handles the request and parsing of the responses to and from the API
 // It will throw and error when a 4xx/5xx HTTP code is encountered or if
 // the API returns an api error.
 // See: https://developers.neverbounce.com/v4.0/reference#error-handling
-func makeRequest(method string, url string, data interface{}) ([]byte, error) {
+func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 	// Marshal struct into JSON
 	body, err := json.Marshal(data)
 	if err != nil {
@@ -95,17 +95,20 @@ func makeRequest(method string, url string, data interface{}) ([]byte, error) {
 		return nil, err
 	}
 
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(res.Body)
+
 	// handle 5xx HTTP codes
 	if res.StatusCode >= 500 {
 		return nil, errors.New("We were unable to complete your request. " +
-			"The following information was supplied: " + res.Status +
+			"The following information was supplied: " + buf.String() +
 			"\n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])")
 	}
 
 	// handle 4xx HTTP codes
 	if res.StatusCode >= 400 {
 		return nil, errors.New("We were unable to complete your request. " +
-			"The following information was supplied: " + res.Status +
+			"The following information was supplied: " + buf.String() +
 			"\n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])")
 	}
 
@@ -119,7 +122,7 @@ func makeRequest(method string, url string, data interface{}) ([]byte, error) {
 	if res.Header.Get("Content-Type") == "application/json" {
 
 		// check error response
-		var apiError nbModels.ApiErrorModel
+		var apiError nbModels.APIErrorModel
 
 		// Unmarshal into error
 		var err = json.Unmarshal(body, &apiError)

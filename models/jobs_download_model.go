@@ -1,9 +1,12 @@
+// Package nbModels provides the data mappings for API requests and API responses
 package nbModels
 
+// JobsDownloadRequestModel is the response model for Jobs.Download()
 type JobsDownloadRequestModel struct {
 	GenericRequestModel
-	JobId int `json:"job_id"`
+	JobID int `json:"job_id"`
 
+	// Segmentation options
 	IncludeValids      bool `json:"valids,omitempty"`
 	IncludeInvalids    bool `json:"invalids,omitempty"`
 	IncludeCatchalls   bool `json:"catchalls,omitempty"`
@@ -13,6 +16,7 @@ type JobsDownloadRequestModel struct {
 	OnlyDuplicates    bool `json:"only_duplicates,omitempty"`
 	OnlyBadSyntax     bool `json:"only_bad_syntax,omitempty"`
 
+	// Data appends
 	IdentifyBadSyntax      bool `json:"bad_syntax,omitempty"`
 	IdentifyFreeEmailHosts bool `json:"free_email_host,omitempty"`
 	IdentifyRoleAccounts   bool `json:"role_account,omitempty"`
@@ -29,6 +33,7 @@ type JobsDownloadRequestModel struct {
 	EmailStatusAsInt       bool `json:"email_status_int,omitempty"`
 	EmailStatusAsString    bool `json:"email_status,omitempty"`
 
+	// Settings for CSV data
 	BinaryOperator string `json:"binary_operator_type,omitempty"`
 	LineFeedType   string `json:"line_feed_type,omitempty"`
 }

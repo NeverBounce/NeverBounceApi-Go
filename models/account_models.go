@@ -1,7 +1,7 @@
-// Package nbDto holds API result models.
+// Package nbModels provides the data mappings for API requests and API responses
 package nbModels
 
-// AccountInfoModel : Result model of Info API
+// AccountInfoResponseModel is used to parse the response from Account.Info()
 type AccountInfoResponseModel struct {
 	GenericResponseModel
 	BillingType string `json:"billing_type"`
@@ -9,6 +9,7 @@ type AccountInfoResponseModel struct {
 	JobsCounts  JobCountsModel `json:"job_counts"`
 }
 
+// JobCountsModel is used to parse the JobsCounts from the AccountInfoResponseModel
 type JobCountsModel struct {
 	Completed   int `json:"completed"`
 	UnderReview int `json:"under_review"`

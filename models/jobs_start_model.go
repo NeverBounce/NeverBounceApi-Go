@@ -1,12 +1,15 @@
+// Package nbModels provides the data mappings for API requests and API responses
 package nbModels
 
+// JobsStartRequestModel is the request model for Jobs.Start()
 type JobsStartRequestModel struct {
 	GenericRequestModel
-	JobId     int `json:"job_id"`
+	JobID     int `json:"job_id"`
 	RunSample bool `json:"run_sample,omitempty"`
 }
 
+// JobsStartResponseModel is the response model for Jobs.Start()
 type JobsStartResponseModel struct {
 	GenericResponseModel
-	QueueId string `json:"queue_id"`
+	QueueID string `json:"queue_id"`
 }

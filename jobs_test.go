@@ -11,7 +11,7 @@ import (
 
 var _ = Describe("Jobs", func() {
 	Describe("CreateFromSuppliedData", func() {
-		It("should return a JobId not equal to zero and error should be nil", func() {
+		It("should return a JobID not equal to zero and error should be nil", func() {
 			// mock the root info API
 			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4/jobs/create",
 				httpmock.NewStringResponder(200, `{
@@ -41,13 +41,13 @@ var _ = Describe("Jobs", func() {
 				AutoRun:       true,
 				RunSample:     false,
 				FileName:      "example.csv"})
-			Expect(resp.JobId).To(Equal(150970))
+			Expect(resp.JobID).To(Equal(150970))
 			Expect(err).To(BeNil())
 		})
 	})
 
-	Describe("CreateFromRemoteUrl", func() {
-		It("should return a JobId not equal to zero and error should be nil", func() {
+	Describe("CreateFromRemoteURL", func() {
+		It("should return a JobID not equal to zero and error should be nil", func() {
 			// mock the root info API
 			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4/jobs/create",
 				httpmock.NewStringResponder(200, `{
@@ -57,20 +57,20 @@ var _ = Describe("Jobs", func() {
             }`))
 
 			neverBounce, _ := neverbounce.New("apiKey")
-			resp, err := neverBounce.Jobs.CreateFromRemoteUrl(&nbModels.JobsCreateRemoteUrlRequestModel{
+			resp, err := neverBounce.Jobs.CreateFromRemoteURL(&nbModels.JobsCreateRemoteURLRequestModel{
 				InputLocation: "supplied",
-				RemoteUrl:  "https://example.com/file.csv",
+				RemoteURL:     "https://example.com/file.csv",
 				AutoParse:     true,
 				AutoRun:       true,
 				RunSample:     false,
 				FileName:      "example.csv"})
-			Expect(resp.JobId).To(Equal(150970))
+			Expect(resp.JobID).To(Equal(150970))
 			Expect(err).To(BeNil())
 		})
 	})
 
 	Describe("Parse", func() {
-		It("should return a valid QueueId and error should be nil", func() {
+		It("should return a valid QueueID and error should be nil", func() {
 			// mock the root info API
 			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4/jobs/parse",
 				httpmock.NewStringResponder(200, `{
@@ -80,15 +80,15 @@ var _ = Describe("Jobs", func() {
             }`))
 			neverBounce, _ := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.Parse(&nbModels.JobsParseRequestModel{
-				JobId: 150970,
+				JobID: 150970,
 			})
-			Expect(resp.QueueId).To(Equal("NB-PQ-59246392E9E5D"))
+			Expect(resp.QueueID).To(Equal("NB-PQ-59246392E9E5D"))
 			Expect(err).To(BeNil())
 		})
 	})
 
 	Describe("Start", func() {
-		It("should return a valid QueueId and error should be nil", func() {
+		It("should return a valid QueueID and error should be nil", func() {
 			// mock the root info API
 			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4/jobs/start",
 				httpmock.NewStringResponder(200, `{
@@ -98,9 +98,9 @@ var _ = Describe("Jobs", func() {
             }`))
 			neverBounce, _ := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.Start(&nbModels.JobsStartRequestModel{
-				JobId: 150970,
+				JobID: 150970,
 			})
-			Expect(resp.QueueId).To(Equal("NB-PQ-59246392E9E5D"))
+			Expect(resp.QueueID).To(Equal("NB-PQ-59246392E9E5D"))
 			Expect(err).To(BeNil())
 		})
 	})
@@ -135,9 +135,9 @@ var _ = Describe("Jobs", func() {
 					}`))
 			neverBounce, _ := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.Status(&nbModels.JobsStatusRequestModel{
-				JobId: 277461,
+				JobID: 277461,
 			})
-			Expect(resp.JobId).To(Equal(277461))
+			Expect(resp.JobID).To(Equal(277461))
 			Expect(resp.Totals.Records).To(Equal(2))
 			Expect(err).To(BeNil())
 		})
@@ -222,7 +222,7 @@ var _ = Describe("Jobs", func() {
 					}`))
 			neverBounce, _ := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.Results(&nbModels.JobsResultsRequestModel{
-				JobId: 251319,
+				JobID: 251319,
 			})
 			Expect(resp.TotalResults).To(Equal(2))
 			Expect(resp.Results[0].Verification.Result).To(Equal("valid"))
@@ -238,7 +238,7 @@ var _ = Describe("Jobs", func() {
                 "status": "success"}`))
 			neverBounce, _ := neverbounce.New("apiKey")
 			err := neverBounce.Jobs.Download(&nbModels.JobsDownloadRequestModel{
-				JobId: 150970,
+				JobID: 150970,
 			}, "./example.csv")
 
 			Expect(err).To(BeNil())
@@ -257,7 +257,7 @@ var _ = Describe("Jobs", func() {
             }`))
 			neverBounce, _ := neverbounce.New("apiKey")
 			_, err := neverBounce.Jobs.Delete(&nbModels.JobsDeleteRequestModel{
-				JobId: 150970,
+				JobID: 150970,
 			})
 			Expect(err).To(BeNil())
 		})

@@ -1,18 +1,21 @@
+// Package nbModels provides the data mappings for API requests and API responses
 package nbModels
 
+// JobsStatusRequestModel is the request model for Jobs.Status()
 type JobsStatusRequestModel struct {
 	GenericRequestModel
-	JobId       int `json:"job_id"`
+	JobID       int `json:"job_id"`
 }
 
+// JobsStatusResponseModel is the response model for Jobs.Status()
 type JobsStatusResponseModel struct {
 	GenericResponseModel
 	JobStatusModel
 }
 
-// Jobs status model
+// JobStatusModel is the model for the job's information
 type JobStatusModel struct {
-	JobId           int `json:"id"`
+	JobID           int `json:"id"`
 	FileName        string `json:"filename"`
 	CreatedAt       string `json:"created_at"`
 	StartedAt       string `json:"started_at"`
@@ -22,7 +25,7 @@ type JobStatusModel struct {
 	PercentComplete int `json:"percent_complete"`
 }
 
-// Job totals model
+// JobStatusTotalsModel is the model for the job's stats
 type JobStatusTotalsModel struct {
 	Records    int `json:"records"`
 	Billable   int `json:"billable"`
