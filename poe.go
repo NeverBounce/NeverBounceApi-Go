@@ -27,24 +27,28 @@ import (
 	"github.com/NeverBounce/NeverBounceApi-Go/models"
 )
 
-// Account contains bindings for account related API endpoints.
-type Account struct {
+// POE endpoints allow you to confirm frontend verifications performed
+// by the Javascript Widget
+type POE struct {
 	apiBaseURL string
 	apiKey     string
 }
 
-// Info returns the account's current credit balance as well as job counts
-// indicating the number of jobs currently in the account.
-func (r *Account) Info() (*nbModels.AccountInfoResponseModel, error) {
+// Confirm verifies that the result provided during frontend verification (e.g. Javascript Widget) has
+// not been tampered with.
+// It requires you to pass the email, result, transaction_id, and confirmation_token supplied by the verification.
+func (r *POE) Confirm(model *nbModels.POEConfirmRequestModel) (*nbModels.POEConfirmResponseModel, error) {
+	model.APIKey = r.apiKey
+
 	// call info API
-	url := r.apiBaseURL + "account/info"
-	body, err := MakeRequest("GET", url, &nbModels.GenericRequestModel{APIKey: r.apiKey})
+	url := r.apiBaseURL + "poe/confirm"
+	body, err := MakeRequest("GET", url, model)
 	if err != nil {
 		return nil, err
 	}
 
 	// Unmarshal response
-	var info nbModels.AccountInfoResponseModel
+	var info nbModels.POEConfirmResponseModel
 	err = json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err

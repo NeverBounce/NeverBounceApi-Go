@@ -1,16 +1,36 @@
-// Package neverBounce wrap NeverBounce restful APIs
-package neverBounce
+/*
+Package neverbounce creates native Golang mappings to use NeverBounce's email verification API.
+Our verification API allows you to create Custom Integrations to add email verification to any part of your software.
+We offer solutions for verifying individual emails as well as lists containing hundreds or even millions of emails.
+
+For our full API documentation see: https://developers.neverbounce.com/v4.0/
+
+Basic usage:
+	import "github.com/neverbounce/neverbounceapi-go"
+	client, err := neverbounce.New("api_key")
+	if err != nil {
+		panic(err)
+	}
+
+	accountInfo, err := client.Account.Info()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(accountInfo)
+
+Additional examples can be found in the examples directory
+*/
+package neverbounce
 
 import (
 	"encoding/json"
-	"strconv"
 	"bytes"
-	"errors"
-	"github.com/NeverBounce/NeverBounceApi-Go/nb_error"
-	"github.com/NeverBounce/NeverBounceApi-Go/nb_dto"
+	"github.com/NeverBounce/NeverBounceApi-Go/models"
+	"io"
+	"os"
 )
 
-// Jobs : The bulk endpoint provides high-speed​ validation on a list of email addresses.
+// Jobs endpoints provides high-speed​ validation on a list of email addresses.
 // You can use the status endpoint to retrieve real-time statistics about a bulk job in progress.
 // Once the job has finished, the results can be retrieved with our download endpoint.
 type Jobs struct {
@@ -18,64 +38,21 @@ type Jobs struct {
 	apiKey     string
 }
 
-// Search : filter and find from the saved validation jobs
-func (r *Jobs) Search(jobID int, fileName string, completed bool, processing bool, indexing bool, failed bool, manualReview bool, unpurchased bool, page int, itemsPerPage int) (*nbDto.SearchInfo, error) {
-	// call API
-	url := r.apiBaseURL + "jobs/search?key=" + r.apiKey
+// Search the jobs you've previously submitted to your account.
+// It will return jobs in batches according to the pagination options you've supplied.
+// The returned jobs will include the same information available from the Status method
+func (r *Jobs) Search(model *nbModels.JobsSearchRequestModel) (*nbModels.JobsSearchResponseModel, error) {
+	model.APIKey = r.apiKey
 
-	// add jobId param
-	if jobID > 0 {
-		url += "&job_id=" + strconv.Itoa(jobID)
-	}
-
-	// add completed param
-	if completed != false {
-		url += "&completed=1"
-	}
-
-	// add processing param
-	if processing != false {
-		url += "&processing=1"
-	}
-
-	// add indexing param
-	if indexing != false {
-		url += "&indexing=1"
-	}
-
-	// add indexing param
-	if failed != false {
-		url += "&failed=1"
-	}
-
-	// add manual_review param
-	if manualReview != false {
-		url += "&manual_review=1"
-	}
-
-	// add unpurchased param
-	if unpurchased != false {
-		url += "&unpurchased=1"
-	}
-
-	// add page param
-	if page > 0 {
-		url += "&page=" + strconv.Itoa(jobID)
-	}
-
-	// add page param
-	if itemsPerPage > 0 {
-		url += "&items_per_page=" + strconv.Itoa(jobID)
-	}
-
-	body, err := callAPI(url)
+	// call info API
+	url := r.apiBaseURL + "jobs/search"
+	body, err := MakeRequest("GET", url, model)
 	if err != nil {
 		return nil, err
 	}
 
-	// extract result info
-	var info nbDto.SearchInfo
-
+	// Unmarshal response
+	var info nbModels.JobsSearchResponseModel
 	err = json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err
@@ -83,40 +60,21 @@ func (r *Jobs) Search(jobID int, fileName string, completed bool, processing boo
 	return &info, nil
 }
 
-// Create : add a new validation job
-// @Param
-// inputLocation: The type of input being supplied. Accepted values are "remote_url" and "supplied".
-// input: The input to be verified
-// autoParse: Should be begin parsing the job immediately?
-// autoRun: Should we run the job immediately after being parsed?
-// runSample: Should this job be run as a sample?
-// fileName: This will be what's displayed in the dashboard when viewing this job
-func (r *Jobs) Create(createSearch *nbDto.CreateJob) (*nbDto.CreateSearchInfo, error) {
-	// call API
+// CreateFromSuppliedData creates a new job from data you supply directly in the request.
+// Supplied data will need to be given as a map, see the examples in the nbModel package.
+func (r *Jobs) CreateFromSuppliedData(model *nbModels.JobsCreateSuppliedDataRequestModel) (*nbModels.JobsCreateResponseModel, error) {
+	model.APIKey = r.apiKey
+	model.InputLocation = "supplied"
+
+	// call info API
 	url := r.apiBaseURL + "jobs/create"
-	createSearch.APIKEY = r.apiKey
-	postedBody, err := json.Marshal(createSearch)
-	if err != nil {
-		return nil, err
-	}
-	body, err := postAPI(url, bytes.NewBuffer(postedBody))
+	body, err := MakeRequest("POST", url, model)
 	if err != nil {
 		return nil, err
 	}
 
-	// check error response
-	var authError nbError.AuthError
-	err = json.Unmarshal(body, &authError)
-	if err != nil {
-		return nil, err
-	}
-	if authError.Status != "success" {
-		return nil, errors.New(authError.Message)
-	}
-
-	// extract result info
-	var info nbDto.CreateSearchInfo
-
+	// Unmarshal response
+	var info nbModels.JobsCreateResponseModel
 	err = json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err
@@ -124,37 +82,44 @@ func (r *Jobs) Create(createSearch *nbDto.CreateJob) (*nbDto.CreateSearchInfo, e
 	return &info, nil
 }
 
-// Parse : allows you to parse a job created with auto_parse disabled.
-// You cannot reparse a list once it's been parsed.
-func (r *Jobs) Parse(jobID int, autoStart bool) (*nbDto.ParseInfo, error) {
-	// call API
+// CreateFromRemoteURL creates a new job from a comma separated value (CSV) file hosted on a remote URL.
+// The URL supplied can be any commonly available protocal; e.g: HTTP, HTTPS, FTP, SFTP.
+// Basic auth is supported by including the credentials in the URI string; e.g: http://name:passwd@example.com/full/path/to/file.csv
+func (r *Jobs) CreateFromRemoteURL(model *nbModels.JobsCreateRemoteURLRequestModel) (*nbModels.JobsCreateResponseModel, error) {
+	model.APIKey = r.apiKey
+	model.InputLocation = "remote_url"
+
+	// call info API
+	url := r.apiBaseURL + "jobs/create"
+	body, err := MakeRequest("POST", url, model)
+	if err != nil {
+		return nil, err
+	}
+
+	// Unmarshal response
+	var info nbModels.JobsCreateResponseModel
+	err = json.Unmarshal(body, &info)
+	if err != nil {
+		return nil, err
+	}
+	return &info, nil
+}
+
+// Parse allows you to parse the job data after creation.
+// If you create a job with AutoParse set to true (defaults to false) you do not need to use this method.
+// Once parsed, a job cannot be reparsed.
+func (r *Jobs) Parse(model *nbModels.JobsParseRequestModel) (*nbModels.JobsParseResponseModel, error) {
+	model.APIKey = r.apiKey
+
+	// call info API
 	url := r.apiBaseURL + "jobs/parse"
-	values := map[string]interface{}{}
-	values["key"] = r.apiKey
-	values["job_id"] = jobID
-	values["auto_start"] = autoStart
-	postedBody, err := json.Marshal(values)
-	if err != nil {
-		return nil, err
-	}
-	body, err := postAPI(url, bytes.NewBuffer(postedBody))
+	body, err := MakeRequest("POST", url, model)
 	if err != nil {
 		return nil, err
 	}
 
-	// check error response
-	var authError nbError.AuthError
-	err = json.Unmarshal(body, &authError)
-	if err != nil {
-		return nil, err
-	}
-	if authError.Status != "success" {
-		return nil, errors.New(authError.Message)
-	}
-
-	// extract result info
-	var info nbDto.ParseInfo
-
+	// Unmarshal response
+	var info nbModels.JobsParseResponseModel
 	err = json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err
@@ -162,37 +127,21 @@ func (r *Jobs) Parse(jobID int, autoStart bool) (*nbDto.ParseInfo, error) {
 	return &info, nil
 }
 
-// Start : allows you to start a job created or parsed with auto_start disabled.
-// Once the list has been started the credits will be deducted and the process cannot be stopped or restarted
-func (r *Jobs) Start(jobID int, runSample bool) (*nbDto.StartInfo, error) {
-	// call API
+// Start allows you to start a job after it has been parsed.
+// If you create a job or parse a job with AutoStart set to true (defaults to false) you do not need to use this method.
+// Once the list has been started the credits will be deducted and the process cannot be stopped or restarted.
+func (r *Jobs) Start(model *nbModels.JobsStartRequestModel) (*nbModels.JobsStartResponseModel, error) {
+	model.APIKey = r.apiKey
+
+	// call info API
 	url := r.apiBaseURL + "jobs/start"
-	values := map[string]interface{}{}
-	values["key"] = r.apiKey
-	values["job_id"] = jobID
-	values["run_sample"] = runSample
-	postedBody, err := json.Marshal(values)
-	if err != nil {
-		return nil, err
-	}
-	body, err := postAPI(url, bytes.NewBuffer(postedBody))
+	body, err := MakeRequest("POST", url, model)
 	if err != nil {
 		return nil, err
 	}
 
-	// check error response
-	var authError nbError.AuthError
-	err = json.Unmarshal(body, &authError)
-	if err != nil {
-		return nil, err
-	}
-	if authError.Status != "success" {
-		return nil, errors.New(authError.Message)
-	}
-
-	// extract result info
-	var info nbDto.StartInfo
-
+	// Unmarshal response
+	var info nbModels.JobsStartResponseModel
 	err = json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err
@@ -200,29 +149,20 @@ func (r *Jobs) Start(jobID int, runSample bool) (*nbDto.StartInfo, error) {
 	return &info, nil
 }
 
-// Status : indicate what stage the job is currently in.
+// Status will return information pertaining to the Jobs state. It will include the jobs current status as well as the verification stats.
 // This will be the primary property you'll want to check to determine what can be done with the job.
-func (r *Jobs) Status(jobID int) (*nbDto.JobStatusInfo, error) {
-	// call API
-	url := r.apiBaseURL + "jobs/status?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
-	body, err := callAPI(url)
+func (r *Jobs) Status(model *nbModels.JobsStatusRequestModel) (*nbModels.JobsStatusResponseModel, error) {
+	model.APIKey = r.apiKey
+
+	// call info API
+	url := r.apiBaseURL + "jobs/status"
+	body, err := MakeRequest("GET", url, model)
 	if err != nil {
 		return nil, err
 	}
 
-	// check error response
-	var authError nbError.AuthError
-	err = json.Unmarshal(body, &authError)
-	if err != nil {
-		return nil, err
-	}
-	if authError.Status != "success" {
-		return nil, errors.New(authError.Message)
-	}
-
-	// extract result info
-	var info nbDto.JobStatusInfo
-
+	// Unmarshal response
+	var info nbModels.JobsStatusResponseModel
 	err = json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err
@@ -230,39 +170,22 @@ func (r *Jobs) Status(jobID int) (*nbDto.JobStatusInfo, error) {
 	return &info, nil
 }
 
-// Results : Get job result by job ID.
-func (r *Jobs) Results(jobID int, page int, itemPerPage int) (*nbDto.ResultInfo, error) {
-	// call API
-	url := r.apiBaseURL + "jobs/results?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
+// Results will return the actual verification results.
+// This can only be done once the job has reached the completed status.
+// The results will be returned in batches according to the pagination options you've supplied.
+// Verification info will be formatted the same way Single.Check returns verification info.
+func (r *Jobs) Results(model *nbModels.JobsResultsRequestModel) (*nbModels.JobsResultsResponseModel, error) {
+	model.APIKey = r.apiKey
 
-	// add page param
-	if page > 0 {
-		url += "&page=" + strconv.Itoa(page)
-	}
-
-	// add itemPerPage param
-	if page > 0 {
-		url += "&items_per_page=" + strconv.Itoa(itemPerPage)
-	}
-
-	body, err := callAPI(url)
+	// call info API
+	url := r.apiBaseURL + "jobs/results"
+	body, err := MakeRequest("GET", url, model)
 	if err != nil {
 		return nil, err
 	}
 
-	// check error response
-	var authError nbError.AuthError
-	err = json.Unmarshal(body, &authError)
-	if err != nil {
-		return nil, err
-	}
-	if authError.Status != "success" {
-		return nil, errors.New(authError.Message)
-	}
-
-	// extract result info
-	var info nbDto.ResultInfo
-
+	// Unmarshal response
+	var info nbModels.JobsResultsResponseModel
 	err = json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err
@@ -270,54 +193,49 @@ func (r *Jobs) Results(jobID int, page int, itemPerPage int) (*nbDto.ResultInfo,
 	return &info, nil
 }
 
-// Download : Download a file containing the job data as a CSV file.
-func (r *Jobs) Download(jobID int, filePath string) (error) {
-	// call API
-	url := r.apiBaseURL + "jobs/download?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
-	err := downloadFile(filePath, url)
+// Download the results as a CSV to a file.
+// This is useful if your uploading the results to a CRM or are use to working with spreadsheets.
+func (r *Jobs) Download(model *nbModels.JobsDownloadRequestModel, filepath string) (error) {
+	model.APIKey = r.apiKey
+
+	// call info API
+	url := r.apiBaseURL + "jobs/download"
+	body, err := MakeRequest("GET", url, model)
+	if err != nil {
+		return err
+	}
+
+	// Writer the body to file
+	// Create the file
+	out, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+	_, err = io.Copy(out, bytes.NewReader(body))
 	return err
 }
 
-// DownloadWithOptions : Download a file containing the job data as a CSV file with using filters.
-func (r *Jobs) DownloadWithOptions(jobID int, filePath string, valids int, inValids int, catchalls int, unknowns int, disposables int, includeDuplicates int, emailStatus int) (error) {
-	// call API
-	url := r.apiBaseURL + "jobs/download?key=" + r.apiKey + "&job_id=" + strconv.Itoa(jobID)
-	url += "&valids=" + strconv.Itoa(valids)
-	url += "&invalids=" + strconv.Itoa(inValids)
-	url += "&catchalls=" + strconv.Itoa(catchalls)
-	url += "&unknowns=" + strconv.Itoa(unknowns)
-	url += "&disposables=" + strconv.Itoa(disposables)
-	url += "&include_duplicates=" + strconv.Itoa(includeDuplicates)
-	url += "&email_status=" + strconv.Itoa(emailStatus)
-	err := downloadFile(filePath, url)
-	return err
-}
+// Delete will remove the job and it's verification data (if previously verified)
+// This can only be done when a job is Queued, Waiting, Completed, or Failed.
+// A job cannot be deleted while it is being uploaded, parsed, or ran.
+// Once deleted the job results cannot be recovered, deletion is permanent.
+func (r *Jobs) Delete(model *nbModels.JobsDeleteRequestModel) (*nbModels.JobsDeleteResponseModel, error) {
+	model.APIKey = r.apiKey
 
-// Delete : delete job by ID
-func (r *Jobs) Delete(jobID int) (error) {
-	// call API
+	// call info API
 	url := r.apiBaseURL + "jobs/delete"
-	values := map[string]interface{}{}
-	values["key"] = r.apiKey
-	values["job_id"] = jobID
-	postedBody, err := json.Marshal(values)
+	body, err := MakeRequest("POST", url, model)
 	if err != nil {
-		return err
-	}
-	body, err := postAPI(url, bytes.NewBuffer(postedBody))
-	if err != nil {
-		return err
+		return nil, err
 	}
 
-	// check error response
-	var authError nbError.AuthError
-	err = json.Unmarshal(body, &authError)
+	// Unmarshal response
+	var info nbModels.JobsDeleteResponseModel
+	err = json.Unmarshal(body, &info)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	if authError.Status != "success" {
-		return errors.New(authError.Message)
-	}
-
-	return nil
+	return &info, nil
 }
+

@@ -1,57 +1,54 @@
-// Package neverBounce wrap NeverBounce restful APIs
-package neverBounce
+/*
+Package neverbounce creates native Golang mappings to use NeverBounce's email verification API.
+Our verification API allows you to create Custom Integrations to add email verification to any part of your software.
+We offer solutions for verifying individual emails as well as lists containing hundreds or even millions of emails.
+
+For our full API documentation see: https://developers.neverbounce.com/v4.0/
+
+Basic usage:
+	import "github.com/neverbounce/neverbounceapi-go"
+	client, err := neverbounce.New("api_key")
+	if err != nil {
+		panic(err)
+	}
+
+	accountInfo, err := client.Account.Info()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(accountInfo)
+
+Additional examples can be found in the examples directory
+*/
+package neverbounce
 
 import (
 	"encoding/json"
-	"github.com/NeverBounce/NeverBounceApi-Go/nb_dto"
-	"github.com/NeverBounce/NeverBounceApi-Go/nb_error"
-	"errors"
+	"github.com/NeverBounce/NeverBounceApi-Go/models"
 )
 
-// Single : Single functionality holder
+// Single endpoints allow you to integrate our email verification into your existing
+// applications at the point of entry and onboarding processes
 type Single struct {
 	apiBaseURL string
 	apiKey     string
 }
 
-// Check : verification allows you verify individual emails and gather additional
-// information pertaining to the email.
-func (r *Single) Check(email string, includeAddressInfo bool, includeCreditInfo bool, maxExecutionTime string) (*nbDto.SingleCheckInfo, error) {
+// Check verifies the email provided and returns the verification result.
+// In addition to this, it can also return a breakdown of the email address' host info
+// and your account balance
+func (r *Single) Check(model *nbModels.SingleCheckRequestModel) (*nbModels.SingleCheckResponseModel, error) {
+	model.APIKey = r.apiKey
+
 	// call info API
-	url := r.apiBaseURL + "single/check?key=" + r.apiKey + "&email=" + email
-	// include address info
-	if includeAddressInfo == true {
-		url += "&address_info=1"
-	}
-
-	// include credit info
-	if includeAddressInfo == true {
-		url += "&credits_info=1"
-	}
-
-	// include maxExecutionTime
-	if maxExecutionTime != "" {
-		url += "&max_execution_time=" + maxExecutionTime
-	}
-
-	body, err := callAPI(url)
+	url := r.apiBaseURL + "single/check"
+	body, err := MakeRequest("GET", url, model)
 	if err != nil {
 		return nil, err
 	}
 
-	// check error response
-	var authError nbError.AuthError
-	err = json.Unmarshal(body, &authError)
-	if err != nil {
-		return nil, err
-	}
-	if authError.Status != "success" {
-		return nil, errors.New(authError.Message)
-	}
-
-	// extract result info
-	var info nbDto.SingleCheckInfo
-
+	// Unmarshal response
+	var info nbModels.SingleCheckResponseModel
 	err = json.Unmarshal(body, &info)
 	if err != nil {
 		return nil, err
