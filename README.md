@@ -7,10 +7,6 @@
 
 > This version of the wrapper is for the V4 API currently in beta
 
-# neverbounce
---
-    import "github.com/NeverBounce/NeverBounceApi-Go"
-
 Package neverbounce creates native Golang mappings to use NeverBounce's email
 verification API. Our verification API allows you to create Custom Integrations
 to add email verification to any part of your software. We offer solutions for
@@ -19,39 +15,70 @@ millions of emails.
 
 For our full API documentation see: https://developers.neverbounce.com/v4.0/
 
-Basic usage:
+## Installation
 
-    import "github.com/neverbounce/neverbounceapi-go"
-    client, err := neverbounce.New("api_key")
-    if err != nil {
-    	panic(err)
-    }
+Install the package with the following command:
 
-    accountInfo, err := client.Account.Info()
-    if err != nil {
-    	panic(err)
-    }
-    fmt.Println(accountInfo)
+```bash
+go get github.com/NeverBounce/NeverBounceApi-Go
+```
 
+Import the package with the following line:
+
+```go
+import "github.com/NeverBounce/NeverBounceApi-Go"
+```
+
+## Basic Usage:
+
+```go
+import "github.com/neverbounce/neverbounceapi-go"
+client, err := neverbounce.New("api_key")
+if err != nil {
+    panic(err)
+}
+
+accountInfo, err := client.Account.Info()
+if err != nil {
+    panic(err)
+}
+fmt.Println(accountInfo)
+```
 
 Additional examples can be found in the examples directory
 
-## Usage
+## API
+
+### type NeverBounce
 
 ```go
-const DefaultBaseURL = "https://api.neverbounce.com/v4/"
+type NeverBounce struct {
+	Account *Account
+	Single  *Single
+	Jobs    *Jobs
+	POE     *POE
+}
 ```
-DefaultBaseURL is the default host to make the API requests on
 
-#### func  MakeRequest
+NeverBounce is the root struct of the wrapper. This is used to access the
+specific bindings.
+
+#### func  New
 
 ```go
-func MakeRequest(method string, url string, data interface{}) ([]byte, error)
+func New(apiKey string) (*NeverBounce, error)
 ```
-MakeRequest handles the request and parsing of the responses to and from the API
-It will throw and error when a 4xx/5xx HTTP code is encountered or if the API
-returns an api error. See:
-https://developers.neverbounce.com/v4.0/reference#error-handling
+New creates a new instance of *NeverBounce. Accepts the api key to use for
+authentication.
+
+#### func (*NeverBounce) SetBaseURL
+
+```go
+func (r *NeverBounce) SetBaseURL(url string)
+```
+SetBaseURL will set the url used to make the requests (overrides the
+DefaultBaseURL constant). This method is primarily for internal testing and
+debugging purposes, under normal circumstances it will not be used
 
 ### type Account
 
@@ -166,37 +193,6 @@ func (r *Jobs) Status(model *nbModels.JobsStatusRequestModel) (*nbModels.JobsSta
 Status will return information pertaining to the Jobs state. It will include the
 jobs current status as well as the verification stats. This will be the primary
 property you'll want to check to determine what can be done with the job.
-
-### type NeverBounce
-
-```go
-type NeverBounce struct {
-	Account *Account
-	Single  *Single
-	Jobs    *Jobs
-	POE     *POE
-}
-```
-
-NeverBounce is the root struct of the wrapper. This is used to access the
-specific bindings.
-
-#### func  New
-
-```go
-func New(apiKey string) (*NeverBounce, error)
-```
-New creates a new instance of *NeverBounce. Accepts the api key to use for
-authentication.
-
-#### func (*NeverBounce) SetBaseURL
-
-```go
-func (r *NeverBounce) SetBaseURL(url string)
-```
-SetBaseURL will set the url used to make the requests (overrides the
-DefaultBaseURL constant). This method is primarily for internal testing and
-debugging purposes, under normal circumstances it will not be used
 
 ### type POE
 
