@@ -38,6 +38,7 @@ type NeverBounce struct {
 	Account     *Account
 	Single     *Single
 	Jobs       *Jobs
+	POE       *POE
 }
 
 // DefaultBaseURL is the default host to make the API requests on
@@ -59,6 +60,10 @@ func New(apiKey string) (*NeverBounce, error) {
 			apiBaseURL: DefaultBaseURL,
 			apiKey:     apiKey,
 		},
+		POE: &POE{
+			apiBaseURL: DefaultBaseURL,
+			apiKey:     apiKey,
+		},
 	}
 
 	return r, nil
@@ -71,6 +76,7 @@ func (r *NeverBounce) SetBaseURL(url string) {
 	r.Account.apiBaseURL = url
 	r.Single.apiBaseURL = url
 	r.Jobs.apiBaseURL = url
+	r.POE.apiBaseURL = url
 }
 
 // MakeRequest handles the request and parsing of the responses to and from the API
@@ -95,23 +101,24 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 		return nil, err
 	}
 
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(res.Body)
-
 	// handle 5xx HTTP codes
-	if res.StatusCode >= 500 {
-		return nil, errors.New("We were unable to complete your request. " +
-			"The following information was supplied: " + buf.String() +
-			"\n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])")
-	}
-
-	// handle 4xx HTTP codes
 	if res.StatusCode >= 400 {
-		return nil, errors.New("We were unable to complete your request. " +
-			"The following information was supplied: " + buf.String() +
-			"\n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])")
-	}
+		buf := new(bytes.Buffer)
+		buf.ReadFrom(res.Body)
 
+		if res.StatusCode >= 500 {
+			return nil, errors.New("We were unable to complete your request. " +
+				"The following information was supplied: " + buf.String() +
+				"\n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])")
+		}
+
+		// handle 4xx HTTP codes
+		if res.StatusCode >= 400 {
+			return nil, errors.New("We were unable to complete your request. " +
+				"The following information was supplied: " + buf.String() +
+				"\n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])")
+		}
+	}
 	// Read body from request
 	body, e := ioutil.ReadAll(res.Body)
 	if e != nil {

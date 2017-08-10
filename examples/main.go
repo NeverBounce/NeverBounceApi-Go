@@ -14,12 +14,12 @@ import (
 
 func main() {
 	// instantiate neverBounce
-	client, err := neverbounce.New("api_key")
+	client, err := neverbounce.New("secret_nvrbnc_golang_")
 	if err != nil {
 		panic(err)
 	}
 
-	AccountInfo(client)
+	//AccountInfo(client)
 	//SingleCheck(client)
 	//JobsSearch(client)
 	//JobsCreateFromSuppliedData(client)
@@ -30,6 +30,7 @@ func main() {
 	//JobsResults(client)
 	//JobsDownload(client)
 	//JobsDelete(client)
+	POEConfirm(client)
 }
 
 // AccountInfo demonstrates how to retrieve the account info
@@ -173,4 +174,18 @@ func JobsDelete(client *neverbounce.NeverBounce) {
 		panic(err)
 	}
 	fmt.Println(deleteInfo)
+}
+
+// POEConfirm demonstrates how to delete a job
+func POEConfirm(client *neverbounce.NeverBounce) {
+	confirmInfo, err := client.POE.Confirm(&nbModels.POEConfirmRequestModel{
+		Email: "support@neverbounce.com",
+		ConfirmationToken: "1341234jkh12h34lb2134b143",
+		TransactionID: "1340813265013984123",
+		Result: "valid",
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(confirmInfo)
 }
