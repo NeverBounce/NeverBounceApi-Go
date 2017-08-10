@@ -41,6 +41,7 @@ var _ = Describe("Jobs", func() {
 				AutoRun:       true,
 				RunSample:     false,
 				FileName:      "example.csv"})
+			panic(err)
 			Expect(resp.JobID).To(Equal(150970))
 			Expect(err).To(BeNil())
 		})
