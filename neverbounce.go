@@ -109,14 +109,14 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 		if res.StatusCode >= 500 {
 			return nil, errors.New("We were unable to complete your request. " +
 				"The following information was supplied: " + buf.String() +
-				"\n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])")
+				"\n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])")
 		}
 
 		// handle 4xx HTTP codes
 		if res.StatusCode >= 400 {
 			return nil, errors.New("We were unable to complete your request. " +
 				"The following information was supplied: " + buf.String() +
-				"\n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])")
+				"\n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])")
 		}
 	}
 	// Read body from request

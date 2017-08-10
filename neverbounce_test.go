@@ -23,19 +23,22 @@ var _ = Describe("NeverBounce", func() {
 			resp, err := neverBounce.Account.Info()
 			Expect(resp).To(BeNil())
 			Expect(err).NotTo(BeNil())
+			Expect(err.Error()).To(Equal("We were unable to complete your request. " +
+				"The following information was supplied: 404 Not Found" +
+				"\n\n(Request error [status 404])"))
 		})
 
 		It("should return an error during a 503", func() {
 			// mock the root info API
 			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",
-				httpmock.NewStringResponder(503, `503 `))
+				httpmock.NewStringResponder(503, `503 Temporarily Unavailable`))
 			neverBounce, _ := neverbounce.New("apiKey")
 			resp, err := neverBounce.Account.Info()
 			Expect(resp).To(BeNil())
 			Expect(err).NotTo(BeNil())
 			Expect(err.Error()).To(Equal("We were unable to complete your request. " +
-				"The following information was supplied: 503" +
-				"\n\n(Internal error [status  503])"))
+				"The following information was supplied: 503 Temporarily Unavailable" +
+				"\n\n(Internal error [status 503])"))
 		})
 
 		It("should return an error when status isn't 'success'", func() {
