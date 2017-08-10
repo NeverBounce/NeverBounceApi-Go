@@ -1,13 +1,15 @@
 language: go
-
 go:
-  - 1.7
-  - 1.8
-
+- 1.7
+- 1.8
 before_install:
-  - go get -v github.com/golang/lint/golint
-  - go get github.com/axw/gocov/gocov
+- go get -v github.com/golang/lint/golint
+- go get github.com/axw/gocov/gocov
 script:
-  - golint ./...
-  - go test -v ./...
-  - gocov test | gocov report
+- golint ./...
+- go test -v ./...
+- gocov test | gocov report
+notifications:
+  email: false
+  slack:
+    secure: aK/9YCFMvQmF/JKelJ5ZpGhYv8p5ZeWq3EjfJQSxfk56wEr9srKUzfqMSlw9cH9SKMCYrtKi9I8Hrz+G3O6GPSJJt5TDsITddBo9GJ0zaxH+EcsRhxWitGazUsbmhh0A7hhWaN1f3I6y1SDyas/NAQv0xHsqTPmyThwgWwSinUdd+ZaN2/+G1qL4i9S3d+Qxsz64EDpxO21t3eQ+D0djufZy40jM8L+AhWinUrIAO9mQQbznMAQBBAe0djs0dqbw9BIpqGftraP5iEKtNDZo/6A2fHcebAKLi882ZpkchGmDXCnmOut+xuxgXxLjcUDmTTVB9MrXYfGB54UE410dxRIRGnw3VyGHFMKr4zB1Gfe/zoClwWI5PiLVdd+T1uCsO+suujSlAqxrPZJwt+oOrvRxtC4I3jg8oQX8nCfarhHQtLP9w+nT9i2DQuV8xDzpBam46mebmpK26J3UsDBkc/7FhII7v3XABsZzFbXFM+AReigwA21vQULtONZGqU3qvRl2ulRzjam9JpR0jkPQAgKy9hD0RtR0WfBLjmzbGhyfe3/RNIIYfXVXlN8xldhyBCi84SufYoPh6OnJ5F/u3K+zJ0b8sKiNN5KZ/xEW6OqHtBySWEDUXBeok5a3u4boF+AwG8vwFl+hZ2rD/wpgojQrDiK1Xp8LB9c47xtrpLg=
