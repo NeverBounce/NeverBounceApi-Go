@@ -60,7 +60,11 @@ func SingleCheck(client *neverbounce.NeverBounce) {
 // JobsSearch demonstrates how to search for existing jobs on your account
 func JobsSearch(client *neverbounce.NeverBounce) {
 	searchResults, err := client.Jobs.Search(&nbModels.JobsSearchRequestModel{
-		JobStatus: "complete",
+		//JobFilename: "MyListName.csv",
+		//JobID: 289010,
+		//JobStatus: "complete",
+		//ItemsPerPage: 10,
+		//Page: 1,
 	})
 	if err != nil {
 		panic(err)
@@ -114,6 +118,7 @@ func JobsCreateFromRemoteURL(client *neverbounce.NeverBounce) {
 func JobsParse(client *neverbounce.NeverBounce) {
 	parseInfo, err := client.Jobs.Parse(&nbModels.JobsParseRequestModel{
 		JobID: 296050,
+		//AutoStart: false,
 	})
 	if err != nil {
 		panic(err)
@@ -125,6 +130,7 @@ func JobsParse(client *neverbounce.NeverBounce) {
 func JobsStart(client *neverbounce.NeverBounce) {
 	startInfo, err := client.Jobs.Start(&nbModels.JobsStartRequestModel{
 		JobID: 296050,
+		//RunSample: false,
 	})
 	if err != nil {
 		panic(err)
@@ -147,6 +153,8 @@ func JobsStatus(client *neverbounce.NeverBounce) {
 func JobsResults(client *neverbounce.NeverBounce) {
 	resultsInfo, err := client.Jobs.Results(&nbModels.JobsResultsRequestModel{
 		JobID: 296050,
+		//ItemsPerPage: 10,
+		//Page: 1,
 	})
 	if err != nil {
 		panic(err)
