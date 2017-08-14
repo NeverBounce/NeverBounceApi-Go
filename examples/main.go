@@ -8,13 +8,14 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/NeverBounce/NeverBounceApi-Go"
 	"github.com/NeverBounce/NeverBounceApi-Go/models"
 )
 
 func main() {
 	// instantiate neverBounce
-	client, err := neverbounce.New("secret_nvrbnc_golang_")
+	client, err := neverbounce.New("api_key")
 	if err != nil {
 		panic(err)
 	}
@@ -179,10 +180,10 @@ func JobsDelete(client *neverbounce.NeverBounce) {
 // POEConfirm demonstrates how to delete a job
 func POEConfirm(client *neverbounce.NeverBounce) {
 	confirmInfo, err := client.POE.Confirm(&nbModels.POEConfirmRequestModel{
-		Email: "support@neverbounce.com",
+		Email:             "support@neverbounce.com",
 		ConfirmationToken: "1341234jkh12h34lb2134b143",
-		TransactionID: "1340813265013984123",
-		Result: "valid",
+		TransactionID:     "1340813265013984123",
+		Result:            "valid",
 	})
 	if err != nil {
 		panic(err)
