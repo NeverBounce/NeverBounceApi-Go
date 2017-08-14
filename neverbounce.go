@@ -23,27 +23,30 @@ Additional examples can be found in the examples directory
 package neverbounce
 
 import (
-	"net/http"
-	"io/ioutil"
 	"bytes"
 	"encoding/json"
 	"errors"
+	"io/ioutil"
+	"net/http"
 	"strconv"
+
 	"github.com/NeverBounce/NeverBounceApi-Go/models"
 )
 
 // NeverBounce is the root struct of the wrapper.
 // This is used to access the specific bindings.
 type NeverBounce struct {
-	Account     *Account
-	Single     *Single
-	Jobs       *Jobs
-	POE       *POE
+	Account *Account
+	Single  *Single
+	Jobs    *Jobs
+	POE     *POE
 }
+
+// Version is the current version of the wrapper
+const Version = "4.0.0"
 
 // DefaultBaseURL is the default host to make the API requests on
 const DefaultBaseURL = "https://api.neverbounce.com/v4/"
-
 
 // New creates a new instance of *NeverBounce. Accepts the api key to use for authentication.
 func New(apiKey string) (*NeverBounce, error) {
@@ -92,6 +95,7 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 
 	// Make request
 	request, _ := http.NewRequest(method, url, bytes.NewReader(body))
+	request.Header.Add("User-Agent", "NeverBounceApi-Go/"+Version)
 	request.Header.Add("Content-Type", "application/json")
 
 	// Do request
