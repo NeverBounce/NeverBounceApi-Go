@@ -15,12 +15,9 @@ import (
 
 func main() {
 	// instantiate neverBounce
-	client, err := neverbounce.New("api_key")
-	if err != nil {
-		panic(err)
-	}
+	client := neverbounce.New("api_key")
 
-	//AccountInfo(client)
+	AccountInfo(client)
 	//SingleCheck(client)
 	//JobsSearch(client)
 	//JobsCreateFromSuppliedData(client)
@@ -31,7 +28,7 @@ func main() {
 	//JobsResults(client)
 	//JobsDownload(client)
 	//JobsDelete(client)
-	POEConfirm(client)
+	//POEConfirm(client)
 }
 
 // AccountInfo demonstrates how to retrieve the account info

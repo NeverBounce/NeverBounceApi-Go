@@ -24,7 +24,7 @@ var _ = Describe("NeverBounce", func() {
 				  "retry_token": "",
 				  "execution_time": 399
 				}`))
-			neverBounce, _ := neverbounce.New("apiKey")
+			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.Single.Check(&nbModels.SingleCheckRequestModel{
 				Email: "support@neverbounce.com",
 			})

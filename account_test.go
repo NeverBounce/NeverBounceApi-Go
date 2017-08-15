@@ -28,9 +28,9 @@ var _ = Describe("Account", func() {
 					},
 					"execution_time": 896
 				}`))
-			neverBounce, err := neverbounce.New("apiKey")
-			neverBounce.Account.Info()
-			Expect(neverBounce).NotTo(BeNil())
+			neverBounce := neverbounce.New("apiKey")
+			resp, err := neverBounce.Account.Info()
+			Expect(resp).NotTo(BeNil())
 			Expect(err).To(BeNil())
 		})
 	})

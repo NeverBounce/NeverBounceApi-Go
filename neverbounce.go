@@ -49,7 +49,7 @@ const Version = "4.0.0"
 const DefaultBaseURL = "https://api.neverbounce.com/v4/"
 
 // New creates a new instance of *NeverBounce. Accepts the api key to use for authentication.
-func New(apiKey string) (*NeverBounce, error) {
+func New(apiKey string) (*NeverBounce) {
 	r := &NeverBounce{
 		Account: &Account{
 			apiBaseURL: DefaultBaseURL,
@@ -69,7 +69,7 @@ func New(apiKey string) (*NeverBounce, error) {
 		},
 	}
 
-	return r, nil
+	return r
 }
 
 // SetBaseURL will set the url used to make the requests (overrides the DefaultBaseURL constant).

@@ -33,7 +33,7 @@ var _ = Describe("Jobs", func() {
 				"name":  "Fred McInvalid",
 			}
 
-			neverBounce, _ := neverbounce.New("apiKey")
+			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.CreateFromSuppliedData(&nbModels.JobsCreateSuppliedDataRequestModel{
 				InputLocation: "supplied",
 				SuppliedData:  createData,
@@ -56,7 +56,7 @@ var _ = Describe("Jobs", func() {
                 "execution_time": 388
             }`))
 
-			neverBounce, _ := neverbounce.New("apiKey")
+			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.CreateFromRemoteURL(&nbModels.JobsCreateRemoteURLRequestModel{
 				InputLocation: "supplied",
 				RemoteURL:     "https://example.com/file.csv",
@@ -78,7 +78,7 @@ var _ = Describe("Jobs", func() {
                 "queue_id": "NB-PQ-59246392E9E5D",
                 "execution_time": 388
             }`))
-			neverBounce, _ := neverbounce.New("apiKey")
+			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.Parse(&nbModels.JobsParseRequestModel{
 				JobID: 150970,
 			})
@@ -96,7 +96,7 @@ var _ = Describe("Jobs", func() {
                 "queue_id": "NB-PQ-59246392E9E5D",
                 "execution_time": 388
             }`))
-			neverBounce, _ := neverbounce.New("apiKey")
+			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.Start(&nbModels.JobsStartRequestModel{
 				JobID: 150970,
 			})
@@ -133,7 +133,7 @@ var _ = Describe("Jobs", func() {
 					"job_status": "complete",
 					"execution_time": 322
 					}`))
-			neverBounce, _ := neverbounce.New("apiKey")
+			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.Status(&nbModels.JobsStatusRequestModel{
 				JobID: 277461,
 			})
@@ -220,7 +220,7 @@ var _ = Describe("Jobs", func() {
 					],
 					"execution_time": 55
 					}`))
-			neverBounce, _ := neverbounce.New("apiKey")
+			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.Results(&nbModels.JobsResultsRequestModel{
 				JobID: 251319,
 			})
@@ -236,7 +236,7 @@ var _ = Describe("Jobs", func() {
 			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/jobs/download",
 				httpmock.NewStringResponder(200, `{
                 "status": "success"}`))
-			neverBounce, _ := neverbounce.New("apiKey")
+			neverBounce := neverbounce.New("apiKey")
 			err := neverBounce.Jobs.Download(&nbModels.JobsDownloadRequestModel{
 				JobID: 150970,
 			}, "./example.csv")
@@ -255,7 +255,7 @@ var _ = Describe("Jobs", func() {
                 "status": "success",
                 "execution_time": 388
             }`))
-			neverBounce, _ := neverbounce.New("apiKey")
+			neverBounce := neverbounce.New("apiKey")
 			_, err := neverBounce.Jobs.Delete(&nbModels.JobsDeleteRequestModel{
 				JobID: 150970,
 			})

@@ -19,7 +19,7 @@ var _ = Describe("NeverBounce", func() {
 			// mock the root info API
 			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",
 				httpmock.NewStringResponder(404, `404 Not Found`))
-			neverBounce, _ := neverbounce.New("apiKey")
+			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.Account.Info()
 			Expect(resp).To(BeNil())
 			Expect(err).NotTo(BeNil())
@@ -32,7 +32,7 @@ var _ = Describe("NeverBounce", func() {
 			// mock the root info API
 			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",
 				httpmock.NewStringResponder(503, `503 Temporarily Unavailable`))
-			neverBounce, _ := neverbounce.New("apiKey")
+			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.Account.Info()
 			Expect(resp).To(BeNil())
 			Expect(err).NotTo(BeNil())
@@ -52,7 +52,7 @@ var _ = Describe("NeverBounce", func() {
 			// mock the root info API
 			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",
 				httpmock.ResponderFromResponse(response))
-			neverBounce, _ := neverbounce.New("apiKey")
+			neverBounce := neverbounce.New("apiKey")
 			body, err := neverBounce.Account.Info()
 			Expect(body).To(BeNil())
 			Expect(err).NotTo(BeNil())

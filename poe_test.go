@@ -17,7 +17,7 @@ var _ = Describe("NeverBounce", func() {
 					"token_confirmed": true,
 					"execution_time": 300
 				}`))
-			neverBounce, _ := neverbounce.New("apiKey")
+			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.POE.Confirm(&nbModels.POEConfirmRequestModel{
 				Email: "support@neverbounce.com",
 				ConfirmationToken: "1341234jkh12h34lb2134b143",
