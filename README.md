@@ -33,36 +33,70 @@ import "github.com/NeverBounce/NeverBounceApi-Go"
 
 ```go
 import "github.com/neverbounce/neverbounceapi-go"
-client, err := neverbounce.New("api_key")
-if err != nil {
-    panic(err)
-}
+client := neverbounce.New("api_key")
 
 accountInfo, err := client.Account.Info()
 if err != nil {
-	// Attempt to cast the error into a neverbounce.Error to
-	// handle-able error objects
-	if nbError, ok := err.(*neverbounce.Error); ok {
-		// Check Error types
-		if nbError.Type == neverbounce.ErrorTypeAuthFailure {
-			// The API credentials used are bad, have you reset them recently?
-		} else if (nbError.Type == neverbounce.ErrorTypeBadReferrer) {
-			// The script is being used from an unauthorized source, you may need to
-			// adjust your app's settings to allow it to be used from here
-		} else if (nbError.Type == neverbounce.ErrorTypeThrottleTriggered) {
-			// Too many requests in a short amount of time, try again shortly or adjust
-			// your rate limit settings for this application in the dashboard
-		} else {
-			// A non recoverable API error occurred check the message for details
-		}
-	} else {
-		// Handle non NeverBounce errors
-	}
+    // Attempt to cast the error into a neverbounce.Error to
+    // handle-able error objects
+    if nbError, ok := err.(*neverbounce.Error); ok {
+        // Check Error types
+        if nbError.Type == neverbounce.ErrorTypeAuthFailure {
+            // The API credentials used are bad, have you reset them recently?
+        } else if (nbError.Type == neverbounce.ErrorTypeBadReferrer) {
+            // The script is being used from an unauthorized source, you may need to
+            // adjust your app's settings to allow it to be used from here
+        } else if (nbError.Type == neverbounce.ErrorTypeThrottleTriggered) {
+            // Too many requests in a short amount of time, try again shortly or adjust
+            // your rate limit settings for this application in the dashboard
+        } else {
+            // A non recoverable API error occurred check the message for details
+        }
+    } else {
+        // Handle non NeverBounce errors
+    }
 }
 fmt.Println(accountInfo)
 ```
 
 Additional examples can be found in the examples directory
+
+## Errors
+
+#### Error types
+
+```go
+const (
+	// ErrorTypeGeneralFailure is a generic error coming from the API
+	ErrorTypeGeneralFailure string = "general_failure"
+
+	// ErrorTypeAuthFailure indicates an issue with the API credentials supplied
+	ErrorTypeAuthFailure string = "auth_failure"
+
+	// ErrorTypeBadReferrer indicates that the API is being used from an host that hasn't been authorized
+	ErrorTypeBadReferrer string = "bad_referrer"
+
+	// ErrorTypeThrottleTriggered indicates that too many requests have been made in a short amount of time
+	ErrorTypeThrottleTriggered string = "throttle_triggered"
+)
+```
+
+#### type Error
+
+```go
+type Error struct {
+	Type    string `json:"status"`
+	Message string `json:"message"`
+}
+```
+
+Error is the structure of for an NeverBounce API error
+
+#### func (*Error) Error
+
+```go
+func (e *Error) Error() string
+```
 
 ## API
 
