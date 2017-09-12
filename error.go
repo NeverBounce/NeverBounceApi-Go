@@ -38,34 +38,30 @@ package neverbounce
 
 import (
 	"encoding/json"
-	"github.com/NeverBounce/NeverBounceApi-Go/models"
 )
 
-// Single endpoints allow you to integrate our email verification into your existing
-// applications at the point of entry and onboarding processes
-type Single struct {
-	apiBaseURL string
-	apiKey     string
+const (
+	// ErrorTypeGeneralFailure is a generic error coming from the API
+	ErrorTypeGeneralFailure    string = "general_failure"
+
+	// ErrorTypeAuthFailure indicates an issue with the API credentials supplied
+	ErrorTypeAuthFailure       string = "auth_failure"
+
+	// ErrorTypeBadReferrer indicates that the API is being used from an host that hasn't been authorized
+	ErrorTypeBadReferrer       string = "bad_referrer"
+
+	// ErrorTypeThrottleTriggered indicates that too many requests have been made in a short amount of time
+	ErrorTypeThrottleTriggered string = "throttle_triggered"
+)
+
+// Error is the structure of for an NeverBounce API error
+type Error struct {
+	Type    string `json:"status"`
+	Message string `json:"message"`
 }
 
-// Check verifies the email provided and returns the verification result.
-// In addition to this, it can also return a breakdown of the email address' host info
-// and your account balance
-func (r *Single) Check(model *nbModels.SingleCheckRequestModel) (*nbModels.SingleCheckResponseModel, error) {
-	model.APIKey = r.apiKey
-
-	// call info API
-	url := r.apiBaseURL + "single/check"
-	body, err := MakeRequest("GET", url, model)
-	if err != nil {
-		return nil, err
-	}
-
-	// Unmarshal response
-	var info nbModels.SingleCheckResponseModel
-	err = json.Unmarshal(body, &info)
-	if err != nil {
-		return nil, err
-	}
-	return &info, nil
+// Error serializes the error object to JSON and returns it as a string.
+func (e *Error) Error() string {
+	ret, _ := json.Marshal(e)
+	return string(ret)
 }
