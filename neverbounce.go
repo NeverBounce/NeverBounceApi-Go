@@ -166,13 +166,13 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 						"The following information was supplied: " + nbError.Message +
 						"\n\n(" + nbError.Type + ")",
 				}
-			} else {
-				return nil, &Error{
-					Type: nbError.Type,
-					Message: "We were unable to complete your request. " +
-						"The following information was supplied: " + nbError.Message +
-						"\n\n(" + nbError.Type + ")",
-				}
+			}
+			
+			return nil, &Error{
+				Type: nbError.Type,
+				Message: "We were unable to complete your request. " +
+					"The following information was supplied: " + nbError.Message +
+					"\n\n(" + nbError.Type + ")",
 			}
 		}
 
