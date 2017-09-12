@@ -25,12 +25,9 @@ package neverbounce
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
 	"strconv"
-
-	"github.com/NeverBounce/NeverBounceApi-Go/models"
 )
 
 // NeverBounce is the root struct of the wrapper.
@@ -111,16 +108,22 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 		buf.ReadFrom(res.Body)
 
 		if res.StatusCode >= 500 {
-			return nil, errors.New("We were unable to complete your request. " +
-				"The following information was supplied: " + buf.String() +
-				"\n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])")
+			return nil, &Error{
+				Type: "auth_failure",
+				Message: "We were unable to complete your request. " +
+					"The following information was supplied: " + buf.String() +
+					"\n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])",
+			}
 		}
 
 		// handle 4xx HTTP codes
 		if res.StatusCode >= 400 {
-			return nil, errors.New("We were unable to complete your request. " +
-				"The following information was supplied: " + buf.String() +
-				"\n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])")
+			return nil, &Error{
+				Type: "general_failure",
+				Message: "We were unable to complete your request. " +
+					"The following information was supplied: " + buf.String() +
+					"\n\n(Request error [status " + strconv.Itoa(res.StatusCode) + "])",
+			}
 		}
 	}
 	// Read body from request
@@ -133,18 +136,30 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 	if res.Header.Get("Content-Type") == "application/json" {
 
 		// check error response
-		var apiError nbModels.APIErrorModel
+		var nbError Error
 
 		// Unmarshal into error
-		var err = json.Unmarshal(body, &apiError)
+		err := json.Unmarshal(body, &nbError)
 		if err != nil {
 			return nil, err
 		}
 
-		if apiError.Status != "success" {
-			return nil, errors.New("We were unable to complete your request. " +
-				"The following information was supplied: " + apiError.Message +
-				"\n\n(" + apiError.Status + ")")
+		if nbError.Type != "success" {
+			if nbError.Type == ErrorTypeAuthFailure {
+				return nil, &Error{
+					Type: "auth_failure",
+					Message: "We were unable to authenticate your request. " +
+						"The following information was supplied: " + nbError.Message +
+						"\n\n(" + nbError.Type + ")",
+				}
+			} else {
+				return nil, &Error{
+					Type: nbError.Type,
+					Message: "We were unable to complete your request. " +
+						"The following information was supplied: " + nbError.Message +
+						"\n\n(" + nbError.Type + ")",
+				}
+			}
 		}
 
 		// Return json string

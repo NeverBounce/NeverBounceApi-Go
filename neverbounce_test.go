@@ -23,9 +23,11 @@ var _ = Describe("NeverBounce", func() {
 			resp, err := neverBounce.Account.Info()
 			Expect(resp).To(BeNil())
 			Expect(err).NotTo(BeNil())
-			Expect(err.Error()).To(Equal("We were unable to complete your request. " +
-				"The following information was supplied: 404 Not Found" +
-				"\n\n(Request error [status 404])"))
+			if nbError, ok := err.(*neverbounce.Error); ok {
+				Expect(nbError.Message).To(Equal("We were unable to complete your request. " +
+					"The following information was supplied: 404 Not Found" +
+					"\n\n(Request error [status 404])"))
+			}
 		})
 
 		It("should return an error during a 503", func() {
@@ -36,9 +38,11 @@ var _ = Describe("NeverBounce", func() {
 			resp, err := neverBounce.Account.Info()
 			Expect(resp).To(BeNil())
 			Expect(err).NotTo(BeNil())
-			Expect(err.Error()).To(Equal("We were unable to complete your request. " +
-				"The following information was supplied: 503 Temporarily Unavailable" +
-				"\n\n(Internal error [status 503])"))
+			if nbError, ok := err.(*neverbounce.Error); ok {
+				Expect(nbError.Message).To(Equal("We were unable to complete your request. " +
+					"The following information was supplied: 503 Temporarily Unavailable" +
+					"\n\n(Internal error [status 503])"))
+			}
 		})
 
 		It("should return an error when status isn't 'success'", func() {
@@ -56,9 +60,11 @@ var _ = Describe("NeverBounce", func() {
 			body, err := neverBounce.Account.Info()
 			Expect(body).To(BeNil())
 			Expect(err).NotTo(BeNil())
-			Expect(err.Error()).To(Equal("We were unable to complete your request. " +
-				"The following information was supplied: Something went wrong" +
-				"\n\n(general_failure)"))
+			if nbError, ok := err.(*neverbounce.Error); ok {
+				Expect(nbError.Message).To(Equal("We were unable to complete your request. " +
+					"The following information was supplied: Something went wrong" +
+					"\n\n(general_failure)"))
+			}
 		})
 	})
 })
