@@ -5,8 +5,6 @@
 <a href="https://codeclimate.com/github/NeverBounce/NeverBounceApi-Go"><img src="https://codeclimate.com/github/NeverBounce/NeverBounceApi-Go/badges/gpa.svg" /></a>
 </p>
 
-> This version of the wrapper is for the V4 API currently in beta
-
 Package neverbounce creates native Golang mappings to use NeverBounce's email
 verification API. Our verification API allows you to create Custom Integrations
 to add email verification to any part of your software. We offer solutions for
