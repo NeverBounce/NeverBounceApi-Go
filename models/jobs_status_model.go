@@ -15,15 +15,15 @@ type JobsStatusResponseModel struct {
 
 // JobStatusModel is the model for the job's information
 type JobStatusModel struct {
-	JobID           int `json:"id"`
-	JobStatus		string `json:"job_status"`
-	FileName        string `json:"filename"`
-	CreatedAt       string `json:"created_at"`
-	StartedAt       string `json:"started_at"`
-	FinishedAt      string `json:"finished_at"`
+	JobID           int                  `json:"id"`
+	JobStatus       string               `json:"job_status"`
+	FileName        string               `json:"filename"`
+	CreatedAt       string               `json:"created_at"`
+	StartedAt       string               `json:"started_at"`
+	FinishedAt      string               `json:"finished_at"`
 	Totals          JobStatusTotalsModel `json:"total"`
-	BounceEstimate  int `json:"bounce_estimate"`
-	PercentComplete int `json:"percent_complete"`
+	BounceEstimate  int                  `json:"bounce_estimate"`
+	PercentComplete int                  `json:"percent_complete"`
 }
 
 // JobStatusTotalsModel is the model for the job's stats
