@@ -139,6 +139,7 @@ var _ = Describe("Jobs", func() {
 			})
 			Expect(resp.JobID).To(Equal(277461))
 			Expect(resp.Totals.Records).To(Equal(2))
+			Expect(resp.JobStatus).To(Equal("complete"))
 			Expect(err).To(BeNil())
 		})
 	})
