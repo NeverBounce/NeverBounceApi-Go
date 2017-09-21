@@ -88,7 +88,7 @@ func JobsCreateFromSuppliedData(client *neverbounce.NeverBounce) {
 	jobInfo, err := client.Jobs.CreateFromSuppliedData(&nbModels.JobsCreateSuppliedDataRequestModel{
 		SuppliedData: createData,
 		AutoParse:    false,
-		AutoRun:      false,
+		AutoStart:    false,
 		RunSample:    false,
 		FileName:     "Created from Golang.csv"})
 	if err != nil {
@@ -102,7 +102,7 @@ func JobsCreateFromRemoteURL(client *neverbounce.NeverBounce) {
 	jobInfo, err := client.Jobs.CreateFromRemoteURL(&nbModels.JobsCreateRemoteURLRequestModel{
 		RemoteURL: "https://example.com/file.csv",
 		AutoParse: true,
-		AutoRun:   false,
+		AutoStart: false,
 		RunSample: false,
 		FileName:  "Created from Golang.csv"})
 	if err != nil {

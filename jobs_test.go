@@ -38,7 +38,7 @@ var _ = Describe("Jobs", func() {
 				InputLocation: "supplied",
 				SuppliedData:  createData,
 				AutoParse:     true,
-				AutoRun:       true,
+				AutoStart:     true,
 				RunSample:     false,
 				FileName:      "example.csv"})
 			Expect(resp.JobID).To(Equal(150970))
@@ -61,7 +61,7 @@ var _ = Describe("Jobs", func() {
 				InputLocation: "supplied",
 				RemoteURL:     "https://example.com/file.csv",
 				AutoParse:     true,
-				AutoRun:       true,
+				AutoStart:     true,
 				RunSample:     false,
 				FileName:      "example.csv"})
 			Expect(resp.JobID).To(Equal(150970))
