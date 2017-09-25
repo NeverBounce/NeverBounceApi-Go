@@ -128,7 +128,7 @@ var _ = Describe("Jobs", func() {
 						"duplicates": 0,
 						"bad_syntax": 0
 					},
-					"bounce_estimate": 0,
+					"bounce_estimate": 0.1,
 					"percent_complete": 100,
 					"job_status": "complete",
 					"execution_time": 322
@@ -138,6 +138,7 @@ var _ = Describe("Jobs", func() {
 				JobID: 277461,
 			})
 			Expect(resp.JobID).To(Equal(277461))
+			Expect(resp.BounceEstimate).To(Equal(0.1))
 			Expect(resp.Totals.Records).To(Equal(2))
 			Expect(resp.JobStatus).To(Equal("complete"))
 			Expect(err).To(BeNil())
