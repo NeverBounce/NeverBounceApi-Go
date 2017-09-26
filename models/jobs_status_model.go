@@ -23,7 +23,7 @@ type JobStatusModel struct {
 	FinishedAt      string               `json:"finished_at"`
 	Totals          JobStatusTotalsModel `json:"total"`
 	BounceEstimate  float64              `json:"bounce_estimate"`
-	PercentComplete int                  `json:"percent_complete"`
+	PercentComplete float64              `json:"percent_complete"`
 }
 
 // JobStatusTotalsModel is the model for the job's stats

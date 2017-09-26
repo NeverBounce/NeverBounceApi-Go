@@ -129,7 +129,7 @@ var _ = Describe("Jobs", func() {
 						"bad_syntax": 0
 					},
 					"bounce_estimate": 0.1,
-					"percent_complete": 100,
+					"percent_complete": 100.0,
 					"job_status": "complete",
 					"execution_time": 322
 					}`))
