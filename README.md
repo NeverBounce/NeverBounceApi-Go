@@ -29,9 +29,11 @@ import "github.com/NeverBounce/NeverBounceApi-Go"
 
 ## Basic Usage:
 
+>**The API username and secret key used to authenticate V3 API requests will not work to authenticate V4 API requests.** If you are attempting to authenticate your request with the 8 character username or 12-16 character secret key the request will return an `auth_failure` error. The API key used for the V4 API will look like the following: `secret_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`. To create new V4 API credentials please go [here](https://app.neverbounce.com/apps/custom-integration/new).
+
 ```go
 import "github.com/neverbounce/neverbounceapi-go"
-client := neverbounce.New("api_key")
+client := neverbounce.New("secret_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 
 accountInfo, err := client.Account.Info()
 if err != nil {
