@@ -6,7 +6,7 @@ type SingleCheckRequestModel struct {
 	GenericRequestModel
 	Email       string `json:"email"`
 	AddressInfo bool `json:"address_info,omitempty"`
-	CreditInfo  bool `json:"credit_info,omitempty"`
+	CreditInfo  bool `json:"credits_info,omitempty"`
 	Timeout     int `json:"timeout,omitempty"`
 }
 
