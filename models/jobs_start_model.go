@@ -4,7 +4,7 @@ package nbModels
 // JobsStartRequestModel is the request model for Jobs.Start()
 type JobsStartRequestModel struct {
 	GenericRequestModel
-	JobID     int `json:"job_id"`
+	JobID     int  `json:"job_id"`
 	RunSample bool `json:"run_sample,omitempty"`
 }
 

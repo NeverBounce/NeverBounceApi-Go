@@ -11,24 +11,24 @@ type GenericRequestModel struct {
 // It contains the responses Status and ExecutionTime
 type GenericResponseModel struct {
 	Status        string `json:"status"`
-	ExecutionTime int `json:"execution_time"`
+	ExecutionTime int    `json:"execution_time"`
 }
 
 // CreditsInfoModel is used to parse out the credit info the repsonse
 type CreditsInfoModel struct {
-	PaidCreditsUsed      int `json:"paid_credits_used"`
-	FreeCreditsUsed      int `json:"free_credits_used"`
-	PaidCreditsRemaining int `json:"paid_credits_remaining"`
-	FreeCreditsRemaining int `json:"free_credits_remaining"`
+	PaidCreditsUsed      int    `json:"paid_credits_used"`
+	FreeCreditsUsed      int    `json:"free_credits_used"`
+	PaidCreditsRemaining int    `json:"paid_credits_remaining"`
+	FreeCreditsRemaining int    `json:"free_credits_remaining"`
 	MonthlyAPIUsage      string `json:"monthly_api_usage"`
 }
 
 // VerificationModel is used to parse out the verification responses from JobsStatus and SingleCheck
 type VerificationModel struct {
-	Result              string `json:"result"`
-	Flags               []string `json:"flags"`
-	SuggestedCorrection string `json:"suggested_correction"`
-	RetryToken          string `json:"retry_token"`
+	Result              string           `json:"result"`
+	Flags               []string         `json:"flags"`
+	SuggestedCorrection string           `json:"suggested_correction"`
+	RetryToken          string           `json:"retry_token"`
 	AddressInfo         AddressInfoModel `json:"address_info"`
 }
 

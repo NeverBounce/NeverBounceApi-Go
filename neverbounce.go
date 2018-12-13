@@ -38,11 +38,11 @@ package neverbounce
 
 import (
 	"bytes"
-	"strings"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 // NeverBounce is the root struct of the wrapper.
@@ -185,7 +185,7 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 						"\n\n(" + nbError.Type + ")",
 				}
 			}
-			
+
 			return nil, &Error{
 				Type: nbError.Type,
 				Message: "We were unable to complete your request. " +

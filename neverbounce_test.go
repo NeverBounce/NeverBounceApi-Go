@@ -1,13 +1,13 @@
 package neverbounce_test
 
 import (
-	"os"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 	"github.com/NeverBounce/NeverBounceApi-Go"
 	"github.com/NeverBounce/NeverBounceApi-Go/models"
-	"testing"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 	"gopkg.in/jarcoal/httpmock.v1"
+	"os"
+	"testing"
 )
 
 func TestNeverBounceApiGo(t *testing.T) {
@@ -31,8 +31,8 @@ var _ = Describe("NeverBounce", func() {
 			Expect(err).NotTo(BeNil())
 			if nbError, ok := err.(*neverbounce.Error); ok {
 				Expect(nbError.Message).To(Equal("The API responded with a datatype of \"text/html" +
-				"\", but \"application/json\" was expected." +
-				"\n\n(Internal error [status 200])"))
+					"\", but \"application/json\" was expected." +
+					"\n\n(Internal error [status 200])"))
 			}
 		})
 
@@ -69,8 +69,8 @@ var _ = Describe("NeverBounce", func() {
 			Expect(err).NotTo(BeNil())
 			if nbError, ok := err.(*neverbounce.Error); ok {
 				Expect(nbError.Message).To(Equal("We were unable to parse the API response. " +
-				"The following information was supplied: " +
-				"\n\n(Internal error [status 200])"))
+					"The following information was supplied: " +
+					"\n\n(Internal error [status 200])"))
 			}
 		})
 

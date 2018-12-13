@@ -5,9 +5,9 @@ package nbModels
 type SingleCheckRequestModel struct {
 	GenericRequestModel
 	Email       string `json:"email"`
-	AddressInfo bool `json:"address_info,omitempty"`
-	CreditInfo  bool `json:"credits_info,omitempty"`
-	Timeout     int `json:"timeout,omitempty"`
+	AddressInfo bool   `json:"address_info,omitempty"`
+	CreditInfo  bool   `json:"credits_info,omitempty"`
+	Timeout     int    `json:"timeout,omitempty"`
 }
 
 // SingleCheckResponseModel is the response model for Single.Check()

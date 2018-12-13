@@ -1,11 +1,9 @@
 package neverbounce_test
 
 import (
-	. "github.com/onsi/ginkgo"
-	"gopkg.in/jarcoal/httpmock.v1"
-	. "github.com/onsi/gomega"
 	"github.com/NeverBounce/NeverBounceApi-Go"
 	"github.com/NeverBounce/NeverBounceApi-Go/models"
+	"gopkg.in/jarcoal/httpmock.v1"
 	"os"
 )
 
@@ -59,7 +57,6 @@ var _ = Describe("Jobs", func() {
 			response.Header.Set("content-type", "application/json")
 			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4/jobs/create",
 				httpmock.ResponderFromResponse(response))
-				
 
 			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.CreateFromRemoteURL(&nbModels.JobsCreateRemoteURLRequestModel{
@@ -238,7 +235,7 @@ var _ = Describe("Jobs", func() {
 			response.Header.Set("content-type", "application/json")
 			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/jobs/results",
 				httpmock.ResponderFromResponse(response))
-				
+
 			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.Jobs.Results(&nbModels.JobsResultsRequestModel{
 				JobID: 251319,
