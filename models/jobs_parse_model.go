@@ -4,7 +4,7 @@ package nbModels
 // JobsParseRequestModel is the request model for Jobs.Parse()
 type JobsParseRequestModel struct {
 	GenericRequestModel
-	JobID     int `json:"job_id"`
+	JobID     int  `json:"job_id"`
 	AutoStart bool `json:"auto_start,omitempty"`
 }
 

@@ -42,13 +42,13 @@ import (
 
 const (
 	// ErrorTypeGeneralFailure is a generic error coming from the API
-	ErrorTypeGeneralFailure    string = "general_failure"
+	ErrorTypeGeneralFailure string = "general_failure"
 
 	// ErrorTypeAuthFailure indicates an issue with the API credentials supplied
-	ErrorTypeAuthFailure       string = "auth_failure"
+	ErrorTypeAuthFailure string = "auth_failure"
 
 	// ErrorTypeBadReferrer indicates that the API is being used from an host that hasn't been authorized
-	ErrorTypeBadReferrer       string = "bad_referrer"
+	ErrorTypeBadReferrer string = "bad_referrer"
 
 	// ErrorTypeThrottleTriggered indicates that too many requests have been made in a short amount of time
 	ErrorTypeThrottleTriggered string = "throttle_triggered"

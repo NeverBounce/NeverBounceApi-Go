@@ -42,6 +42,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 // NeverBounce is the root struct of the wrapper.
@@ -106,6 +107,7 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 
 	// Make request
 	request, _ := http.NewRequest(method, url, bytes.NewReader(body))
+	// request, _ := http.NewRequest(method, "http://http-test.test", bytes.NewReader(body))
 	request.Header.Add("User-Agent", "NeverBounceApi-Go/"+Version)
 	request.Header.Add("Content-Type", "application/json")
 
@@ -146,6 +148,15 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 		return nil, e
 	}
 
+	if strings.Contains(url, "v4/jobs/download") == false && res.Header.Get("Content-Type") != "application/json" {
+		return nil, &Error{
+			Type: "general_failure",
+			Message: "The API responded with a datatype of \"" + res.Header.Get("Content-Type") +
+				"\", but \"application/json\" was expected." +
+				"\n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])",
+		}
+	}
+
 	// Handle JSON repsonses
 	if res.Header.Get("Content-Type") == "application/json" {
 
@@ -155,7 +166,14 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 		// Unmarshal into error
 		err := json.Unmarshal(body, &nbError)
 		if err != nil {
-			return nil, err
+			buf := new(bytes.Buffer)
+			buf.ReadFrom(res.Body)
+			return nil, &Error{
+				Type: "general_failure",
+				Message: "We were unable to parse the API response. " +
+					"The following information was supplied: " + buf.String() +
+					"\n\n(Internal error [status " + strconv.Itoa(res.StatusCode) + "])",
+			}
 		}
 
 		if nbError.Type != "success" {
@@ -167,7 +185,7 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 						"\n\n(" + nbError.Type + ")",
 				}
 			}
-			
+
 			return nil, &Error{
 				Type: nbError.Type,
 				Message: "We were unable to complete your request. " +

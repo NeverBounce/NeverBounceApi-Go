@@ -4,9 +4,9 @@ package nbModels
 // AccountInfoResponseModel is used to parse the response from Account.Info()
 type AccountInfoResponseModel struct {
 	GenericResponseModel
-	BillingType string `json:"billing_type"`
+	BillingType string           `json:"billing_type"`
 	CreditsInfo CreditsInfoModel `json:"credits_info"`
-	JobsCounts  JobCountsModel `json:"job_counts"`
+	JobsCounts  JobCountsModel   `json:"job_counts"`
 }
 
 // JobCountsModel is used to parse the JobsCounts from the AccountInfoResponseModel

@@ -4,7 +4,7 @@ package nbModels
 // JobsStatusRequestModel is the request model for Jobs.Status()
 type JobsStatusRequestModel struct {
 	GenericRequestModel
-	JobID       int `json:"job_id"`
+	JobID int `json:"job_id"`
 }
 
 // JobsStatusResponseModel is the response model for Jobs.Status()

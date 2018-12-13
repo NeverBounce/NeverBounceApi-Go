@@ -37,8 +37,8 @@ Additional examples can be found in the examples directory
 package neverbounce
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"github.com/NeverBounce/NeverBounceApi-Go/models"
 	"io"
 	"os"
@@ -252,4 +252,3 @@ func (r *Jobs) Delete(model *nbModels.JobsDeleteRequestModel) (*nbModels.JobsDel
 	}
 	return &info, nil
 }
-

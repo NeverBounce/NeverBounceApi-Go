@@ -1,16 +1,15 @@
 language: go
 go:
-- 1.7
-- 1.8
-- "1.9.x"
-- "1.10.x"
+  - "1.9.x"
+  - "1.10.x"
+  - "1.11.x"
 before_install:
-- go get -v github.com/golang/lint/golint
-- go get github.com/axw/gocov/gocov
+  - go get -v github.com/golang/lint/golint
+  - go get github.com/axw/gocov/gocov
 script:
-- golint ./...
-- go test -v ./...
-- gocov test | gocov report
+  - golint ./...
+  - go test -v ./...
+  - gocov test | gocov report
 notifications:
   email: false
   slack:

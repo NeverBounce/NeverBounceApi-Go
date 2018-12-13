@@ -12,9 +12,9 @@ type JobsDownloadRequestModel struct {
 	IncludeCatchalls   bool `json:"catchalls,omitempty"`
 	IncludeUnknowns    bool `json:"unknowns,omitempty"`
 	IncludeDisposables bool `json:"disposables,omitempty"`
-	IncludeDuplicates bool `json:"include_duplicates,omitempty"`
-	OnlyDuplicates    bool `json:"only_duplicates,omitempty"`
-	OnlyBadSyntax     bool `json:"only_bad_syntax,omitempty"`
+	IncludeDuplicates  bool `json:"include_duplicates,omitempty"`
+	OnlyDuplicates     bool `json:"only_duplicates,omitempty"`
+	OnlyBadSyntax      bool `json:"only_bad_syntax,omitempty"`
 
 	// Data appends
 	IdentifyBadSyntax      bool `json:"bad_syntax,omitempty"`
