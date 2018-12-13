@@ -1,9 +1,11 @@
 package neverbounce_test
 
 import (
+	"os"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/NeverBounce/NeverBounceApi-Go"
+	"github.com/NeverBounce/NeverBounceApi-Go/models"
 	"testing"
 	"gopkg.in/jarcoal/httpmock.v1"
 )
@@ -15,6 +17,63 @@ func TestNeverBounceApiGo(t *testing.T) {
 
 var _ = Describe("NeverBounce", func() {
 	Describe("MakeRequest", func() {
+
+		It("should return an error when the content-type mismatches", func() {
+			response := httpmock.NewStringResponse(200, ``)
+			response.Header.Set("content-type", "text/html")
+
+			// mock the root info API
+			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",
+				httpmock.ResponderFromResponse(response))
+			neverBounce := neverbounce.New("apiKey")
+			resp, err := neverBounce.Account.Info()
+			Expect(resp).To(BeNil())
+			Expect(err).NotTo(BeNil())
+			if nbError, ok := err.(*neverbounce.Error); ok {
+				Expect(nbError.Message).To(Equal("The API responded with a datatype of \"text/html" +
+				"\", but \"application/json\" was expected." +
+				"\n\n(Internal error [status 200])"))
+			}
+		})
+
+		It("should not return an error when requesting job/download with non json response", func() {
+			response := httpmock.NewStringResponse(200, ``)
+			response.Header.Set("content-type", "text/html")
+
+			// mock the root info API
+			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/jobs/download",
+				httpmock.ResponderFromResponse(response))
+			neverBounce := neverbounce.New("apiKey")
+			err := neverBounce.Jobs.Download(&nbModels.JobsDownloadRequestModel{
+				JobID:            296050,
+				EmailStatusAsInt: true,
+			}, "test.csv")
+			Expect(err).To(BeNil())
+
+			err2 := os.Remove("test.csv")
+			if err2 != nil {
+				panic(err2)
+			}
+		})
+
+		It("should return an error when the response is empty and content-type matches", func() {
+			response := httpmock.NewStringResponse(200, ``)
+			response.Header.Set("content-type", "application/json")
+
+			// mock the root info API
+			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",
+				httpmock.ResponderFromResponse(response))
+			neverBounce := neverbounce.New("apiKey")
+			resp, err := neverBounce.Account.Info()
+			Expect(resp).To(BeNil())
+			Expect(err).NotTo(BeNil())
+			if nbError, ok := err.(*neverbounce.Error); ok {
+				Expect(nbError.Message).To(Equal("We were unable to parse the API response. " +
+				"The following information was supplied: " +
+				"\n\n(Internal error [status 200])"))
+			}
+		})
+
 		It("should return an error during a 404", func() {
 			// mock the root info API
 			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",
@@ -51,7 +110,7 @@ var _ = Describe("NeverBounce", func() {
 					"message": "Something went wrong",
 					"execution_time": 300
 				}`)
-			response.Header.Set("Content-Type", "application/json")
+			response.Header.Set("content-Type", "application/json")
 
 			// mock the root info API
 			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",

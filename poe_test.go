@@ -11,12 +11,15 @@ import (
 var _ = Describe("NeverBounce", func() {
 	Describe("POE", func() {
 		It("should return an instance of POEConfirmResponseModel", func() {
+			response := httpmock.NewStringResponse(200, `{
+				"status": "success",
+				"token_confirmed": true,
+				"execution_time": 300
+			}`)
+			response.Header.Set("content-type", "application/json")
 			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/poe/confirm",
-				httpmock.NewStringResponder(200, `{
-					"status": "success",
-					"token_confirmed": true,
-					"execution_time": 300
-				}`))
+				httpmock.ResponderFromResponse(response))
+
 			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.POE.Confirm(&nbModels.POEConfirmRequestModel{
 				Email: "support@neverbounce.com",
