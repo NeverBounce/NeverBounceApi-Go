@@ -107,7 +107,6 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 
 	// Make request
 	request, _ := http.NewRequest(method, url, bytes.NewReader(body))
-	// request, _ := http.NewRequest(method, "http://http-test.test", bytes.NewReader(body))
 	request.Header.Add("User-Agent", "NeverBounceApi-Go/"+Version)
 	request.Header.Add("Content-Type", "application/json")
 
