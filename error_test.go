@@ -2,6 +2,8 @@ package neverbounce_test
 
 import (
 	"github.com/NeverBounce/NeverBounceApi-Go"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("Jobs", func() {
