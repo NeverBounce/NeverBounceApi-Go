@@ -16,7 +16,7 @@ import (
 func main() {
 	// instantiate neverBounce
 	client := neverbounce.New("api_key")
-
+	client.SetApiVersion("v4.1")
 	AccountInfo(client)
 	//SingleCheck(client)
 	//JobsSearch(client)
@@ -43,10 +43,11 @@ func AccountInfo(client *neverbounce.NeverBounce) {
 // SingleCheck demonstrates how to make to verify a single email
 func SingleCheck(client *neverbounce.NeverBounce) {
 	singleResults, err := client.Single.Check(&nbModels.SingleCheckRequestModel{
-		Email:       "support@neverbounce.com",
-		AddressInfo: true,
-		CreditInfo:  true,
-		Timeout:     10,
+		Email:          "support@neverbounce.com",
+		AddressInfo:    true,
+		CreditInfo:     true,
+		Timeout:        10,
+		HistoricalData: nbModels.HistoricalDataModel{RequestMetaData: 0},
 	})
 	if err != nil {
 		panic(err)
@@ -86,11 +87,13 @@ func JobsCreateFromSuppliedData(client *neverbounce.NeverBounce) {
 
 	// Create a job from supplied data
 	jobInfo, err := client.Jobs.CreateFromSuppliedData(&nbModels.JobsCreateSuppliedDataRequestModel{
-		SuppliedData: createData,
-		AutoParse:    false,
-		AutoStart:    false,
-		RunSample:    false,
-		FileName:     "Created from Golang.csv"})
+		SuppliedData:   createData,
+		AutoParse:      false,
+		AutoStart:      false,
+		RunSample:      false,
+		FileName:       "Created from Golang.csv",
+		HistoricalData: nbModels.HistoricalDataModel{RequestMetaData: 0},
+	})
 	if err != nil {
 		panic(err)
 	}
@@ -100,11 +103,13 @@ func JobsCreateFromSuppliedData(client *neverbounce.NeverBounce) {
 // JobsCreateFromRemoteURL demonstrates how to create a job using data hosted on a remote url
 func JobsCreateFromRemoteURL(client *neverbounce.NeverBounce) {
 	jobInfo, err := client.Jobs.CreateFromRemoteURL(&nbModels.JobsCreateRemoteURLRequestModel{
-		RemoteURL: "https://example.com/file.csv",
-		AutoParse: true,
-		AutoStart: false,
-		RunSample: false,
-		FileName:  "Created from Golang.csv"})
+		RemoteURL:      "https://example.com/file.csv",
+		AutoParse:      true,
+		AutoStart:      false,
+		RunSample:      false,
+		FileName:       "Created from Golang.csv",
+		HistoricalData: nbModels.HistoricalDataModel{RequestMetaData: 0},
+	})
 	if err != nil {
 		panic(err)
 	}

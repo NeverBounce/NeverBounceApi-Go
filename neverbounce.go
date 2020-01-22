@@ -58,25 +58,26 @@ type NeverBounce struct {
 const Version = "4.0.0"
 
 // DefaultBaseURL is the default host to make the API requests on
-const DefaultBaseURL = "https://api.neverbounce.com/v4/"
+const DefaultBaseURL = "https://api.neverbounce.com"
 
 // New creates a new instance of *NeverBounce. Accepts the api key to use for authentication.
-func New(apiKey string) (*NeverBounce) {
+func New(apiKey string) *NeverBounce {
+	apiBaseUrl := DefaultBaseURL + "/v4/"
 	r := &NeverBounce{
 		Account: &Account{
-			apiBaseURL: DefaultBaseURL,
+			apiBaseURL: apiBaseUrl,
 			apiKey:     apiKey,
 		},
 		Single: &Single{
-			apiBaseURL: DefaultBaseURL,
+			apiBaseURL: apiBaseUrl,
 			apiKey:     apiKey,
 		},
 		Jobs: &Jobs{
-			apiBaseURL: DefaultBaseURL,
+			apiBaseURL: apiBaseUrl,
 			apiKey:     apiKey,
 		},
 		POE: &POE{
-			apiBaseURL: DefaultBaseURL,
+			apiBaseURL: apiBaseUrl,
 			apiKey:     apiKey,
 		},
 	}
@@ -92,6 +93,11 @@ func (r *NeverBounce) SetBaseURL(url string) {
 	r.Single.apiBaseURL = url
 	r.Jobs.apiBaseURL = url
 	r.POE.apiBaseURL = url
+}
+
+func (r *NeverBounce) SetApiVersion(apiVersion string) {
+	apiBaseUrl := DefaultBaseURL + "/" + apiVersion + "/"
+	r.SetBaseURL(apiBaseUrl)
 }
 
 // MakeRequest handles the request and parsing of the responses to and from the API

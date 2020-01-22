@@ -50,3 +50,7 @@ type APIErrorModel struct {
 	GenericResponseModel
 	Message string `json:"message"`
 }
+
+type HistoricalDataModel struct {
+	RequestMetaData int `json:"leverage_historical_data"`
+}
