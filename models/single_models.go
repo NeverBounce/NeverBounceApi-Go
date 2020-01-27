@@ -8,7 +8,7 @@ type SingleCheckRequestModel struct {
 	AddressInfo    bool                `json:"address_info,omitempty"`
 	CreditInfo     bool                `json:"credits_info,omitempty"`
 	Timeout        int                 `json:"timeout,omitempty"`
-	HistoricalData HistoricalDataModel `json:"request_meta_data, omitempty"`
+	HistoricalData HistoricalDataModel `json:"request_meta_data,omitempty"`
 }
 
 // SingleCheckResponseModel is the response model for Single.Check()

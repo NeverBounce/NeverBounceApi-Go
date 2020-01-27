@@ -11,7 +11,7 @@ type JobsCreateSuppliedDataRequestModel struct {
 	AutoStart      bool                `json:"auto_start"`
 	RunSample      bool                `json:"run_sample"`
 	FileName       string              `json:"filename,omitempty"`
-	HistoricalData HistoricalDataModel `json:"request_meta_data, omitempty"`
+	HistoricalData HistoricalDataModel `json:"request_meta_data,omitempty"`
 }
 
 // JobsCreateRemoteURLRequestModel is the request model for creating a job with a remote URL
@@ -23,7 +23,7 @@ type JobsCreateRemoteURLRequestModel struct {
 	AutoStart      bool                `json:"auto_start"`
 	RunSample      bool                `json:"run_sample"`
 	FileName       string              `json:"filename,omitempty"`
-	HistoricalData HistoricalDataModel `json:"request_meta_data, omitempty"`
+	HistoricalData HistoricalDataModel `json:"request_meta_data,omitempty"`
 }
 
 // JobsCreateResponseModel is the response model for both creation methods
