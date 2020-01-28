@@ -16,7 +16,7 @@ import (
 func main() {
 	// instantiate neverBounce
 	client := neverbounce.New("api_key")
-	client.SetApiVersion("v4.1")
+	client.SetAPIVersion("v4.1")
 	AccountInfo(client)
 	//SingleCheck(client)
 	//JobsSearch(client)

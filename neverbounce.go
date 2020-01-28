@@ -62,22 +62,22 @@ const DefaultBaseURL = "https://api.neverbounce.com"
 
 // New creates a new instance of *NeverBounce. Accepts the api key to use for authentication.
 func New(apiKey string) *NeverBounce {
-	apiBaseUrl := DefaultBaseURL + "/v4/"
+	apiBaseURL := DefaultBaseURL + "/v4/"
 	r := &NeverBounce{
 		Account: &Account{
-			apiBaseURL: apiBaseUrl,
+			apiBaseURL: apiBaseURL,
 			apiKey:     apiKey,
 		},
 		Single: &Single{
-			apiBaseURL: apiBaseUrl,
+			apiBaseURL: apiBaseURL,
 			apiKey:     apiKey,
 		},
 		Jobs: &Jobs{
-			apiBaseURL: apiBaseUrl,
+			apiBaseURL: apiBaseURL,
 			apiKey:     apiKey,
 		},
 		POE: &POE{
-			apiBaseURL: apiBaseUrl,
+			apiBaseURL: apiBaseURL,
 			apiKey:     apiKey,
 		},
 	}
@@ -95,9 +95,10 @@ func (r *NeverBounce) SetBaseURL(url string) {
 	r.POE.apiBaseURL = url
 }
 
-func (r *NeverBounce) SetApiVersion(apiVersion string) {
-	apiBaseUrl := DefaultBaseURL + "/" + apiVersion + "/"
-	r.SetBaseURL(apiBaseUrl)
+// SetAPIVersion will set API version used to make requests. It overrides DefaultBaseUrl.
+func (r *NeverBounce) SetAPIVersion(apiVersion string) {
+	apiBaseURL := DefaultBaseURL + "/" + apiVersion + "/"
+	r.SetBaseURL(apiBaseURL)
 }
 
 // MakeRequest handles the request and parsing of the responses to and from the API

@@ -51,6 +51,7 @@ type APIErrorModel struct {
 	Message string `json:"message"`
 }
 
+// HistoricalDataModel
 type HistoricalDataModel struct {
 	RequestMetaData int `json:"leverage_historical_data,omitempty"`
 }
