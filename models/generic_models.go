@@ -51,7 +51,7 @@ type APIErrorModel struct {
 	Message string `json:"message"`
 }
 
-// HistoricalDataModel
+// HistoricalDataModel is used in some requests to enable or disable Historical Data
 type HistoricalDataModel struct {
 	RequestMetaData int `json:"leverage_historical_data,omitempty"`
 }
