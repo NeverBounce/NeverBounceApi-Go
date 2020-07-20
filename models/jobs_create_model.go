@@ -13,7 +13,7 @@ type JobsCreateSuppliedDataRequestModel struct {
 	FileName          string                 `json:"filename,omitempty"`
 	HistoricalData    HistoricalDataModel    `json:"request_meta_data,omitempty"`
 	AllowManualReview bool                   `json:"allow_manual_review,omitempty"`
-	CallbackUrl       string                 `json:"callback_url,omitempty"`
+	CallbackURL       string                 `json:"callback_url,omitempty"`
 	CallbackHeaders   map[string]interface{} `json:"callback_headers,omitempty"`
 }
 
@@ -28,7 +28,7 @@ type JobsCreateRemoteURLRequestModel struct {
 	FileName          string                 `json:"filename,omitempty"`
 	HistoricalData    HistoricalDataModel    `json:"request_meta_data,omitempty"`
 	AllowManualReview bool                   `json:"allow_manual_review,omitempty"`
-	CallbackUrl       string                 `json:"callback_url,omitempty"`
+	CallbackURL       string                 `json:"callback_url,omitempty"`
 	CallbackHeaders   map[string]interface{} `json:"callback_headers,omitempty"`
 }
 
