@@ -23,7 +23,7 @@ var _ = Describe("NeverBounce", func() {
 			response.Header.Set("content-type", "text/html")
 
 			// mock the root info API
-			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",
+			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4.2/account/info",
 				httpmock.ResponderFromResponse(response))
 			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.Account.Info()
@@ -41,7 +41,7 @@ var _ = Describe("NeverBounce", func() {
 			response.Header.Set("content-type", "text/html")
 
 			// mock the root info API
-			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/jobs/download",
+			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4.2/jobs/download",
 				httpmock.ResponderFromResponse(response))
 			neverBounce := neverbounce.New("apiKey")
 			err := neverBounce.Jobs.Download(&nbModels.JobsDownloadRequestModel{
@@ -61,7 +61,7 @@ var _ = Describe("NeverBounce", func() {
 			response.Header.Set("content-type", "application/json")
 
 			// mock the root info API
-			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",
+			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4.2/account/info",
 				httpmock.ResponderFromResponse(response))
 			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.Account.Info()
@@ -76,7 +76,7 @@ var _ = Describe("NeverBounce", func() {
 
 		It("should return an error during a 404", func() {
 			// mock the root info API
-			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",
+			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4.2/account/info",
 				httpmock.NewStringResponder(404, `404 Not Found`))
 			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.Account.Info()
@@ -91,7 +91,7 @@ var _ = Describe("NeverBounce", func() {
 
 		It("should return an error during a 503", func() {
 			// mock the root info API
-			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",
+			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4.2/account/info",
 				httpmock.NewStringResponder(503, `503 Temporarily Unavailable`))
 			neverBounce := neverbounce.New("apiKey")
 			resp, err := neverBounce.Account.Info()
@@ -113,7 +113,7 @@ var _ = Describe("NeverBounce", func() {
 			response.Header.Set("content-Type", "application/json")
 
 			// mock the root info API
-			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",
+			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4.2/account/info",
 				httpmock.ResponderFromResponse(response))
 			neverBounce := neverbounce.New("apiKey")
 			body, err := neverBounce.Account.Info()
@@ -132,7 +132,7 @@ var _ = BeforeSuite(func() {
 	// block all HTTP requests
 	httpmock.Activate()
 	// mock the root info API
-	httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",
+	httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4.2/account/info",
 		httpmock.NewStringResponder(200, `{
                 "status": "success",
                 "result": "valid",

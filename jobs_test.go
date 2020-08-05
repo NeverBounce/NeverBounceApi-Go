@@ -19,7 +19,7 @@ var _ = Describe("Jobs", func() {
                 "execution_time": 388
 			}`)
 			response.Header.Set("content-type", "application/json")
-			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4/jobs/create",
+			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4.2/jobs/create",
 				httpmock.ResponderFromResponse(response))
 
 			// Build data map
@@ -57,7 +57,7 @@ var _ = Describe("Jobs", func() {
                 "execution_time": 388
 			}`)
 			response.Header.Set("content-type", "application/json")
-			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4/jobs/create",
+			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4.2/jobs/create",
 				httpmock.ResponderFromResponse(response))
 
 			neverBounce := neverbounce.New("apiKey")
@@ -82,7 +82,7 @@ var _ = Describe("Jobs", func() {
                 "execution_time": 388
             }`)
 			response.Header.Set("content-type", "application/json")
-			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4/jobs/parse",
+			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4.2/jobs/parse",
 				httpmock.ResponderFromResponse(response))
 
 			neverBounce := neverbounce.New("apiKey")
@@ -103,7 +103,7 @@ var _ = Describe("Jobs", func() {
                 "execution_time": 388
             }`)
 			response.Header.Set("content-type", "application/json")
-			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4/jobs/start",
+			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4.2/jobs/start",
 				httpmock.ResponderFromResponse(response))
 
 			neverBounce := neverbounce.New("apiKey")
@@ -143,7 +143,7 @@ var _ = Describe("Jobs", func() {
 				"execution_time": 322
 				}`)
 			response.Header.Set("content-type", "application/json")
-			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/jobs/status",
+			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4.2/jobs/status",
 				httpmock.ResponderFromResponse(response))
 
 			neverBounce := neverbounce.New("apiKey")
@@ -235,7 +235,7 @@ var _ = Describe("Jobs", func() {
 				"execution_time": 55
 				}`)
 			response.Header.Set("content-type", "application/json")
-			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/jobs/results",
+			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4.2/jobs/results",
 				httpmock.ResponderFromResponse(response))
 
 			neverBounce := neverbounce.New("apiKey")
@@ -251,7 +251,7 @@ var _ = Describe("Jobs", func() {
 	Describe("Download", func() {
 		It("error should be nil", func() {
 			// mock the root info API
-			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/jobs/download",
+			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4.2/jobs/download",
 				httpmock.NewStringResponder(200, `{
                 "status": "success"}`))
 			neverBounce := neverbounce.New("apiKey")
@@ -273,7 +273,7 @@ var _ = Describe("Jobs", func() {
                 "execution_time": 388
             }`)
 			response.Header.Set("content-type", "application/json")
-			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4/jobs/delete",
+			httpmock.RegisterResponder("POST", "https://api.neverbounce.com/v4.2/jobs/delete",
 				httpmock.ResponderFromResponse(response))
 
 			neverBounce := neverbounce.New("apiKey")
