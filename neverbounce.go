@@ -154,7 +154,7 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 		return nil, e
 	}
 
-	if strings.Contains(url, "v4/jobs/download") == false && res.Header.Get("Content-Type") != "application/json" {
+	if strings.Contains(url, "/jobs/download") == false && res.Header.Get("Content-Type") != "application/json" {
 		return nil, &Error{
 			Type: "general_failure",
 			Message: "The API responded with a datatype of \"" + res.Header.Get("Content-Type") +
