@@ -16,7 +16,7 @@ import (
 func main() {
 	// instantiate neverBounce
 	client := neverbounce.New("api_key")
-	client.SetAPIVersion("v4.1")
+	client.SetAPIVersion("v4.2")
 	AccountInfo(client)
 	//SingleCheck(client)
 	//JobsSearch(client)
@@ -87,12 +87,17 @@ func JobsCreateFromSuppliedData(client *neverbounce.NeverBounce) {
 
 	// Create a job from supplied data
 	jobInfo, err := client.Jobs.CreateFromSuppliedData(&nbModels.JobsCreateSuppliedDataRequestModel{
-		SuppliedData:   createData,
-		AutoParse:      false,
-		AutoStart:      false,
-		RunSample:      false,
-		FileName:       "Created from Golang.csv",
-		HistoricalData: nbModels.HistoricalDataModel{RequestMetaData: 0},
+		SuppliedData:      createData,
+		AutoParse:         false,
+		AutoStart:         false,
+		RunSample:         false,
+		FileName:          "Created from Golang.csv",
+		HistoricalData:    nbModels.HistoricalDataModel{RequestMetaData: 0},
+		AllowManualReview: false,
+		CallbackURL:       "test.com",
+		CallbackHeaders: map[string]interface{}{
+			"TestHeader": "test",
+		},
 	})
 	if err != nil {
 		panic(err)
@@ -103,12 +108,17 @@ func JobsCreateFromSuppliedData(client *neverbounce.NeverBounce) {
 // JobsCreateFromRemoteURL demonstrates how to create a job using data hosted on a remote url
 func JobsCreateFromRemoteURL(client *neverbounce.NeverBounce) {
 	jobInfo, err := client.Jobs.CreateFromRemoteURL(&nbModels.JobsCreateRemoteURLRequestModel{
-		RemoteURL:      "https://example.com/file.csv",
-		AutoParse:      true,
-		AutoStart:      false,
-		RunSample:      false,
-		FileName:       "Created from Golang.csv",
-		HistoricalData: nbModels.HistoricalDataModel{RequestMetaData: 0},
+		RemoteURL:         "https://example.com/file.csv",
+		AutoParse:         true,
+		AutoStart:         false,
+		RunSample:         false,
+		FileName:          "Created from Golang.csv",
+		HistoricalData:    nbModels.HistoricalDataModel{RequestMetaData: 0},
+		AllowManualReview: false,
+		CallbackURL:       "test.com",
+		CallbackHeaders: map[string]interface{}{
+			"TestHeader": "test",
+		},
 	})
 	if err != nil {
 		panic(err)
@@ -131,7 +141,8 @@ func JobsParse(client *neverbounce.NeverBounce) {
 // JobsStart demonstrates how to start a job after it's been parsed and AutoStart was set to false
 func JobsStart(client *neverbounce.NeverBounce) {
 	startInfo, err := client.Jobs.Start(&nbModels.JobsStartRequestModel{
-		JobID: 296050,
+		JobID:             296050,
+		AllowManualReview: false,
 		//RunSample: false,
 	})
 	if err != nil {

@@ -28,7 +28,7 @@ var _ = Describe("Account", func() {
 				"execution_time": 896
 			}`)
 			response.Header.Set("content-type", "application/json")
-			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4/account/info",
+			httpmock.RegisterResponder("GET", "https://api.neverbounce.com/v4.2/account/info",
 				httpmock.ResponderFromResponse(response))
 
 			neverBounce := neverbounce.New("apiKey")

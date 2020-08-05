@@ -55,14 +55,14 @@ type NeverBounce struct {
 }
 
 // Version is the current version of the wrapper
-const Version = "4.0.0"
+const Version = "4.1.0"
 
 // DefaultBaseURL is the default host to make the API requests on
 const DefaultBaseURL = "https://api.neverbounce.com"
 
 // New creates a new instance of *NeverBounce. Accepts the api key to use for authentication.
 func New(apiKey string) *NeverBounce {
-	apiBaseURL := DefaultBaseURL + "/v4/"
+	apiBaseURL := DefaultBaseURL + "/v4.2/"
 	r := &NeverBounce{
 		Account: &Account{
 			apiBaseURL: apiBaseURL,
@@ -154,7 +154,7 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 		return nil, e
 	}
 
-	if strings.Contains(url, "v4/jobs/download") == false && res.Header.Get("Content-Type") != "application/json" {
+	if strings.Contains(url, "/jobs/download") == false && res.Header.Get("Content-Type") != "application/json" {
 		return nil, &Error{
 			Type: "general_failure",
 			Message: "The API responded with a datatype of \"" + res.Header.Get("Content-Type") +
