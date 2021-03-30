@@ -127,7 +127,7 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 	// handle 5xx HTTP codes
 	if res.StatusCode >= 400 {
 		buf := new(bytes.Buffer)
-		buf.ReadFrom(res.Body)
+		_, _ = buf.ReadFrom(res.Body)
 
 		if res.StatusCode >= 500 {
 			return nil, &Error{
@@ -154,7 +154,7 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 		return nil, e
 	}
 
-	if strings.Contains(url, "/jobs/download") == false && res.Header.Get("Content-Type") != "application/json" {
+	if !strings.Contains(url, "/jobs/download") && res.Header.Get("Content-Type") != "application/json" {
 		return nil, &Error{
 			Type: "general_failure",
 			Message: "The API responded with a datatype of \"" + res.Header.Get("Content-Type") +
@@ -173,7 +173,7 @@ func MakeRequest(method string, url string, data interface{}) ([]byte, error) {
 		err := json.Unmarshal(body, &nbError)
 		if err != nil {
 			buf := new(bytes.Buffer)
-			buf.ReadFrom(res.Body)
+			_, _ = buf.ReadFrom(res.Body)
 			return nil, &Error{
 				Type: "general_failure",
 				Message: "We were unable to parse the API response. " +
