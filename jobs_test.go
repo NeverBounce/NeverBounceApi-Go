@@ -5,7 +5,7 @@ import (
 	"github.com/NeverBounce/NeverBounceApi-Go/models"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"gopkg.in/jarcoal/httpmock.v1"
+	"github.com/jarcoal/httpmock"
 	"os"
 )
 
